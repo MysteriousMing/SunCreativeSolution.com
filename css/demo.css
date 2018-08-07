@@ -7,10 +7,10 @@ body>header, body>section{
 }
 @keyframes fromTopIn {
     from {
-        display: none;
+        top: -40px;
     }
     to {
-        display: block;
+        top: 0;
     }
 }
 header {
@@ -19,18 +19,14 @@ header {
 header .right-col{
     height: 40px;
 }
-header:hover {
+header {
     animation: fromTopIn 200ms ease-out;
-    display: block
 }
 .nav {
-    background: white;
+    background: #000000b7;
 }
 .nav a {
-    color: black;
-}
-.nav-link {
-    color: black;
+    color: white;
 }
 .left-col {
     width: 80%;
@@ -47,17 +43,19 @@ header:hover {
     height: 100%;
 }
 figure.left-col {
-    height: 100%;
     background: black;
     display: block;
-    line-height: 100%;
-    padding-top: 40px;
+    line-height: 720px;
+    overflow: hidden;
 }
 .left-col>img {
+    min-width: 300px;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
-    height: 100%;
+    text-align: center;
     vertical-align: middle;
-    line-height: 100%;
 }
 .right-col>.color-pattern {
     border-left: 15px solid white;
