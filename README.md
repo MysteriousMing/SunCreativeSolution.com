@@ -5,4 +5,5 @@ Bio-web
 - Init git and sftp 
 - Upload to www.suncreativesolution.com
 - Add .gitignore
+- Add 404.html
 
