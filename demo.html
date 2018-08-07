@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Here is the portfolio of Sun.">
+    <meta name="author" content="Here is the portfolio of Sun.">
+    <title>Portfolio of Sun</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="css/demo.css">
+</head>
+
+<body>
+    <!-- nav bar -->
+    <header>
+        <div>
+            <ul class="nav pl-4">
+                <img class="nav-item mr-3 img-fluid align-self-center" width="24" height="24" src="images/syl.png" alt="syl logo">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Art</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Research</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Commercial</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- image banner -->
+    <section class="header">
+        <figure class="left-col mb-0 pb-4">
+            <img class="align-self-center" height="auto" width="100px" src="images/img2.png" alt="Header photos - name...">
+        </figure>
+        <div class="right-col mb-0">
+            <div class="color-pattern">
+            </div>
+        </div>
+    </section>
+
+    <!-- body -->
+    <div class="left-col">
+        <article class="pl-4">
+            <h1>ChemIsTry</h1>
+            <p>Chemistry is the scientific discipline involved with compounds composed of atoms, i.e. elements, and molecules, i.e.
+                combinations of atoms: their composition, structure, properties, behavior and the changes they undergo during a reaction
+                with other compounds. Chemistry addresses topics such as how atoms and molecules interact via chemical bonds to form
+                new chemical compounds. There are four types of chemical bonds: covalent bonds, in which compounds share one or more
+                electron(s); ionic bonds, in which a compound donates one or more electrons to another compound to produce ions (cations
+                and anions); hydrogen bonds; and Van der Waals force bonds.</p>
+            <figure>
+                <img width="100%" src="images/img1.png" alt="image 1">
+                <figcaption> ... </figcaption>
+            </figure>
+            <figure>
+                <img width="100%" src="images/img3.png" alt="image 2">
+                <figcaption>pic 2 ...
+                </figcaption>
+            </figure>
+            <p>Chemistry is the scientific discipline involved with compounds composed of atoms, i.e. elements, and molecules, i.e.
+                combinations of atoms: their composition, structure, properties, behavior and the changes they undergo during a reaction
+                with other compounds. Chemistry addresses topics such as how atoms and molecules interact via chemical bonds to form
+                new chemical compounds. There are four types of chemical bonds: covalent bonds, in which compounds share one or more
+                electron(s); ionic bonds, in which a compound donates one or more electrons to another compound to produce ions (cations
+                and anions); hydrogen bonds; and Van der Waals force bonds.</p>
+        </article>
+    </div>
+    <div class="right-col"></div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+
+            var oriosTop = $("body").offset().top; //元素距浏览器最上边的距离 
+            $(window).scroll( function(){ 
+                var scrollValue=$(window).scrollTop();//元素相对滚动条顶部的距离 
+                console.log(scrollValue, oriosTop)
+
+                if (scrollValue <= oriosTop){
+                    $("header").css({
+                        "top": "0",
+                        "animation": "fromTopIn 200ms ease-out"
+                    });
+                } else {
+                    $("header").css("top", "-40px");
+                }
+                if (scrollValue > 0) {
+                    $('header').css('opacity', '0.8')
+                } else {
+                    $('header').css({
+                        "top": "0",
+                        "animation": "fromTopIn 200ms ease-out",
+                        'opacity': '1'
+                    })
+                }
+                // if (scrollValue > 200){ 
+                //     $('header').css("top", "-40px"); //隐藏回到顶部 
+                // } else {
+                //     $('header').css("top", "0"); //显示回到顶部
+                // }
+
+
+                oriosTop = scrollValue
+            })
+
+        })
+    </script>
+</body>
+</html>
