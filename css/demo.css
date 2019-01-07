@@ -13,8 +13,16 @@ body>header, body>section{
         top: 0;
     }
 }
+@font-face{
+    font-family: centurygothic
+    src:url("../font/Century Gothic");
+}
+p {
+    font-family: centurygothic;
+}
 header {
     position: fixed;
+    font-family: centurygothic;
 }
 header .right-col{
     height: 40px;
@@ -63,4 +71,7 @@ figure.left-col {
     height: 100%;
     display: block;
     width: 100%;
+}
+.proj-content {
+    margin-left:10%;
 }
