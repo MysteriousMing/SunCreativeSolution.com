@@ -19,7 +19,7 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
-      path: '/product',
+      path: '/',
       redirect: '/dashboard',
       name: 'Admin',
       component: Full,
@@ -48,7 +48,7 @@ export default new Router({
       ]
     },
     {
-      path: '/',
+      path: '/dev',
       name: 'Dev',
       component: Construction,
       children: []
