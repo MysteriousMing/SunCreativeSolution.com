@@ -1,14 +1,24 @@
 <template>
   <header class="app-header navbar">
-    <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">&#9776;</button>
-    <b-link class="navbar-brand" to="#"></b-link>
-    <button class="navbar-toggler sidebar-toggler d-md-down-none mr-auto" type="button" @click="sidebarToggle">&#9776;</button>
-    <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" @click="asideToggle">&#9776;</button>
+    <b-link class="navbar-brand ml-2" to="#">
+      <logo></logo>
+    </b-link>
+    <span class="navbar-brand pt-10px d-md-down-none" to="#">ART</span>
+    <span class="navbar-brand pt-10px d-md-down-none" to="#">RESEARCH</span>
+    <span class="navbar-brand pt-10px d-md-down-none" to="#">COMMERCIAL</span>
+    <button class="ml-auto navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">&#9776;</button>
   </header>
 </template>
 <script>
+import logo from '../components/logo'
 export default {
   name: 'header',
+  components: {
+    logo
+  },
+  created () {
+    document.body.classList.toggle('sidebar-hidden')
+  },
   methods: {
     sidebarToggle (e) {
       e.preventDefault()
