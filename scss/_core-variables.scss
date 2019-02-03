@@ -1,4 +1,6 @@
 // core overrides
+$spacer: 2rem;
+$navbar-padding-x: $spacer;
 $navbar-height: 33px !default;
 $navbar-bg: #D6D8D6 !default;
 $navbar-border: none !default;
@@ -10,3 +12,11 @@ $navbar-brand-logo-size: 45px auto !default;
 $navbar-brand-border: none !default;
 
 $navbar-brand-minimized-width: 45px !default;
+
+
+// app-footer
+$footer-bg: #262626;
+$footer-color: #FFFFFF;
+$footer-borders: none;
+
+$footer-height: 130px;

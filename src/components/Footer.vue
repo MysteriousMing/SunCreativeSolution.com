@@ -1,11 +1,29 @@
 <template>
   <footer class="app-footer">
-    <span><a href="http://coreui.io/pro/">CoreUI PRO</a> &copy; 2017 creativeLabs.</span>
-    <span class="ml-auto">Powered by <a href="http://coreui.io/pro/">CoreUI PRO</a></span>
+    <div class="ml-2 mr-auto my-4">
+      <section class="flex-row flex-start">
+        <logo class="footer-upper" :topBg="'black'" :bottomBg="'white'"/><p class="ml-4">Something else you can read ...</p>
+      </section>
+      <div class="mr-auto mt-4">
+        <span class="mr-2">ABOUT ME</span>
+        <span class="mr-2">THOUGHTS</span>
+        <span class="mr-2">CONTACT</span>
+      </div>
+    </div>
   </footer>
 </template>
 <script>
+import logo from '../components/logo'
+
 export default {
-  name: 'footer'
+  name: 'footer',
+  components: {
+    logo
+  }
 }
 </script>
+<style>
+.footer-upper {
+  margin-top: -45px;
+}
+</style>

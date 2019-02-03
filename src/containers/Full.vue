@@ -9,22 +9,19 @@
         </div>
       </main>
     </div>
-    <AppFooter/>
   </div>
 </template>
 
 <script>
 import nav from '../_nav'
-import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '../components/'
+import { Header as AppHeader, Sidebar, Aside as AppAside } from '../components/'
 
 export default {
   name: 'full',
   components: {
     AppHeader,
     Sidebar,
-    AppAside,
-    AppFooter,
-    Breadcrumb
+    AppAside
   },
   data () {
     return {

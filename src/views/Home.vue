@@ -9,17 +9,20 @@
   <section class="container" v-if="picArray.length">
     <vue-waterfall-easy :imgsArr="picArray" @scrollReachBottom="getData"></vue-waterfall-easy>
   </section>
+  <AppFooter/>
 </div>
 </template>
 
 
 
 <script>
+import { Footer as AppFooter } from '../components/'
 
 import vueWaterfallEasy from 'vue-waterfall-easy'
 export default {
   name: 'dashboard',
   components: {
+    AppFooter,
     vueWaterfallEasy
   },
   data () {
@@ -117,8 +120,11 @@ export default {
 }
 </script>
 <style>
+.main .container-fluid {
+  padding: 40px 0 0;
+}
 .container {
-  height: 800px;
+  height: 1200px;
 }
 </style>
 

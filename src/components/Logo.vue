@@ -13,6 +13,13 @@
 <script>
 export default {
   name: 'logo',
+  props: ['topBg', 'bottomBg'],
+  data () {
+    return {
+      topUpperBg: this.topBg || 'black',
+      bottomUpperBg: this.bottomBg || 'white'
+    }
+  },
   methods: {
 
   }
@@ -23,9 +30,9 @@ export default {
   position: relative;
   width: 45px;
   height: 45px;
-  background: white;
+
   &.white {
-    background: #D6D8D6;
+    background: transparent;
   }
   &.black {
     background: #000000;
@@ -74,6 +81,14 @@ export default {
     }
     &.stella-right-bottom {
       border-bottom-right-radius: 100%;
+    }
+  }
+  .stella-item {
+    &.white {
+      background: transparent;
+    }
+    &.black {
+      background: #000000;
     }
   }
 }
