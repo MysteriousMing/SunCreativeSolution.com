@@ -9,6 +9,7 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "upload": "scp -r SunCreativeSolution.com root@out.dubheee.com:/var/sun/",
+    "uploadCybera": "scp -i ~/uare/.ssh/livebook.key -r SunCreativeSolution.com ubuntu@cybera.dubheee.com:/var/sun",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
@@ -27,9 +28,11 @@
     "vue": "2.4.4",
     "vue-chartjs": "2.8.7",
     "vue-codemirror": "^3.1.6",
+    "vue-images-loaded": "^1.1.2",
     "vue-quill-editor": "^2.3.2",
     "vue-router": "2.7.0",
-    "vue-waterfall-easy": "^2.4.3"
+    "vue-waterfall-easy": "^2.4.3",
+    "vueisotope": "^3.1.2"
   },
   "devDependencies": {
     "autoprefixer": "7.1.4",

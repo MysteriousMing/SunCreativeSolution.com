@@ -1,13 +1,22 @@
 <template>
 <div class="home-page">
   <section class="selector">
-    <button type="primary" @click="sliceData(0)">Class 1</button>
-    <button type="primary" @click="sliceData(1)">Class 2</button>
-    <button type="primary" @click="sliceData(2)">Class 3</button>
-    <button type="primary" @click="filterData()">Clear</button>
+    <button class="btn btn-primary" type="primary" @click="filterData(0)">Class 1</button>
+    <button class="btn btn-primary" type="primary" @click="filterData(1)">Class 2</button>
+    <button class="btn btn-primary" type="primary" @click="filterData(2)">Class 3</button>
+    <button class="btn btn-primary" type="primary" @click="filterData()">Clear</button>
+    <button class="btn btn-primary" type="primary" @click="shuffle()">shuffle ()</button>
   </section>
-  <section class="container" v-if="picArray.length">
-    <vue-waterfall-easy :imgsArr="picArray" @scrollReachBottom="getData"></vue-waterfall-easy>
+  <section class="container" v-if="picArray && picArray.length">
+    <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
+    <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
+      <div v-for="element in picArray" :key="element.name" 
+      class="grid-item grid-sizer" @click="selected=element">
+          {{element.name}} [GROUP: {{element.group+1}}]
+          <br>
+          <img :src="element.src" alt="Not found">
+      </div>
+    </isotope>
   </section>
   <AppFooter/>
 </div>
@@ -17,13 +26,18 @@
 
 <script>
 import { Footer as AppFooter } from '../components/'
-
+import isotope from 'vueisotope'
+import imagesLoaded from 'vue-images-loaded'
 import vueWaterfallEasy from 'vue-waterfall-easy'
 export default {
   name: 'dashboard',
   components: {
     AppFooter,
+    isotope,
     vueWaterfallEasy
+  },
+  directives: {
+    imagesLoaded
   },
   data () {
     return {
@@ -48,12 +62,45 @@ export default {
     this.getData()
   },
   methods: {
+    getOptions () {
+      return {
+        itemSelector: '.grid-item',
+        layoutMode: 'masonry',
+        masonry: {
+          gutter: 10,
+          columnWidth: '.grid-sizer'
+        },
+        getFilterData: {
+          isEven: function (itemElem) {
+            return itemElem.id % 2 === 0
+          },
+          isOdd: function (itemElem) {
+            return itemElem.id % 2 !== 0
+          },
+          filterByText: function (itemElem) {
+            return itemElem.name.toLowerCase().includes(this.filterText.toLowerCase())
+          }
+        },
+        getSortData: {
+          id: 'group',
+          name: function (itemElem) {
+            return itemElem.name.toLowerCase()
+          }
+        }
+      }
+    },
+    layout () {
+      this.$refs.cpt.layout('masonry')
+    },
+    shuffle () {
+      this.$refs.cpt.shuffle()
+    },
     getData () {
-      console.log('More datas')
-      let getNum = 20
-      while (getNum) {
+      let getNum = 15
+      while (getNum >= 0) {
         this.picArray.push({
-          'src': `http://demo.lanrenzhijia.com/demo/48/4871/demo/_assets/mm${this.picNum}.jpg`,
+          'name': `mm${this.picNum}`,
+          'src': `/static/test/${this.picNum}.JPG`,
           'href': '/',
           'group': parseInt(Math.random() * 3)
         })
@@ -64,13 +111,11 @@ export default {
       this.picSaveArray = this.picArray
     },
     filterData (val) {
-      console.log(this.picSaveArray)
       if (val >= 0) {
         let selectArray = this.picSaveArray.filter(each => each.group === val)
         this.picArray = selectArray
       } else {
-        this.picNum = 1
-        this.getData()
+        this.picArray = this.picSaveArray
       }
     },
     sliceData (val) {
@@ -91,8 +136,7 @@ export default {
           }
         }
       } else {
-        this.picNum = 1
-        this.getData()
+        this.picArray = this.picSaveArray
       }
     },
     // buildGLMap () {
@@ -124,7 +168,15 @@ export default {
   padding: 40px 0 0;
 }
 .container {
-  height: 1200px;
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+.grid-item,
+.grid-sizer {
+  width: 32%; 
+}
+.grid-item img {
+  width: 100%;
 }
 </style>
 
