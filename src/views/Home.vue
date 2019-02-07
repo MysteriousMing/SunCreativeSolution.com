@@ -1,11 +1,12 @@
 <template>
-<div class="home-page">
+<div class="home-page" v-scroll="onScroll" ref="page">
+  <Dashboard></Dashboard>
   <section class="selector">
-    <button class="btn btn-primary" type="primary" @click="filterData(0)">Class 1</button>
-    <button class="btn btn-primary" type="primary" @click="filterData(1)">Class 2</button>
-    <button class="btn btn-primary" type="primary" @click="filterData(2)">Class 3</button>
-    <button class="btn btn-primary" type="primary" @click="filterData()">Clear</button>
-    <button class="btn btn-primary" type="primary" @click="shuffle()">shuffle ()</button>
+    <button class="btn btn-primary" type="primary" @click="filterData(0)">GROUP 1</button>
+    <button class="btn btn-primary" type="primary" @click="filterData(1)">GROUP 2</button>
+    <button class="btn btn-primary" type="primary" @click="filterData(2)">GROUP 3</button>
+    <button class="btn btn-secondary" type="primary" @click="filterData()">Clear</button>
+    <button class="btn btn-warning" type="primary" @click="shuffle()">Shuffle</button>
   </section>
   <section class="container" v-if="picArray && picArray.length">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
@@ -26,13 +27,17 @@
 
 <script>
 import { Footer as AppFooter } from '../components/'
+import Dashboard from '@/views/Dashboard'
 import isotope from 'vueisotope'
 import imagesLoaded from 'vue-images-loaded'
 import vueWaterfallEasy from 'vue-waterfall-easy'
+import bus from '@/router/bus'
+
 export default {
-  name: 'dashboard',
+  name: 'home',
   components: {
     AppFooter,
+    Dashboard,
     isotope,
     vueWaterfallEasy
   },
@@ -43,7 +48,9 @@ export default {
     return {
       picArray: [],
       picSaveArray: [],
-      picNum: 1,
+      position: {},
+      windowHinnerHeight: window.innerHeight,
+      picNum: 0,
       randomIndex: parseInt(Math.random() * 3),
       windowWith: 0,
       windowHeight: 0,
@@ -60,8 +67,27 @@ export default {
   },
   created () {
     this.getData()
+    console.log(this.windowHinnerHeight)
+    bus.$on('home-go-down', isDown => {
+      console.log(window.scrollY)
+      if (isDown) {
+        this.$refs.page.scrollTop = this.windowHinnerHeight
+      }
+    })
   },
   methods: {
+    onScroll: function (e, position) {
+      this.position = position
+      if (this.position.scrollTop - this.windowHinnerHeight >= 0) {
+        this.logoType = 'black'
+        console.log('Color |', 'black')
+        // console.log(this.windowHinnerHeight, this.position)
+        // 渐变
+      } else {
+        this.logoType = 'white'
+        console.log('Color |', 'white')
+      }
+    },
     getOptions () {
       return {
         itemSelector: '.grid-item',
@@ -100,7 +126,7 @@ export default {
       while (getNum >= 0) {
         this.picArray.push({
           'name': `mm${this.picNum}`,
-          'src': `/static/test/${this.picNum}.JPG`,
+          'src': `/static/test/${this.picNum}.jpg`,
           'href': '/',
           'group': parseInt(Math.random() * 3)
         })
@@ -165,7 +191,11 @@ export default {
 </script>
 <style>
 .main .container-fluid {
-  padding: 40px 0 0;
+  padding: 0;
+}
+.home-page {
+  height: calc(100vh - 33px);
+  overflow: auto;
 }
 .container {
   min-height: 100vh;

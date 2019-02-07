@@ -4,9 +4,10 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
+import VueScroll from 'vue-scroll'
 
 Vue.use(BootstrapVue)
-
+Vue.use(VueScroll, {debounce: 50})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -15,4 +16,14 @@ new Vue({
   components: {
     App
   }
+})
+// Disable context menu
+// document.addEventListener('contextmenu', event => {
+//   event.preventDefault()
+//   event.stopPropagation()
+// })
+// Disable double click selection
+document.addEventListener('mousedown', e => {
+  e.preventDefault()
+  console.log('双击啦')
 })
