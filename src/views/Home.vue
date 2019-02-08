@@ -83,6 +83,7 @@ export default {
         console.log('Color |', 'black')
         // console.log(this.windowHinnerHeight, this.position)
         // 渐变
+        bus.$emit('header-go-black', true)
       } else {
         this.logoType = 'white'
         console.log('Color |', 'white')

@@ -1,13 +1,13 @@
 <template>
   <div class="stella-container white">
-    <div class="stella-item stella-left-top white"></div>
-    <div class="stella-item stella-right-top white"></div>
-    <div class="stella-item stella-left-bottom black"></div>
-    <div class="stella-item stella-right-bottom black"></div>
-    <div class="stella-upper-item stella-left-top black"></div>
-    <div class="stella-upper-item stella-right-top black"></div>
-    <div class="stella-upper-item stella-left-bottom white"></div>
-    <div class="stella-upper-item stella-right-bottom white"></div>
+    <div class="stella-item stella-left-top" :class="bottomUpperBg"></div>
+    <div class="stella-item stella-right-top" :class="bottomUpperBg"></div>
+    <div class="stella-item stella-left-bottom" :class="topUpperBg"></div>
+    <div class="stella-item stella-right-bottom" :class="topUpperBg"></div>
+    <div class="stella-upper-item stella-left-top " :class="topUpperBg"></div>
+    <div class="stella-upper-item stella-right-top " :class="topUpperBg"></div>
+    <div class="stella-upper-item stella-left-bottom " :class="bottomUpperBg"></div>
+    <div class="stella-upper-item stella-right-bottom " :class="bottomUpperBg"></div>
   </div>
 </template>
 <script>
@@ -19,6 +19,12 @@ export default {
       topUpperBg: this.topBg || 'black',
       bottomUpperBg: this.bottomBg || 'white'
     }
+  },
+  mounted () {
+    // setTimeout模拟异步数据
+    this.topUpperBg = this.topBg || 'black'
+    this.bottomUpperBg = this.bottomBg || 'white'
+    console.log(this.topUpperBg, this.bottomUpperBg)
   },
   methods: {
 

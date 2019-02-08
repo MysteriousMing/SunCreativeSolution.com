@@ -7,7 +7,9 @@ import router from './router'
 import VueScroll from 'vue-scroll'
 
 Vue.use(BootstrapVue)
-Vue.use(VueScroll, {debounce: 50})
+Vue.use(VueScroll, {
+  throttle: 100
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
