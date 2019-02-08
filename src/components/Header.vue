@@ -1,11 +1,11 @@
 <template>
-  <header class="app-header navbar">
+  <header class="app-header navbar animated" :class="{'black':bottomUpperBg == 'black'}">
     <b-link class="navbar-brand ml-2" to="#">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg"></logo>
     </b-link>
-    <span class="navbar-brand pt-10px d-md-down-none" to="#">ART</span>
-    <span class="navbar-brand pt-10px d-md-down-none" to="#">RESEARCH</span>
-    <span class="navbar-brand pt-10px d-md-down-none" to="#">COMMERCIAL</span>
+    <span class="navbar-brand pt-10px d-md-down-none " :class="{'black':bottomUpperBg == 'black'}" to="#">ART</span>
+    <span class="navbar-brand pt-10px d-md-down-none " :class="{'black':bottomUpperBg == 'black'}" to="#">RESEARCH</span>
+    <span class="navbar-brand pt-10px d-md-down-none " :class="{'black':bottomUpperBg == 'black'}" to="#">COMMERCIAL</span>
     <button class="ml-auto navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">&#9776;</button>
   </header>
 </template>
@@ -27,15 +27,17 @@ export default {
   created () {
     document.body.classList.toggle('sidebar-hidden')
     bus.$on('header-go-black', isDown => {
-      console.log(isDown)
-      if (isDown) {
+      if (isDown === 'black') {
         this.topUpperBg = 'white'
         this.bottomUpperBg = 'black'
+      } else {
+        this.topUpperBg = 'black'
+        this.bottomUpperBg = 'white'
       }
     })
   },
   mounted () {
-    console.log(this.topUpperBg)
+    console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
   },
   methods: {
     sidebarToggle (e) {
@@ -57,3 +59,14 @@ export default {
   }
 }
 </script>
+<style>
+.navbar-brand.black {
+  color: #ffffff;
+}
+.app-header.black {
+  background: #000000;
+}
+.animated {
+  transition: all 100ms ease-in;
+}
+</style>

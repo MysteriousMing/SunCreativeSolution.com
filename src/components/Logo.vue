@@ -1,13 +1,13 @@
 <template>
   <div class="stella-container white">
-    <div class="stella-item stella-left-top" :class="bottomUpperBg"></div>
-    <div class="stella-item stella-right-top" :class="bottomUpperBg"></div>
-    <div class="stella-item stella-left-bottom" :class="topUpperBg"></div>
-    <div class="stella-item stella-right-bottom" :class="topUpperBg"></div>
-    <div class="stella-upper-item stella-left-top " :class="topUpperBg"></div>
-    <div class="stella-upper-item stella-right-top " :class="topUpperBg"></div>
-    <div class="stella-upper-item stella-left-bottom " :class="bottomUpperBg"></div>
-    <div class="stella-upper-item stella-right-bottom " :class="bottomUpperBg"></div>
+    <div class="stella-item animated stella-left-top" :class="bottomUpperBg"></div>
+    <div class="stella-item animated stella-right-top" :class="bottomUpperBg"></div>
+    <div class="stella-item animated stella-left-bottom" :class="topUpperBg"></div>
+    <div class="stella-item animated stella-right-bottom" :class="topUpperBg"></div>
+    <div class="stella-upper-item animated stella-left-top " :class="topUpperBg"></div>
+    <div class="stella-upper-item animated stella-right-top " :class="topUpperBg"></div>
+    <div class="stella-upper-item animated stella-left-bottom " :class="bottomUpperBg"></div>
+    <div class="stella-upper-item animated stella-right-bottom " :class="bottomUpperBg"></div>
   </div>
 </template>
 <script>
@@ -16,15 +16,27 @@ export default {
   props: ['topBg', 'bottomBg'],
   data () {
     return {
-      topUpperBg: this.topBg || 'black',
-      bottomUpperBg: this.bottomBg || 'white'
     }
   },
   mounted () {
     // setTimeout模拟异步数据
-    this.topUpperBg = this.topBg || 'black'
-    this.bottomUpperBg = this.bottomBg || 'white'
-    console.log(this.topUpperBg, this.bottomUpperBg)
+    // this.topUpperBg = this.topBg || 'black'
+    // this.bottomUpperBg = this.bottomBg || 'white'
+    // console.log(this.topUpperBg, this.bottomUpperBg)
+  },
+  computed: {
+    topUpperBg: function () {
+      return {
+        'black': this.topBg === 'black',
+        'white': this.topBg === 'white'
+      }
+    },
+    bottomUpperBg: function () {
+      return {
+        'black': this.bottomBg === 'black',
+        'white': this.bottomBg === 'white'
+      }
+    }
   },
   methods: {
 
@@ -36,7 +48,9 @@ export default {
   position: relative;
   width: 45px;
   height: 45px;
-
+  .animated {
+    transition: all 100ms ease-in;
+  }
   &.white {
     background: transparent;
   }
@@ -49,7 +63,7 @@ export default {
     position: absolute;
     box-sizing: border-box;
     &.white {
-      background: #D6D8D6;
+      background: #ffffff;
     }
     &.black {
       background: #000000;
@@ -91,7 +105,7 @@ export default {
   }
   .stella-item {
     &.white {
-      background: transparent;
+      background: #ffffff;
     }
     &.black {
       background: #000000;

@@ -69,7 +69,6 @@ export default {
     this.getData()
     console.log(this.windowHinnerHeight)
     bus.$on('home-go-down', isDown => {
-      console.log(window.scrollY)
       if (isDown) {
         this.$refs.page.scrollTop = this.windowHinnerHeight
       }
@@ -80,13 +79,12 @@ export default {
       this.position = position
       if (this.position.scrollTop - this.windowHinnerHeight >= 0) {
         this.logoType = 'black'
-        console.log('Color |', 'black')
         // console.log(this.windowHinnerHeight, this.position)
         // 渐变
-        bus.$emit('header-go-black', true)
+        bus.$emit('header-go-black', 'black')
       } else {
         this.logoType = 'white'
-        console.log('Color |', 'white')
+        bus.$emit('header-go-black', 'white')
       }
     },
     getOptions () {
