@@ -94,6 +94,7 @@ export default {
 <style>
 .page-dashboard {
   color: white;
+  height: 100vh;
 }
 .page-dashboard h3 {
   display: block;

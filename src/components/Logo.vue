@@ -46,8 +46,8 @@ export default {
 <style lang="scss">
 .stella-container {
   position: relative;
-  width: 45px;
-  height: 45px;
+  width: 90px;
+  height: 90px;
   .animated {
     transition: all 100ms ease-in;
   }
@@ -58,8 +58,8 @@ export default {
     background: #000000;
   }
   .stella-item, .stella-upper-item {
-    width: 22.5px;
-    height: 22.5px;
+    width: 45px;
+    height: 45px;
     position: absolute;
     box-sizing: border-box;
     &.white {

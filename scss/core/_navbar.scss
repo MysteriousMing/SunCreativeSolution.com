@@ -18,6 +18,7 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: $navbar-brand-logo-size;
+    font-weight:bold;
     @include borders($navbar-brand-border);
   }
 

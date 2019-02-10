@@ -5,9 +5,9 @@
         <logo class="footer-upper" :topBg="'black'" :bottomBg="'white'"/><p class="ml-4">Something else you can read ...</p>
       </section>
       <div class="mr-auto mt-4">
-        <span class="mr-2">ABOUT ME</span>
-        <span class="mr-2">THOUGHTS</span>
-        <span class="mr-2">CONTACT</span>
+        <span class="nav-tag-item mr-2">ABOUT ME</span>
+        <span class="nav-tag-item mr-2">THOUGHTS</span>
+        <span class="nav-tag-item mr-2">CONTACT</span>
       </div>
     </div>
   </footer>
@@ -23,6 +23,9 @@ export default {
 }
 </script>
 <style>
+.nav-tag-item {
+  font-weight: bold;
+}
 .footer-upper {
   margin-top: -45px;
 }

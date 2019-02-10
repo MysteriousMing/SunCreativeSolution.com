@@ -1,4 +1,10 @@
 // Here you can add other styles
+/* Set customer font */
+@font-face {
+  font-family: CenturyGothic;
+  src: url("/static/font/centurygothic.ttf");
+}
+
 .pt-20px {
   padding-top: 10px;
 }
@@ -9,4 +15,16 @@
 }
 .flex-start {
   justify-content: flex-start;
+}
+* {
+  font-family: CenturyGothic,
+  "PingFang SC",
+  "Microsoft YaHei",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Roboto,
+  "Helvetica Neue",
+  Arial,
+  sans-serif;
 }

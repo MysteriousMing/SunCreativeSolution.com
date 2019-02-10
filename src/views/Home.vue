@@ -193,7 +193,7 @@ export default {
   padding: 0;
 }
 .home-page {
-  height: calc(100vh - 33px);
+  height: calc(100vh - 66px);
   overflow: auto;
 }
 .container {
