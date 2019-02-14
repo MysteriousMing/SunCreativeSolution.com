@@ -37,6 +37,12 @@
     height: $navbar-height;
     line-height: $navbar-height;
     padding-bottom: 0 !important;
+    cursor: pointer;
+    user-select: none;
+    &:focus,
+    &:hover {
+      background-color: #fafafa15;
+    }
   }
   .navbar-brand.logo {
     padding-left: 78px !important;

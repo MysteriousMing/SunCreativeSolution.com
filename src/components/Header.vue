@@ -1,6 +1,6 @@
 <template>
   <header class="app-header navbar animated" :class="{'black':bottomUpperBg == 'black'}">
-    <b-link class="navbar-brand logo" to="#">
+    <b-link class="navbar-brand logo" to="/">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg"></logo>
     </b-link>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav(0)">ART</span>
