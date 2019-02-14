@@ -9,6 +9,7 @@ import Construction from '@/containers/Construction'
 import Dashboard from '@/views/Dashboard'
 import Home from '@/views/Home'
 import Post from '@/views/Post'
+import Editor from '@/views/Editor'
 import Periodic from '@/views/Periodic'
 
 Vue.use(Router)
@@ -33,6 +34,11 @@ export default new Router({
           path: 'post',
           name: 'Post',
           component: Post
+        },
+        {
+          path: 'editor',
+          name: 'Editor',
+          component: Editor
         },
         {
           path: 'home',

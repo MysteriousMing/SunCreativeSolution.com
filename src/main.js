@@ -25,7 +25,7 @@ new Vue({
 //   event.stopPropagation()
 // })
 // Disable double click selection
-document.addEventListener('mousedown', e => {
-  e.preventDefault()
-  console.log('双击啦')
-})
+// document.addEventListener('mousedown', e => {
+//   e.preventDefault()
+//   console.log('双击啦')
+// })
