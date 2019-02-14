@@ -14,8 +14,8 @@ body>header, body>section{
     }
 }
 @font-face{
-    font-family: centurygothic
-    src:url("../font/Century Gothic");
+    font-family: centurygothic;
+    src: url("/static/font/Century Gothic");
 }
 p {
     font-family: centurygothic;
