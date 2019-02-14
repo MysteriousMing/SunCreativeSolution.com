@@ -28,3 +28,18 @@
   Arial,
   sans-serif;
 }
+// header
+.app-header {
+  .navbar-brand {
+    display: inline-block;
+    vertical-align: baseline;
+    width: $navbar-brand-width;
+    height: $navbar-height;
+    line-height: $navbar-height;
+    padding-bottom: 0 !important;
+  }
+  .navbar-brand.logo {
+    padding-left: 78px !important;
+    padding-right: 52px!important;
+  }
+}

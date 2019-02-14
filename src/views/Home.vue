@@ -1,20 +1,19 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
   <Dashboard></Dashboard>
-  <section class="selector">
+  <section hidden class="selector">
     <button class="btn btn-primary" type="primary" @click="filterData(0)">GROUP 1</button>
     <button class="btn btn-primary" type="primary" @click="filterData(1)">GROUP 2</button>
     <button class="btn btn-primary" type="primary" @click="filterData(2)">GROUP 3</button>
     <button class="btn btn-secondary" type="primary" @click="filterData()">Clear</button>
     <button class="btn btn-warning" type="primary" @click="shuffle()">Shuffle</button>
   </section>
-  <section class="container" v-if="picArray && picArray.length">
+  <section class="container flud" v-if="picArray && picArray.length">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
       <div v-for="element in picArray" :key="element.name" 
       class="grid-item grid-sizer" @click="selected=element">
-          {{element.name}} [GROUP: {{element.group+1}}]
-          <br>
+          <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
           <img :src="element.src" alt="Not found">
       </div>
     </isotope>
@@ -73,6 +72,9 @@ export default {
         this.$refs.page.scrollTop = this.windowHinnerHeight
       }
     })
+    bus.$on('nav-router', nav => {
+      this.filterData(nav)
+    })
   },
   methods: {
     onScroll: function (e, position) {
@@ -92,7 +94,7 @@ export default {
         itemSelector: '.grid-item',
         layoutMode: 'masonry',
         masonry: {
-          gutter: 10,
+          gutter: 36, // 间距
           columnWidth: '.grid-sizer'
         },
         getFilterData: {
@@ -200,17 +202,18 @@ export default {
   min-height: 100vh;
   padding-bottom: 2rem;
 }
+.home-page .container {
+  max-width: calc(100% - 232px);
+}
+.flud {
+  margin-top: 118px;
+}
 .grid-item,
 .grid-sizer {
-  width: 45%; 
+  width: calc(50% - 18px); 
 }
 .grid-item img {
   width: 100%;
+  margin-bottom: 36px;
 }
 </style>
-
-// 2
-// A Vue.js 2.0 directive to detect when images have been loaded, based on imagesLoaded
-
-// This directive allows to get a callback when children images are loaded in a container element.
-// Plays nicely with vue.isotope to allow re-layout when images are loaded.

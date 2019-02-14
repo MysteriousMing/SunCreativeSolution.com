@@ -1,11 +1,11 @@
 <template>
   <header class="app-header navbar animated" :class="{'black':bottomUpperBg == 'black'}">
-    <b-link class="navbar-brand ml-2" to="#">
+    <b-link class="navbar-brand logo" to="#">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg"></logo>
     </b-link>
-    <span class="navbar-brand pt-10px d-md-down-none " :class="{'black':bottomUpperBg == 'black'}" to="#">ART</span>
-    <span class="navbar-brand pt-10px d-md-down-none " :class="{'black':bottomUpperBg == 'black'}" to="#">RESEARCH</span>
-    <span class="navbar-brand pt-10px d-md-down-none " :class="{'black':bottomUpperBg == 'black'}" to="#">COMMERCIAL</span>
+    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav(0)">ART</span>
+    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav(1)">RESEARCH</span>
+    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav(2)">COMMERCIAL</span>
     <button class="ml-auto navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">&#9776;</button>
   </header>
 </template>
@@ -40,6 +40,9 @@ export default {
     console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
   },
   methods: {
+    selectNav (val) {
+      bus.$emit('nav-router', val)
+    },
     sidebarToggle (e) {
       e.preventDefault()
       document.body.classList.toggle('sidebar-hidden')

@@ -1,6 +1,6 @@
 <template>
   <footer class="app-footer">
-    <div class="ml-2 mr-auto my-4">
+    <div class="mr-auto my-4">
       <section class="flex-row flex-start">
         <logo class="footer-upper" :topBg="'black'" :bottomBg="'white'"/><p class="ml-4">Something else you can read ...</p>
       </section>
@@ -27,6 +27,6 @@ export default {
   font-weight: bold;
 }
 .footer-upper {
-  margin-top: -45px;
+  margin-top: -66px;
 }
 </style>

@@ -1,6 +1,7 @@
 // core overrides
 $spacer: 1.5rem;
-$navbar-padding-x: $spacer;
+$navbar-padding-x: 1.28rem;
+$navbar-padding-y: 21px;
 $navbar-height: 66px !default;
 $navbar-bg: #ffffff !default;
 $navbar-border: none !default;
@@ -19,4 +20,5 @@ $footer-bg: #262626;
 $footer-color: #FFFFFF;
 $footer-borders: none;
 
-$footer-height: 130px;
+$footer-height: 260px;
+$footer-padding-x: 78px;
