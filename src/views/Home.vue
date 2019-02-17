@@ -127,7 +127,7 @@ export default {
       while (getNum >= 0) {
         this.picArray.push({
           'name': `mm${this.picNum}`,
-          'src': `http://static.dubheee.cn/images/cat/${this.picNum}.jpg?x-oss-process=style/720w`,
+          'src': `https://static.dubheee.cn/images/cat/${this.picNum}.jpg?x-oss-process=style/720w`,
           'href': '/',
           'group': parseInt(Math.random() * 3)
         })

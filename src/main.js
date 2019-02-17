@@ -5,8 +5,9 @@ import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
 import VueScroll from 'vue-scroll'
-
+import Api from 'src/tirls'
 Vue.use(BootstrapVue)
+Vue.use(Api)
 Vue.use(VueScroll, {
   throttle: 100
 })
