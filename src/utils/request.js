@@ -1,35 +1,135 @@
+import Vue from 'vue'
 import axios from 'axios'
+import {
+  Message
+} from 'element-ui'
+Vue.prototype.$http = axios
 
-const instance = axios.create({
-  baseURL: 'apiBaseUrl', // api的base_url
-  timeout: 10000 // 请求超时时间
-  // transformRequest: data => qs.stringify(data) //
-})
-// request拦截器
-instance.interceptors.request.use(
-  e => {
-    e.params = e.params || {}
-    e.headers = e.headers || {}
-    // set 默认值
-    return e
-  },
-  error => ({
-    status: 0,
-    msg: error.message
+const baseUrl = 'http://localhost:8000/' // API_URL_PREFIX
+// window.localStorage.token = '6a637b4943abd8c9945b1849388edebb5813e1ce'
+const showErr = function (err) {
+  Message.error({
+    message: err
   })
-)
-// respone拦截器
-instance.interceptors.response.use(
-  response => {
-    const resp = response.data
-    if (response.status === 200) {
-      return resp
-    }
-    return resp
-  },
-  error => {
-    console.log('err' + error) // for debug
-    return Promise.reject(error)
+}
+
+axios.interceptors.request.use(config => {
+  return config
+}, err => {
+  Message.error({
+    message: '请求超时!'
+  })
+  return Promise.resolve(err)
+})
+
+/**
+ * 处理报错的各种情况
+ * 参数：err
+ * 返回值：正确则返回 resolve
+ * 失败 reject 错误信息
+ */
+axios.interceptors.response.use(data => {
+  if (data.status && data.status === 200 && data.data.status === 'error') {
+    Message.error({
+      message: data.data.msg
+    })
+    return
   }
-)
-export default instance
+  return data
+}, err => {
+  console.error('HandleErr', err)
+  if (err.response.status === 504 || err.response.status === 404) {
+    showErr('服务器被吃了⊙﹏⊙∥')
+  } else if (err.response.status === 403) {
+    showErr('权限不足,请联系管理员!')
+  } else if (err.response.status === 401) {
+    console.log('233')
+    window.localStorage.removeItem('token')
+    showErr(err.response.data.message)
+  } else if (err.response.data.message) {
+    showErr(err.response.data.message)
+  } else {
+    showErr('未知错误!')
+  }
+  return Promise.resolve(err)
+})
+
+/**
+ * 判断请求状态是否成功
+ * 参数：http状态码
+ * 返回值：[Boolen]
+ */
+const isHttpSuccess = function (status) {
+  return (status >= 200 && status < 300) || status === 304
+}
+
+function request (url, params, data, method) {
+  return new Promise((resolve, reject) => {
+    let config = {
+      url: baseUrl + url,
+      method,
+      headers: {
+        'Authorization': 'token ' + window.localStorage.token
+      },
+      params,
+      data
+    }
+    axios(config).then(res => {
+      if (isHttpSuccess(res.status)) {
+        resolve(res.data)
+      } else {
+        reject(res)
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+function Get (url, params, data) {
+  return this.request(url, params, data, 'get')
+}
+
+function Post (url, params, data) {
+  return this.request(url, params, data, 'post')
+}
+
+function Patch (url, params, data) {
+  return this.request(url, params, data, 'patch')
+}
+
+function Delete (url, params, data) {
+  return this.request(url, params, data, 'delete')
+}
+
+function UploadFile (url, params) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'post',
+      url: `${baseUrl}${url}`,
+      data: params,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(res => {
+      console.log(res)
+      if (isHttpSuccess(res.status)) {
+        resolve(res.data)
+      } else {
+        reject(res)
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+export default {
+  baseUrl,
+  request,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  UploadFile
+}

@@ -1,16 +1,25 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import ElementUI from 'element-ui'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
 import VueScroll from 'vue-scroll'
-import Api from 'src/tirls'
+import Http from './utils/request'
+import utils from './utils/utils'
+import Loading from './directive/loading'
+
 Vue.use(BootstrapVue)
-Vue.use(Api)
+Vue.use(ElementUI)
+Vue.use(Loading)
+
 Vue.use(VueScroll, {
   throttle: 100
 })
+Vue.prototype.Http = Http
+Vue.prototype.utils = utils
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
