@@ -1,8 +1,8 @@
 <template>
   <div class="app">
-    <AppHeader/>
+    <AdminHeader/>
     <div class="app-body">
-      <!-- <Sidebar :navItems="nav"/> -->
+      <Sidebar :navItems="nav"/>
       <main class="main">
         <div class="container-fluid">
           <router-view></router-view>
@@ -14,12 +14,13 @@
 
 <script>
 import nav from '../_nav'
-import { Header as AppHeader, Sidebar, Aside as AppAside } from '../components/'
+import AdminHeader from '../components/AdminHeader'
+import { Sidebar, Aside as AppAside } from '../components/'
 
 export default {
   name: 'full',
   components: {
-    AppHeader,
+    AdminHeader,
     Sidebar,
     AppAside
   },

@@ -1,23 +1,22 @@
 export default {
   items: [
     {
-      name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer'
-    },
-    {
-      name: 'Home',
-      url: '/home',
-      icon: 'icon-speedometer'
-    },
-    {
-      name: 'Periodic',
-      url: '/periodic',
+      name: 'PostRecord',
+      url: 'articles',
       icon: 'icon-speedometer'
     },
     {
       name: 'Post',
-      url: '/post',
+      url: 'post',
+      icon: 'icon-speedometer'
+    },
+    {
+      name: 'Dashboard',
+      url: 'dashboard',
+      icon: 'icon-speedometer'
+    }, {
+      name: 'Periodic',
+      url: 'periodic',
       icon: 'icon-speedometer'
     }
   ]

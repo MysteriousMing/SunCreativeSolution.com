@@ -3,11 +3,13 @@ import Router from 'vue-router'
 
 // Containers
 import Full from '@/containers/Full'
+import Admin from '@/containers/Admin'
 import Construction from '@/containers/Construction'
 
 // Views
 import Dashboard from '@/views/Dashboard'
 import Home from '@/views/Home'
+import PostRecord from '@/views/PostRecord'
 import Post from '@/views/Post'
 import Editor from '@/views/Editor'
 import Periodic from '@/views/Periodic'
@@ -20,10 +22,10 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
-      path: '/test/',
-      redirect: '/test/home',
+      path: '/admin/',
+      redirect: '/admin/articles',
       name: 'Admin',
-      component: Full,
+      component: Admin,
       children: [
         {
           path: 'dashboard',
@@ -36,14 +38,14 @@ export default new Router({
           component: Post
         },
         {
+          path: 'articles',
+          name: 'PostRecord',
+          component: PostRecord
+        },
+        {
           path: 'editor',
           name: 'Editor',
           component: Editor
-        },
-        {
-          path: 'home',
-          name: 'Home',
-          component: Home
         },
         {
           path: 'periodic',
@@ -51,6 +53,20 @@ export default new Router({
           component: Periodic
         }
 
+      ]
+    },
+    {
+      path: '/index/',
+      redirect: '/index/',
+      name: 'Product',
+      component: Full,
+      children: [
+        {
+          path: '/',
+          name: 'Home',
+          component: Home
+        }
+        // todo: articleDetail
       ]
     },
     {

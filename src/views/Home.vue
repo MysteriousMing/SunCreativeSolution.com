@@ -123,17 +123,29 @@ export default {
       this.$refs.cpt.shuffle()
     },
     getData () {
-      let getNum = 15
-      while (getNum >= 0) {
-        this.picArray.push({
-          'name': `mm${this.picNum}`,
-          'src': `https://static.dubheee.cn/images/cat/${this.picNum}.jpg?x-oss-process=style/720w`,
-          'href': '/',
-          'group': parseInt(Math.random() * 3)
+      // let getNum = 15
+      // while (getNum >= 0) {
+      //   this.picArray.push({
+      //     'name': `mm${this.picNum}`,
+      //     'src': `https://static.dubheee.cn/images/cat/${this.picNum}.jpg?x-oss-process=style/720w`,
+      //     'href': '/',
+      //     'group': parseInt(Math.random() * 3)
+      //   })
+      //   this.picNum = this.picNum + 1
+      //   getNum--
+      // }
+      this.Http.Get('sun-create/article/').then(res => {
+        console.log(res)
+        this.picArray = res.results.map(item => {
+          return {
+            uuid: item.uuid,
+            src: item.header_image,
+            name: item.title,
+            href: '/', // todo: single Article
+            group: item.category || parseInt(Math.random() * 3)
+          }
         })
-        this.picNum = this.picNum + 1
-        getNum--
-      }
+      })
       console.log(this.picArray)
       this.picSaveArray = this.picArray
     },
@@ -203,7 +215,7 @@ export default {
   padding-bottom: 2rem;
 }
 .home-page .container {
-  max-width: calc(100% - 232px);
+  max-width: calc(100% - 132px);
 }
 .flud {
   margin-top: 118px;
