@@ -1,6 +1,7 @@
 <template>
   <div class="animated fadeIn">
     <quill-editor v-model="content"
+                  class="editor-container"
                   ref="myQuillEditor"
                   :options="editorOption"
                   @blur="onEditorBlur($event)"
@@ -8,17 +9,11 @@
                   @ready="onEditorReady($event)">
     </quill-editor>
     <!-- Confirm -->
-    <div class="row mb-3 d-flex justify-content-end">
-      <div class="col-3">
-        <button class="btn btn-secondary" @click="cancel()">CANCEL</button>
+    <div class="my-3 d-flex justify-content-end">
+        <button class="btn btn-secondary" @click="cancel()">Clear</button>
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
-        <button class="btn btn-success" type="success" @click="confirmText()">SAVE</button>
-      </div>
     </div>
-    <b-card class="row mb-3" v-if="result">
-      <div slot="header">
-        DEMO
-      </div>
+    <b-card class="mb-3 animated fadeIn" v-if="result">
       <div class="col-12 col-md-8" v-html="result"></div>
     </b-card>
   </div>
@@ -31,6 +26,7 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+
 // mount with global
 Vue.use(VueQuillEditor)
 
@@ -65,13 +61,13 @@ export default {
   },
   methods: {
     onEditorBlur (quill) {
-      console.log('editor blur!', quill)
+      // console.log('editor blur!', quill)
     },
     onEditorFocus (quill) {
-      console.log('editor focus!', quill)
+      // console.log('editor focus!', quill)
     },
     onEditorReady (quill) {
-      console.log('editor ready!', quill)
+      // console.log('editor ready!', quill)
     },
     onEditorChange ({ quill, html, text }) {
       console.log('editor change!', quill, html, text)
@@ -80,9 +76,11 @@ export default {
     confirmText: function (params) {
       console.log('CONTENT | ', this.content)
       this.result = this.content
+      this.$emit('confirmEditorRichText', this.content)
     },
     cancel: function (params) {
       this.result = ''
+      this.content = ''
     }
   },
   computed: {
@@ -112,6 +110,13 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
+.quill-editor {
+  // min-height: 500px;
+  .ql-container {
+    // min-height: 500px
+  }
+}
+  
 
 </style>
