@@ -10,7 +10,7 @@
         fixed
         prop="date"
         label="日期"
-        width="60">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="title"
@@ -19,8 +19,7 @@
       </el-table-column>
       <el-table-column
         prop="explanation"
-        label="描述"
-        width="140">
+        label="描述">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -32,7 +31,7 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <hr/>
     <el-button type="primary" round @click="handlePostNewArticle">发布新文章</el-button>
   </div>
 </template>
@@ -46,13 +45,13 @@ export default {
     }
   },
   mounted () {
-
+    this.loadArtcleList()
   },
   methods: {
     loadArtcleList: function (params) {
       this.Http.Get('sun-create/article-admin/', {}).then(res => {
         console.log(res)
-        this.articleList = res.results.map(item => {
+        this.articleList = res.map(item => {
           return {
             date: new Date(item.created_at).toDateString(),
             ...item
