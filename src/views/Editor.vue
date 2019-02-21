@@ -1,33 +1,27 @@
 <template>
   <div class="animated fadeIn">
-    <b-card class="mt-4">
-      <div slot="header">
-        <strong>案例编辑</strong> / 1. 选择分类 2. 输入标题 3. 输入内容
-        <div class="card-actions"><a href="https://github.com/surmon-china/vue-quill-editor" target="_blank">docs</a></div>
+    <quill-editor v-model="content"
+                  ref="myQuillEditor"
+                  :options="editorOption"
+                  @blur="onEditorBlur($event)"
+                  @focus="onEditorFocus($event)"
+                  @ready="onEditorReady($event)">
+    </quill-editor>
+    <!-- Confirm -->
+    <div class="row mb-3 d-flex justify-content-end">
+      <div class="col-3">
+        <button class="btn btn-secondary" @click="cancel()">CANCEL</button>
+        <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
+        <button class="btn btn-success" type="success" @click="confirmText()">SAVE</button>
       </div>
-      <quill-editor v-model="content"
-                    ref="myQuillEditor"
-                    :options="editorOption"
-                    @blur="onEditorBlur($event)"
-                    @focus="onEditorFocus($event)"
-                    @ready="onEditorReady($event)">
-      </quill-editor>
-  </b-card>
-  <!-- Confirm -->
-  <div class="row mb-3 d-flex justify-content-end">
-    <div class="col-3">
-      <button class="btn btn-secondary" @click="cancel()">CANCEL</button>
-      <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
-      <button class="btn btn-success" type="success" @click="confirmText()">SAVE</button>
     </div>
+    <b-card class="row mb-3" v-if="result">
+      <div slot="header">
+        DEMO
+      </div>
+      <div class="col-12 col-md-8" v-html="result"></div>
+    </b-card>
   </div>
-  <b-card class="row mb-3" v-if="result">
-    <div slot="header">
-      DEMO
-    </div>
-    <div class="col-12 col-md-8" v-html="result"></div>
-  </b-card>
-</div>
 </template>
 
 

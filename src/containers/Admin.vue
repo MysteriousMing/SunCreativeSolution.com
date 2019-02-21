@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <AdminHeader/>
-    <div class="app-body">
+    <div class="app-body admin-body">
       <Sidebar :navItems="nav"/>
       <main class="main">
         <div class="container-fluid">
@@ -11,6 +11,17 @@
     </div>
   </div>
 </template>
+<style scoped>
+.app {
+  overflow: hidden;
+}
+.app-body.admin-body{
+  margin-top: 62px;
+}
+.sidebar-fixed .admin-body .sidebar {
+  height: calc(100vh - 62px);
+}
+</style>
 
 <script>
 import nav from '../_nav'

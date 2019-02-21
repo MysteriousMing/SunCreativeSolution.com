@@ -1,6 +1,11 @@
 <template>
   <header class="app-header navbar animated white">
-    <h4 class="pl-2">Sun Creative Solution Admin</h4>
+    <h4 class="px-4">Sun Creative Solution</h4>
+    <el-menu :default-active="activeIndex" class="el-menu-demo ml-auto" mode="horizontal" @select="handleSelect">
+      <el-menu-item index="Product">首页</el-menu-item>
+      <el-menu-item index="Dev">建设中</el-menu-item>
+      <el-menu-item index="Admin">后台管理</el-menu-item>
+    </el-menu>
   </header>
 </template>
 <script>
@@ -14,6 +19,7 @@ export default {
   },
   data () {
     return {
+      activeIndex: 'Admin',
       topUpperBg: this.topBg || 'black',
       bottomUpperBg: this.bottomBg || 'white'
     }
@@ -34,6 +40,21 @@ export default {
     console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
   },
   methods: {
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+      this.$router.push({
+        name: key
+      })
+    },
+    showName (item) {
+      if (item.meta && item.meta.label) {
+        item = item.meta && item.meta.label
+      }
+      if (item.name) {
+        item = item.name
+      }
+      return item
+    },
     selectNav (val) {
       bus.$emit('nav-router', val)
     },
@@ -56,9 +77,14 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .navbar-brand.black {
   color: #ffffff;
+}
+.app-header {
+  border-bottom: solid 1px #e6e6e6;
+  box-sizing: border-box;
+  height: auto;
 }
 .app-header.black {
   background: #000000;

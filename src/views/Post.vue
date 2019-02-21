@@ -13,9 +13,10 @@
     </div>
 
   </b-card>
-  <b-card class="post-body">
-    <textarea name="article" id="article" rows="30" class="post-article"></textarea>
-  </b-card>
+  <div>
+    <strong>案例编辑</strong> / 1. 选择分类 2. 输入标题 3. 输入内容
+  </div>
+  <Editor></Editor>
   <b-card class="post-foot">
     <span class="time-tips">当前: {{lastSaveTime}}</span>
     <button class="btn btn-light" type="clear"> 取消</button>
@@ -27,8 +28,12 @@
 
 
 <script>
+import Editor from './Editor'
 export default {
   name: 'dashboard',
+  components: {
+    Editor
+  },
   data: function () {
     return {
       lastSaveTime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
@@ -47,6 +52,9 @@ export default {
 }
 </script>
 <style>
+.post-page {
+  height: calc(100vh - 62px);
+}
 .post-page .post-header {
   /* height: 5rem; */
   margin-top: 2rem;
