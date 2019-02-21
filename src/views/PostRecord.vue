@@ -32,12 +32,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <hr/>
-    <el-row>
-      <el-col>
-        <el-button type="primary" round @click="handlePostNewArticle">发布新文章</el-button>
-      </el-col>
-    </el-row>
+
+    <el-button type="primary" round @click="handlePostNewArticle">发布新文章</el-button>
   </div>
 </template>
 <script>
@@ -54,7 +50,7 @@ export default {
   },
   methods: {
     loadArtcleList: function (params) {
-      this.Http.Get('sun-create/article/', {}).then(res => {
+      this.Http.Get('sun-create/article-admin/', {}).then(res => {
         console.log(res)
         this.articleList = res.results.map(item => {
           return {

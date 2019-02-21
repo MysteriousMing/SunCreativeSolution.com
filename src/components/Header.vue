@@ -14,7 +14,7 @@ import logo from '../components/logo'
 import bus from '@/router/bus'
 
 export default {
-  name: 'header',
+  name: 'index-header',
   components: {
     logo
   },

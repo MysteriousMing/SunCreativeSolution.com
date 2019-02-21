@@ -16,7 +16,7 @@
 import logo from '../components/logo'
 
 export default {
-  name: 'footer',
+  name: 'foot',
   components: {
     logo
   }
