@@ -7,8 +7,10 @@ import Admin from '@/containers/Admin'
 import Construction from '@/containers/Construction'
 
 // Views
-import Dashboard from '@/views/Dashboard'
 import Home from '@/views/Home'
+import Project from '@/views/Project'
+import Dashboard from '@/views/Dashboard'
+// Admin
 import PostRecord from '@/views/PostRecord'
 import Post from '@/views/Post'
 import Editor from '@/views/Editor'
@@ -65,6 +67,12 @@ export default new Router({
           path: '/',
           name: 'Home',
           component: Home
+        },
+        {
+          path: '/project',
+          name: 'Project',
+          component: Project
+
         }
         // todo: articleDetail
       ]

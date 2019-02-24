@@ -184,6 +184,12 @@ export default {
     },
     handleClick (row) {
       console.log(row)
+      this.$router.push({
+        name: 'Project',
+        query: {
+          uuid: row.uuid
+        }
+      })
     },
     handleClickEdit (row) {
 
