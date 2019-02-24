@@ -12,7 +12,7 @@
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
       <div v-for="element in picArray" :key="element.name" 
-      class="grid-item grid-sizer" @click="selected=element">
+      class="grid-item grid-sizer" @click="handleClick(element)">
           <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
           <img :src="element.src" alt="Not found">
       </div>
@@ -77,6 +77,15 @@ export default {
     })
   },
   methods: {
+    handleClick (row) {
+      console.log(row)
+      this.$router.push({
+        name: 'Project',
+        query: {
+          uuid: row.uuid
+        }
+      })
+    },
     onScroll: function (e, position) {
       this.position = position
       if (this.position.scrollTop - this.windowHinnerHeight >= 0) {
