@@ -3,21 +3,22 @@ export default {
     {
       name: 'PostRecord',
       url: 'articles',
-      icon: 'icon-speedometer'
+      icon: 'icon-book-open'
     },
     {
       name: 'Post',
       url: 'post',
-      icon: 'icon-speedometer'
+      icon: 'icon-paper-plane'
     },
     {
       name: 'Dashboard',
       url: 'dashboard',
-      icon: 'icon-speedometer'
+      icon: 'icon-layers'
     }, {
       name: 'Periodic',
       url: 'periodic',
-      icon: 'icon-speedometer'
+      icon: 'icon-magic-wand'
     }
   ]
 }
+// https://coreui.io/v1/demo/AngularJS_Demo/#!/icons/simple-line-icons
