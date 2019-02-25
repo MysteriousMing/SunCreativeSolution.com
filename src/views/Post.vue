@@ -1,5 +1,5 @@
 <template>
-<div class="post-page">
+<div class="post-page" v-loading="processLoading">
   <div>
     <strong>案例编辑</strong> / 1. 选择分类 2. 输入标题 3. 输入内容 4. Preview 后提交
   </div>
@@ -23,6 +23,7 @@
           :action="uploadImage"
           :data="uploadThumbImageData"
           :show-file-list="false"
+          :on-progress="uploadProcess"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
           <img v-if="form.thumbnail" :src="form.thumbnail" class="avatar">
@@ -36,6 +37,7 @@
           :action="uploadImage"
           :data="uploadHeaderImageData"
           :show-file-list="false"
+          :on-progress="uploadProcess"
           :on-success="handleHeaderSuccess"
           :before-upload="beforeAvatarUpload">
           <img v-if="form.header_image" :src="form.header_image" class="avatar">
@@ -68,6 +70,7 @@ export default {
   },
   data: function () {
     return {
+      processLoading: false,
       editStatus: 'editing', // saved
       uploadHeaderImageData: {
         identifier: '',
@@ -107,8 +110,8 @@ export default {
     },
     inputTitle (val) {
       console.log(val)
-      this.uploadThumbImageData.identifier = this.form.title
-      this.uploadHeaderImageData.identifier = this.form.title
+      this.uploadThumbImageData.identifier = this.form.title.replace(/\s+/g, '')
+      this.uploadHeaderImageData.identifier = this.form.title.replace(/\s+/g, '')
     },
     confirmText (data) {
       this.form.content = data
@@ -118,11 +121,16 @@ export default {
       console.log(res, file)
       // this.imageUrl = URL.createObjectURL(file.raw)
       this.form.header_image = res
+      this.processLoading = false
     },
     handleAvatarSuccess (res, file) {
       console.log(res, file)
       // this.imageUrl = URL.createObjectURL(file.raw)
       this.form.thumbnail = res
+      this.processLoading = false
+    },
+    uploadProcess () {
+      this.processLoading = true
     },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif'
@@ -155,13 +163,18 @@ export default {
         this.$message.error('请编辑内容')
         return
       }
+      this.processLoading = true
+
       console.log(this.form)
       this.Http.Post('sun-create/article-admin/', {}, this.form)
         .then(res => {
+          this.processLoading = false
           this.editStatus = 'saved'
         })
         .catch(err => {
-          this.$message.error(err)
+          this.processLoading = false
+          console.error('Error', err)
+          this.$message.error('报错啦')
         })
     }
   }

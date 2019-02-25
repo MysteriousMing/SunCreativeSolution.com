@@ -13,7 +13,9 @@
     </section>
 
     <!-- body -->
-    <div class="left-col">
+    <div class="left-col article-content">
+      <h1>{{ articleDetail.title }}</h1>
+      <br>
       <article v-if="articleDetail" 
       class="proj-content"
       ref="content"
@@ -107,9 +109,11 @@
       width: 100%;
   }
   .proj-content {
-      margin-left:10%;
+  }
+  .article-content {
       padding-top: 50px;
       padding-bottom: 150px;
+      padding-left:10%;
   }
 
 
