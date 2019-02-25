@@ -69,7 +69,7 @@ export default new Router({
           component: Home
         },
         {
-          path: '/project',
+          path: '/project/:uuid/',
           name: 'Project',
           component: Project
 

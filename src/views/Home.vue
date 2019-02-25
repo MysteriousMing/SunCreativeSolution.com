@@ -67,6 +67,8 @@ export default {
   created () {
     this.getData()
     console.log(this.windowHinnerHeight)
+    bus.$emit('header-go-black', 'white')
+
     bus.$on('home-go-down', isDown => {
       if (isDown) {
         this.$refs.page.scrollTop = this.windowHinnerHeight
@@ -81,7 +83,7 @@ export default {
       console.log(row)
       this.$router.push({
         name: 'Project',
-        query: {
+        params: {
           uuid: row.uuid
         }
       })

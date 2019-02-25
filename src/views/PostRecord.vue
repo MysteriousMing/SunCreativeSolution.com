@@ -186,7 +186,7 @@ export default {
       console.log(row)
       this.$router.push({
         name: 'Project',
-        query: {
+        params: {
           uuid: row.uuid
         }
       })

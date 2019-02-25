@@ -1,9 +1,10 @@
 <template>
-  <section class="page-project">
+  <section v-loading="isDetailLoading" class="page-project">
     <!-- image banner -->
     <section class="header">
         <figure class="left-col mb-0 pb-4">
-            <img class="align-self-center" height="auto" width="100px" src="/static/images/project/img2.png" alt="Header photos - title">
+            <img class="align-self-center" height="auto" width="100px"
+            :src="articleDetail.header_image" alt="Header photos - title">
         </figure>
         <div class="right-col mb-0 d-md-down-none">
             <div class="color-pattern">
@@ -13,7 +14,11 @@
 
     <!-- body -->
     <div class="left-col">
-      <article class="proj-content">
+      <article v-if="articleDetail" 
+      class="proj-content"
+      ref="content"
+      v-html="articleDetail.content"></article>
+      <article v-else class="proj-content">
           <h1>ChemIsTry</h1>
           <p>Chemistry is the scientific discipline involved with compounds composed of atoms, i.e. elements, and molecules, i.e.
               combinations of atoms: their composition, structure, properties, behavior and the changes they undergo during a reaction
@@ -38,24 +43,43 @@
               and anions); hydrogen bonds; and Van der Waals force bonds.</p>
       </article>
     </div>
-    <div class="right-col d-md-down-none"></div>
+    <div class="right-col d-md-down-none">
+      <div style="height: 300px;"
+      class="pt-4 px-2">
+        <el-steps direction="vertical" 
+        :active="activeTitle">
+          <el-step 
+          v-for="(item, index) in titleArray" :key="index"
+          :title="item.title" :description="item.subtitle"
+          @click="gotoTitle(index)"></el-step>
+        </el-steps>
+      </div>
 
+    </div>
+
+    <section class="clear">
+      <AppFooter/>
+    </section>
   </section>
 </template>
-<style scoped>
+<style lang="scss" scoped>
+  $project-header-height: 530px;
+
   section.page-project {
     margin: 0 -30px;
   }
+
+
   .left-col {
-      width: 80%;
+      width: calc(100% - 270px);
       float: left;
   }
   .right-col {
-      width: 20%;
+      width: 270px;
       float: left;
   }
   .header {
-      height: 720px;
+      height: $project-header-height;
   }
   .header .left-col, .header .right-col {
       height: 100%;
@@ -63,7 +87,7 @@
   figure.left-col {
       background: black;
       display: block;
-      line-height: 720px;
+      line-height: $project-header-height;
       overflow: hidden;
   }
   .left-col>img {
@@ -84,33 +108,100 @@
   }
   .proj-content {
       margin-left:10%;
+      padding-top: 50px;
+      padding-bottom: 150px;
+  }
+
+
+  @media (max-width: 991px) {
+    .left-col {
+        width: 100%;
+        float: left;
+    }
+    .header {
+      height: 284px;
+    }
+    figure.left-col {
+      background: black;
+      display: block;
+      line-height: 200px;
+      overflow: hidden;
+    }
+  }
+
+  .clear {
+    clear: both;
   }
 </style>
 <script>
-  import categoryConfig from '../config/category'
+import bus from '@/router/bus'
 
-  export default {
-    name: 'project',
-    components: {
+import { Footer as AppFooter } from '../components/'
 
-    },
-    data: function () {
-      return {
-        categoryConfig: categoryConfig
-      }
-    },
-    created () {
-      console.log('Name or Uuid')
-      this.getArticleDetail()
-    },
-    mounted () {
+import categoryConfig from '../config/category'
 
+export default {
+  name: 'project',
+  components: {
+    AppFooter
+  },
+  data: function () {
+    return {
+      isDetailLoading: true,
+      titleArray: [],
+      activeTitle: 1,
+      articleDetail: {
+        content: ''
+      },
+      categoryConfig: categoryConfig
+    }
+  },
+  created () {
+    console.log('Name or Uuid')
+    bus.$emit('header-go-black', 'white')
+
+    this.getArticleDetail()
+  },
+  mounted () {
+  },
+  methods: {
+    getArticleDetail () {
+      this.isDetailLoading = true
+      let uuid = this.$router.history.current.params.uuid
+      this.Http.Get(`sun-create/article/${uuid}/`).then(res => {
+        this.articleDetail = res
+        this.isDetailLoading = false
+        setTimeout(() => {
+          this.formatTitleMenu()
+        }, 1000)
+      })
     },
-    methods: {
-      getArticleDetail () {
-        let uuid = this.$router.query.uuid
-        console.log(uuid)
-      }
+
+    // titleList: this.formatTitleMenu(item.content)
+
+    formatTitleMenu (richtext) {
+      let content = this.$refs.content
+      console.log(content)
+
+      console.log(content.childNodes)
+      let titleArr = content.querySelectorAll('h1')
+      console.log(titleArr)
+      this.titleArray = []
+
+      titleArr.forEach((element, index) => {
+        element.id = `title-${index}`
+        // console.log(element.id)
+        // console.log(element.textContent)
+        this.titleArray.push({
+          id: element.id,
+          title: element.textContent
+        })
+      })
+    },
+    gotoTitle (index) {
+      this.activeTitle = index + 1
+      console.log('2333', this.titleArray[index].id)
     }
   }
+}
 </script>
