@@ -85,6 +85,8 @@ export default {
   border-bottom: solid 1px #e6e6e6;
   box-sizing: border-box;
   height: auto;
+  background: #ffffff;
+  z-index: 1001;
 }
 .app-header.black {
   background: #000000;

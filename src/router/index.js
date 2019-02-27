@@ -35,8 +35,13 @@ export default new Router({
           component: Dashboard
         },
         {
-          path: 'post',
+          path: 'post/',
           name: 'Post',
+          component: Post
+        },
+        {
+          path: 'post/:uuid',
+          name: 'Edit',
           component: Post
         },
         {

@@ -8,10 +8,10 @@
     <button class="btn btn-secondary" type="primary" @click="filterData()">Clear</button>
     <button class="btn btn-warning" type="primary" @click="shuffle()">Shuffle</button>
   </section>
-  <section class="container flud" v-if="picArray && picArray.length">
+  <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
-      <div v-for="element in picArray" :key="element.name" 
+      <div v-for="element in picArray" :key="element.name"
       class="grid-item grid-sizer" @click="handleClick(element)">
           <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
           <img :src="element.src" alt="Not found">
@@ -45,6 +45,7 @@ export default {
   },
   data () {
     return {
+      dataLoading: true,
       picArray: [],
       picSaveArray: [],
       position: {},
@@ -134,19 +135,12 @@ export default {
       this.$refs.cpt.shuffle()
     },
     getData () {
-      // let getNum = 15
-      // while (getNum >= 0) {
-      //   this.picArray.push({
-      //     'name': `mm${this.picNum}`,
-      //     'src': `https://static.dubheee.cn/images/cat/${this.picNum}.jpg?x-oss-process=style/720w`,
-      //     'href': '/',
-      //     'group': parseInt(Math.random() * 3)
-      //   })
-      //   this.picNum = this.picNum + 1
-      //   getNum--
-      // }
+      // dataLoading
+      this.dataLoading = true
       this.Http.Get('sun-create/article/').then(res => {
         console.log(res)
+        this.dataLoading = false
+
         this.picArray = res.results.map(item => {
           return {
             uuid: item.uuid,
@@ -230,6 +224,8 @@ export default {
 }
 .flud {
   margin-top: 118px;
+  margin-bottom: 118px;
+  min-height: 8rem;
 }
 .grid-item,
 .grid-sizer {

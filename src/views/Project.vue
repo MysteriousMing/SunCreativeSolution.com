@@ -2,12 +2,15 @@
   <section v-loading="isDetailLoading" class="page-project">
     <!-- image banner -->
     <section class="header">
-        <figure class="left-col mb-0 pb-4">
+        <figure 
+        v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
+        class="left-col mb-0 pb-4">
             <img class="align-self-center" height="auto" width="100px"
             :src="articleDetail.header_image" alt="Header photos - title">
         </figure>
         <div class="right-col mb-0 d-md-down-none">
-            <div class="color-pattern">
+            <div class="color-pattern" 
+            v-bind:style="{ background: articleDetail.theme_color || 'gray'}">
             </div>
         </div>
     </section>

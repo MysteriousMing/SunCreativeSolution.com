@@ -62,14 +62,15 @@
       <el-button type="primary" round @click="handlePostNewArticle">发布新文章</el-button>
     </el-main>
     <el-main v-if="viewType === 'thumbnail'" v-loading="recordListLoading">
-      <section class="container">
+      <section class="container masonry-arr">
         <isotope ref="cpt" :options="getOptions()" :list="articleList">
           <div v-for="(item,index) in articleList"
           :key="item.uuid"
           class="grid-item grid-sizer">
             <el-card :body-style="{ padding: '0px' }" style="margin-bottom: 10px">
               <img :src="item.header_image + '?x-oss-process=style/400wh'" class="image thumbnail">
-              <div style="padding: 14px;">
+              <div style="border-top: 10px solid"
+              :style="{ padding: '14px', borderColor: item.theme_color }">
                 <span>{{index+1}}. {{item.title}}</span>
                 <p>{{item.explanation}}</p>
 
@@ -192,7 +193,12 @@ export default {
       })
     },
     handleClickEdit (row) {
-
+      this.$router.push({
+        name: 'Edit',
+        params: {
+          uuid: row.uuid
+        }
+      })
     },
     handleClickDelete (uuid) {
       this.recordListLoading = true
@@ -234,6 +240,9 @@ export default {
     min-height: 660px;
     padding-bottom: 2rem;
     // max-width: calc(100% - 132px);
+  }
+  .masonry-arr>div {
+    min-height: 660px;
   }
   .grid-item,
   .grid-sizer {

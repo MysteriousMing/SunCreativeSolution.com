@@ -16,6 +16,10 @@
       <el-form-item label="简介">
         <el-input type="textarea" v-model="form.explanation"></el-input>
       </el-form-item>
+      <el-form-item label="主题色">
+        <el-color-picker v-model="form.theme_color"></el-color-picker>
+      </el-form-item>
+
       <el-form-item v-if="this.form.title" label="缩略图">
         <el-upload
           class="avatar-uploader"
@@ -47,12 +51,12 @@
     </el-form>    
   </b-card>
 
-  <Editor @confirmEditorRichText="confirmText"></Editor>
+  <Editor @confirmEditorRichText="confirmText" :form-content="form.content"></Editor>
 
   <b-card class="post-foot">
     <span class="time-tips">当前: {{lastSaveTime}}</span>
-    <button @click="cancelPost" class="btn btn-light" type="clear"> 取消</button>
-    <button @click="confirmPost" v-if="editStatus === 'editing'" class="btn btn-primary" type="submit"> 提交</button>
+    <button @click="cancelPost" class="btn btn-light" type="clear">{{!articleUuid ? '取消':'返回'}}</button>
+    <button @click="beforeConfirmPost" v-if="editStatus.indexOf('edit') >= 0" class="btn btn-primary" type="submit">{{!articleUuid ? '提交':'修改'}}</button>
   </b-card>
 </div>
 </template>
@@ -85,9 +89,11 @@ export default {
       uploadHeader: {
         Authorization: `Token ${window.localStorage.token}`
       },
+      articleUuid: null,
       uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
       form: {
         sort_index: 2,
+        theme_color: '#409EFF',
         // category: 'art',
         // explanation: 'hhhhh',
         // header_image: 'https://static.dubheee.cn/sun/header-image/正式测试.jpg',
@@ -98,6 +104,16 @@ export default {
       lastSaveTime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
     }
   },
+  created () {
+    console.log('Created Post Page')
+    let uuid = this.$router.history.current.params.uuid
+    if (uuid) {
+      console.log('uuid - ', uuid)
+      this.editStatus = 'editing'
+      this.articleUuid = uuid
+      this.loadArticleDetail(uuid)
+    }
+  },
   mounted () {
     setInterval(() => {
       this.loadTime()
@@ -105,6 +121,16 @@ export default {
     console.log(categoryConfig)
   },
   methods: {
+    loadArticleDetail: function (uuid) {
+      this.processLoading = true
+      this.Http.Get(`sun-create/article-admin/${uuid}/`).then(res => {
+        this.form = res
+        setTimeout(() => {
+          // this.formatTitleMenu()
+          this.processLoading = false
+        }, 1000)
+      })
+    },
     loadTime: function (params) {
       this.lastSaveTime = new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
     },
@@ -145,7 +171,13 @@ export default {
       return isJPG
     },
     cancelPost () {
-      this.$alert('取消后将不会保存内容, 确认返回历史页', '提示', {
+      if (this.articleUuid) {
+        this.$router.push({
+          name: 'Admin'
+        })
+        return
+      }
+      this.$alert('取消后将不会保存已编辑内容, 确认返回历史页', '提示', {
         confirmButtonText: '确定',
         callback: action => {
           this.$router.push({
@@ -153,6 +185,34 @@ export default {
           })
         }
       })
+    },
+    beforeConfirmPost () {
+      if (this.articleUuid) {
+        this.confirmUpdate()
+      } else {
+        this.confirmPost()
+      }
+    },
+    confirmUpdate () {
+      if (!this.form.title) {
+        this.$message.error('请填写题目')
+        return
+      }
+      if (!this.form.content) {
+        this.$message.error('请编辑内容')
+        return
+      }
+      this.processLoading = true
+      this.Http.Patch(`sun-create/article-admin/${this.articleUuid}/`, {}, this.form)
+        .then(res => {
+          this.$notify({
+            title: '成功',
+            message: '你已成功修改文字',
+            type: 'success'
+          })
+          this.processLoading = false
+          this.editStatus = 'edited'
+        })
     },
     confirmPost () {
       if (!this.form.title) {
@@ -168,6 +228,11 @@ export default {
       console.log(this.form)
       this.Http.Post('sun-create/article-admin/', {}, this.form)
         .then(res => {
+          this.$notify({
+            title: '成功',
+            message: '你已成功保存.',
+            type: 'success'
+          })
           this.processLoading = false
           this.editStatus = 'saved'
         })

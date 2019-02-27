@@ -10,12 +10,42 @@
     </quill-editor>
     <!-- Confirm -->
     <div class="my-3 d-flex justify-content-end">
+        <el-button type="primary" class="mr-auto" @click="showAddCarousel()">插入轮播图</el-button>
         <button class="btn btn-secondary" @click="cancel()">Clear</button>
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
     </div>
     <b-card class="mb-3 animated fadeIn" v-if="result">
       <div class="col-12 col-md-8" v-html="result"></div>
     </b-card>
+
+
+<el-dialog
+  title="轮播图插件"
+  :visible.sync="isShowAddCarousel"
+  width="80%"
+  :before-close="handleClose">
+  <span>选择需要插入轮播图的图片们</span>
+  <el-upload
+  class="upload-demo"
+  drag
+  action="https://jsonplaceholder.typicode.com/posts/"
+  multiple>
+    <i class="el-icon-upload"></i>
+    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+  </el-upload>
+  <el-carousel indicator-position="outside">
+    <el-carousel-item v-for="item in carouselData.length" :key="item">
+      <img v-if="item.type === 'image'" :src="item.url"/>
+      <h3 v-else>{{ item }}</h3>
+    </el-carousel-item>
+  </el-carousel>
+  {{carouselData}}
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="closeAddCarousel">取 消</el-button>
+    <el-button type="primary" @click="confirmCarouselText">确 定</el-button>
+  </span>
+</el-dialog>
   </div>
 </template>
 
@@ -32,9 +62,17 @@ Vue.use(VueQuillEditor)
 
 export default {
   name: 'text-editors',
+  props: {
+    formContent: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       result: '',
+      carouselData: [1, 2],
+      isShowAddCarousel: false,
       startTimestamp: new Date(),
       editorOption: {
         modules: {
@@ -73,6 +111,52 @@ export default {
       console.log('editor change!', quill, html, text)
       this.content = html
     },
+    showAddCarousel: function (params) {
+      this.isShowAddCarousel = true
+    },
+    closeAddCarousel: function (params) {
+      this.carouselData = []
+      this.isShowAddCarousel = false
+    },
+    handleClose (done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.carouselData = []
+          done()
+        })
+        .catch(_ => {})
+    },
+    addCarouselImage: function (params) {
+      let imgItem = {
+        type: 'image',
+        url: params
+      }
+      this.carouselData.push(imgItem)
+      this.carouselContext = this.buildCarouselCtx()
+    },
+    removeCarouselImage: function (index) {
+      this.carouselData.splice(index, 1)
+      this.carouselContext = this.buildCarouselCtx()
+    },
+    buildCarouselCtx: function () {
+      let ctx = `<el-carousel indicator-position="outside">`
+      this.carouselData.forEach(each => {
+        ctx = ctx + `<el-carousel-item>`
+        if (each.type === 'image') {
+          let itemCtx = `<img style="max-width:100%;max-height:100%;" src="${each.url}" /></el-carousel-item>`
+          ctx = ctx + itemCtx
+        } else {
+          let itemCtx = `<h3>${each}</h3>`
+          ctx = ctx + itemCtx
+        }
+        ctx = ctx + `</el-carousel-item>`
+      })
+      ctx = ctx + `</el-carousel>`
+      return ctx
+    },
+    confirmCarouselText: function (params) {
+      this.content = this.content + '<br/>' + this.carouselContext
+    },
     confirmText: function (params) {
       console.log('CONTENT | ', this.content)
       this.result = this.content
@@ -91,7 +175,7 @@ export default {
   mounted () {
     console.log('this is current quill instance object', this.editor)
     setTimeout(() => {
-      this.content = `<h1 class="ql-align-center">
+      this.content = this.formContent || `<h1 class="ql-align-center">
                           <span class="ql-font-serif" style="background-color: rgb(240, 102, 102); color: rgb(255, 255, 255);"> I am Example 1! </span>
                         </h1>
                         <p><br></p>
