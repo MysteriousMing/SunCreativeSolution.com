@@ -1,9 +1,11 @@
 <template>
-<div class="post-page" v-loading="processLoading">
+<div class="post-page">
   <div>
     <strong>案例编辑</strong> / 1. 选择分类 2. 输入标题 3. 输入内容 4. Preview 后提交
   </div>
-  <b-card class="post-header">
+  <b-card 
+  v-loading="processLoading"
+  class="post-header">
     <el-form ref="form" :model="form" label-width="60px">
       <el-form-item label="题目">
         <el-input v-model="form.title" @change="inputTitle"></el-input>
@@ -28,6 +30,7 @@
           :data="uploadThumbImageData"
           :show-file-list="false"
           :on-progress="uploadProcess"
+          :on-error="handleUploadError"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
           <img v-if="form.thumbnail" :src="form.thumbnail" class="avatar">
@@ -42,6 +45,7 @@
           :data="uploadHeaderImageData"
           :show-file-list="false"
           :on-progress="uploadProcess"
+          :on-error="handleUploadError"
           :on-success="handleHeaderSuccess"
           :before-upload="beforeAvatarUpload">
           <img v-if="form.header_image" :src="form.header_image" class="avatar">
@@ -51,9 +55,13 @@
     </el-form>    
   </b-card>
 
-  <Editor @confirmEditorRichText="confirmText" :form-content="form.content"></Editor>
+  <Editor 
+  v-loading="processLoading"
+  @confirmEditorRichText="confirmText" :form-content="form.content"></Editor>
 
-  <b-card class="post-foot">
+  <b-card 
+  v-loading="processLoading"
+  class="post-foot">
     <span class="time-tips">当前: {{lastSaveTime}}</span>
     <button @click="cancelPost" class="btn btn-light" type="clear">{{!articleUuid ? '取消':'返回'}}</button>
     <button @click="beforeConfirmPost" v-if="editStatus.indexOf('edit') >= 0" class="btn btn-primary" type="submit">{{!articleUuid ? '提交':'修改'}}</button>
@@ -149,6 +157,13 @@ export default {
       this.form.header_image = res
       this.processLoading = false
     },
+
+    handleUploadError (res) {
+      console.error(res)
+      this.$message.error('上传图片失败')
+      this.processLoading = false
+    },
+
     handleAvatarSuccess (res, file) {
       console.log(res, file)
       // this.imageUrl = URL.createObjectURL(file.raw)
@@ -289,27 +304,26 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-.avatar-uploader .el-upload {
+.el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
+.el-upload:hover {
   border-color: #409EFF;
 }
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
+  width: 400px;
+  height: 300px;
+  line-height: 300px;
   text-align: center;
+  background: white;
 }
+img{ width: 100%; height: auto;max-width: 100%; display: block; }
 .avatar {
-  width: 178px;
-  height: 178px;
   display: block;
 }
 </style>

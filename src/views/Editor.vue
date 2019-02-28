@@ -25,18 +25,27 @@
   width="80%"
   :before-close="handleClose">
   <span>选择需要插入轮播图的图片们</span>
+
   <el-upload
   class="upload-demo"
   drag
-  action="https://jsonplaceholder.typicode.com/posts/"
+  :headers="uploadHeader"
+  :action="uploadImage"
+  :data="uploadImageData"
+  :before-upload="handleBeforeUpdate"
+  :on-progress="handleUploadProcess"
+  :on-error="handleUploadError"
+  :on-success="handleImageSuccess"
   multiple>
     <i class="el-icon-upload"></i>
     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
   </el-upload>
-  <el-carousel indicator-position="outside">
-    <el-carousel-item v-for="item in carouselData.length" :key="item">
-      <img v-if="item.type === 'image'" :src="item.url"/>
+
+  <el-carousel v-loading="processLoading"
+  indicator-position="outside">
+    <el-carousel-item v-for="(item, index) in carouselData" :key="index">
+      <img v-if="item.type == 'image'" :src="item.url"/>
       <h3 v-else>{{ item }}</h3>
     </el-carousel-item>
   </el-carousel>
@@ -71,8 +80,17 @@ export default {
   data () {
     return {
       result: '',
-      carouselData: [1, 2],
+      carouselData: [],
       isShowAddCarousel: false,
+      uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
+      uploadImageData: {
+        identifier: '',
+        image_type: 'sun/carousel'
+      },
+      uploadHeader: {
+        Authorization: `Token ${window.localStorage.token}`
+      },
+      processLoading: false,
       startTimestamp: new Date(),
       editorOption: {
         modules: {
@@ -126,16 +144,35 @@ export default {
         })
         .catch(_ => {})
     },
+    handleBeforeUpdate () {
+      this.uploadImageData.identifier = new Date().getTime()
+    },
+    handleUploadProcess () {
+      this.processLoading = true
+    },
+    handleUploadError (res) {
+      console.warn(res)
+      // this.$message.error(res)
+      this.processLoading = false
+    },
+    handleImageSuccess (res, file) {
+      console.log(res, file)
+      // this.imageUrl = URL.createObjectURL(file.raw)
+      this.addCarouselImage(res)
+      this.processLoading = false
+    },
     addCarouselImage: function (params) {
       let imgItem = {
         type: 'image',
         url: params
       }
       this.carouselData.push(imgItem)
+      console.log(this.carouselData)
       this.carouselContext = this.buildCarouselCtx()
     },
     removeCarouselImage: function (index) {
       this.carouselData.splice(index, 1)
+      console.log(this.carouselData)
       this.carouselContext = this.buildCarouselCtx()
     },
     buildCarouselCtx: function () {
