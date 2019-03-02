@@ -16,48 +16,23 @@
     </section>
 
     <!-- body -->
-    <div class="left-col article-content">
-      <h1>{{ articleDetail.title }}</h1>
+    <div class="left-col article-content ql-snow">
       <br>
-      <article v-if="articleDetail" 
-      class="proj-content"
+      <article v-if="articleDetail"
+      class="proj-content ql-editor"
       ref="content"
-      v-html="articleDetail.content"></article>
-      <article v-else class="proj-content">
-          <h1>ChemIsTry</h1>
-          <p>Chemistry is the scientific discipline involved with compounds composed of atoms, i.e. elements, and molecules, i.e.
-              combinations of atoms: their composition, structure, properties, behavior and the changes they undergo during a reaction
-              with other compounds. Chemistry addresses topics such as how atoms and molecules interact via chemical bonds to form
-              new chemical compounds. There are four types of chemical bonds: covalent bonds, in which compounds share one or more
-              electron(s); ionic bonds, in which a compound donates one or more electrons to another compound to produce ions (cations
-              and anions); hydrogen bonds; and Van der Waals force bonds.</p>
-          <figure>
-              <img width="100%" src="/static/images/project/img1.png" alt="image 1">
-              <figcaption> ... </figcaption>
-          </figure>
-          <figure>
-              <img width="100%" src="/static/images/project/img3.png" alt="image 2">
-              <figcaption>pic 2 ...
-              </figcaption>
-          </figure>
-          <p>Chemistry is the scientific discipline involved with compounds composed of atoms, i.e. elements, and molecules, i.e.
-              combinations of atoms: their composition, structure, properties, behavior and the changes they undergo during a reaction
-              with other compounds. Chemistry addresses topics such as how atoms and molecules interact via chemical bonds to form
-              new chemical compounds. There are four types of chemical bonds: covalent bonds, in which compounds share one or more
-              electron(s); ionic bonds, in which a compound donates one or more electrons to another compound to produce ions (cations
-              and anions); hydrogen bonds; and Van der Waals force bonds.</p>
-      </article>
+      v-html="articleDetail.content"
+      v-scroll-spy></article>
     </div>
     <div class="right-col d-md-down-none">
       <div style="height: 300px;"
       class="pt-4 px-2">
-        <el-steps direction="vertical" 
-        :active="activeTitle">
-          <el-step 
-          v-for="(item, index) in titleArray" :key="index"
-          :title="item.title" :description="item.subtitle"
-          @click="gotoTitle(index)"></el-step>
-        </el-steps>
+        <ul v-scroll-spy-active="{selector: 'li.menu-item', class: 'custom-active'}"
+         v-scroll-spy-link="{selector: 'a.title-nav-item'}">
+            <li class="menu-item" v-for="(item, index) in titleArray" :key="index">
+                <a class="title-nav-item">{{item.title}}</a>
+            </li>
+        </ul>
       </div>
 
     </div>
@@ -112,12 +87,29 @@
       width: 100%;
   }
   .proj-content {
+    // position: relative;
   }
   .article-content {
       padding-top: 50px;
       padding-bottom: 150px;
       padding-left:10%;
   }
+  .title-nav-item {
+    cursor: pointer;
+    color: #010000;
+    font-size: 0.8125rem;
+  }
+  .menu-item {
+
+
+  }
+  .custom-active {
+    opacity: 0.6;
+    .title-nav-item {
+      font-size: 1rem;
+    }
+  }
+
 
 
   @media (max-width: 991px) {
@@ -147,6 +139,16 @@ import { Footer as AppFooter } from '../components/'
 
 import categoryConfig from '../config/category'
 
+import Vue from 'vue'
+import Scrollspy, { Easing } from 'vue2-scrollspy'
+// use default options
+Vue.use(Scrollspy)
+const scrollspyOptions = {
+  easing: Easing.Cubic.In,
+  offset: 120
+}
+// or custom options
+Vue.use(Scrollspy, scrollspyOptions)
 export default {
   name: 'project',
   components: {
@@ -179,14 +181,14 @@ export default {
         this.articleDetail = res
         this.isDetailLoading = false
         setTimeout(() => {
-          this.formatTitleMenu()
+          this.formatTitleMenu(res.title)
         }, 1000)
       })
     },
 
     // titleList: this.formatTitleMenu(item.content)
 
-    formatTitleMenu (richtext) {
+    formatTitleMenu (title) {
       let content = this.$refs.content
       console.log(content)
 
@@ -203,6 +205,9 @@ export default {
           id: element.id,
           title: element.textContent
         })
+        if (index === 0) {
+          element.innerText = title
+        }
       })
     },
     gotoTitle (index) {

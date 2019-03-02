@@ -14,8 +14,8 @@
         <button class="btn btn-secondary" @click="cancel()">Clear</button>
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
     </div>
-    <b-card class="mb-3 animated fadeIn" v-if="result">
-      <div class="col-12 col-md-8" v-html="result"></div>
+    <b-card class="mb-3 animated fadeIn ql-container ql-snow" v-if="result">
+      <div class="col-12 col-md-8 ql-editor" v-html="result"></div>
     </b-card>
 
 
@@ -62,9 +62,6 @@
 <script>
 import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
 
 // mount with global
 Vue.use(VueQuillEditor)
@@ -193,6 +190,9 @@ export default {
     },
     confirmCarouselText: function (params) {
       this.content = this.content + '<br/>' + this.carouselContext
+      console.log(this.content)
+      console.log(this.carouselContext)
+      this.closeAddCarousel()
     },
     confirmText: function (params) {
       console.log('CONTENT | ', this.content)
@@ -238,6 +238,8 @@ export default {
     // min-height: 500px
   }
 }
+img { width: 100%; height: auto;max-width: 100%; display: block; }
+
   
 
 </style>

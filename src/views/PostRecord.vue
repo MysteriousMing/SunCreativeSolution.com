@@ -248,6 +248,9 @@ export default {
   .grid-sizer {
     width: calc(33.3% - 9px);
   }
+  .grid-item img {
+    width: 100%;
+  }
 }
 
 </style>

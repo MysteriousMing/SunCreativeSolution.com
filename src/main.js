@@ -10,6 +10,10 @@ import Http from './utils/request'
 import utils from './utils/utils'
 import Loading from './directive/loading'
 
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 Vue.use(BootstrapVue)
 Vue.use(ElementUI)
 Vue.use(Loading)
