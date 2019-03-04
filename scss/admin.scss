@@ -1,5 +1,24 @@
-$navbar-hover-color: $gray-200 !default;
-$navbar-active-color: $gray-200 !default;
-$sidebar-nav-link-hover-bg: theme-color("warning") !default;
-$sidebar-nav-link-active-icon-color: theme-color("warning") !default;
+$sidebar-nav-link-hover-bg: #ffc107 !important;
+$sidebar-nav-link-hover-color: #fff !important;
+$sidebar-nav-link-icon-hover-color: #fff !important;
+$sidebar-nav-link-active-color: #ffc107 !important;
+$sidebar-nav-link-active-icon-color: #ffc107 !important;
+.nav-link {
+  &.active {
+    color: $sidebar-nav-link-active-color;
 
+    i {
+      color: $sidebar-nav-link-active-icon-color;
+    }
+  }
+
+  &:hover {
+    color: $sidebar-nav-link-hover-color;
+
+    background: $sidebar-nav-link-hover-bg;
+    i {
+      color: $sidebar-nav-link-icon-hover-color;
+    }
+  }
+
+}

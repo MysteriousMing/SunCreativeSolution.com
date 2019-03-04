@@ -11,8 +11,11 @@
     </div>
   </div>
 </template>
+<style lang="scss">
+  // Import Main styles for this application
+  @import '../../scss/admin.scss';
+</style>
 <style scoped>
-@import '/scss/admin.scss';
 .app {
   overflow: hidden;
 }
