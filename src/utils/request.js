@@ -7,9 +7,13 @@ Vue.prototype.$http = axios
 
 const baseUrl = 'https://api.dubheee.cn/' // API_URL_PREFIX
 const showErr = function (err) {
-  Message.error({
-    message: err
-  })
+  try {
+    Message.error({
+      message: err
+    })
+  } catch (error) {
+    console.error('Message Error - ', error)
+  }
 }
 
 axios.interceptors.request.use(config => {
@@ -36,17 +40,17 @@ axios.interceptors.response.use(data => {
   }
   return data
 }, err => {
-  console.error('HandleErr', err)
+  console.error('[+] HandleErr: ', err)
   if (err.response.status === 504 || err.response.status === 404) {
     showErr('服务器被吃了⊙﹏⊙∥')
   } else if (err.response.status === 403) {
     showErr('权限不足,请联系管理员!')
   } else if (err.response.status === 401) {
     console.log('233')
+    showErr('还未登录, 请登录后再试!')
     window.localStorage.removeItem('token')
-    showErr(err.response.data.message)
-  } else if (err.response.data.message) {
-    showErr(err.response.data.message)
+  } else if (err.response.data.detial) {
+    showErr(err.response.data.detial)
   } else {
     showErr('未知错误!')
   }

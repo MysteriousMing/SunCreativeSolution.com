@@ -2,7 +2,7 @@
   <div class="app">
     <AdminHeader/>
     <div class="app-body admin-body">
-      <Sidebar :navItems="nav"/>
+      <Sidebar class="admin-sidebar" :navItems="nav"/>
       <main class="main">
         <div class="container-fluid">
           <router-view></router-view>
@@ -12,6 +12,7 @@
   </div>
 </template>
 <style scoped>
+@import '/scss/admin.scss';
 .app {
   overflow: hidden;
 }
