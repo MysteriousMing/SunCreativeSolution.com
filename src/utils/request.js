@@ -5,7 +5,8 @@ import {
 } from 'element-ui'
 Vue.prototype.$http = axios
 
-const baseUrl = 'https://api.dubheee.cn/' // API_URL_PREFIX
+const baseUrl = 'https://api.dubheee.com/' // API_URL_PREFIX
+// const baseUrl = 'http://localhost:8000/' // API_URL_PREFIX
 const showErr = function (err) {
   try {
     Message.error({
@@ -40,20 +41,21 @@ axios.interceptors.response.use(data => {
   }
   return data
 }, err => {
-  console.error('[+] HandleErr: ', err)
-  if (err.response.status === 504 || err.response.status === 404) {
-    showErr('服务器被吃了⊙﹏⊙∥')
-  } else if (err.response.status === 403) {
-    showErr('权限不足,请联系管理员!')
-  } else if (err.response.status === 401) {
-    console.log('233')
-    showErr('还未登录, 请登录后再试!')
-    window.localStorage.removeItem('token')
-  } else if (err.response.data.detial) {
-    showErr(err.response.data.detial)
-  } else {
-    showErr('未知错误!')
-  }
+  // console.error('[+] HandleErr: ', err)
+  showErr(err)
+  // if (err.response.status === 504 || err.response.status === 404) {
+  //   showErr('服务器被吃了⊙﹏⊙∥')
+  // } else if (err.response.status === 403) {
+  //   showErr('权限不足,请联系管理员!')
+  // } else if (err.response.status === 401) {
+  //   console.log('233')
+  //   showErr('还未登录, 请登录后再试!')
+  //   window.localStorage.removeItem('token')
+  // } else if (err.response.data.detial) {
+  //   showErr(err.response.data.detial)
+  // } else {
+  //   showErr('未知错误!')
+  // }
   return Promise.resolve(err)
 })
 

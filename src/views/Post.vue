@@ -7,7 +7,7 @@
   v-loading="processLoading"
   class="post-header">
     <el-form ref="form" :model="form" label-width="60px">
-      <el-form-item label="题目">
+      <el-form-item label="标题">
         <el-input v-model="form.title" @change="inputTitle"></el-input>
       </el-form-item>
       <el-form-item label="类型">

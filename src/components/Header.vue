@@ -1,5 +1,6 @@
 <template>
-  <header class="app-header navbar animated" :class="{'black':bottomUpperBg == 'black'}">
+  <header class="app-header navbar animated"
+  :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true }">
     <b-link class="navbar-brand logo" to="/">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg"></logo>
     </b-link>
@@ -18,10 +19,21 @@ export default {
   components: {
     logo
   },
+  props: {
+    // isAnimate: Boolean,
+    animateDirect: String
+  },
+  watch: {
+    scrollInfo (from, to) {
+      console.log(from, to)
+    }
+  },
   data () {
     return {
       topUpperBg: this.topBg || 'black',
-      bottomUpperBg: this.bottomBg || 'white'
+      bottomUpperBg: this.bottomBg || 'white',
+      headerAnimate: false,
+      scrollUp: false
     }
   },
   created () {
@@ -33,6 +45,12 @@ export default {
       } else {
         this.topUpperBg = 'black'
         this.bottomUpperBg = 'white'
+      }
+    })
+    bus.$on('animate-info', animateInfo => {
+      if (animateInfo && animateInfo.isShow) {
+        this.headerAnimate = animateInfo.isShow
+        this.scrollUp = animateInfo.scrollUp
       }
     })
   },
@@ -71,5 +89,34 @@ export default {
 }
 .animated {
   transition: all 100ms ease-in;
+}
+
+@keyframes fromTopIn {
+    from {
+        top: -70px;
+    }
+    to {
+        top: 0;
+    }
+}
+
+@keyframes toTopIn {
+    from {
+        top: 0;
+    }
+    to {
+        top: -70px;
+    }
+}
+
+.app-header.show {
+  /* animation: fromTopIn 200ms ease-out; */
+  transform: translateY(0);
+  transition: transform 200ms ease;
+}
+.app-header.hide {
+  /* animation: toTopIn 200ms ease-out; */
+  transform: translateY(-66px);
+  transition: transform 200ms ease;
 }
 </style>

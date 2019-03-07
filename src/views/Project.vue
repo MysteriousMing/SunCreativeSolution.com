@@ -1,5 +1,5 @@
 <template>
-  <section v-loading="isDetailLoading" class="page-project">
+  <section v-loading="isDetailLoading" on-scroll="onScroll" ref="project-page" class="page-project">
     <!-- image banner -->
     <section class="header">
         <figure 
@@ -156,6 +156,7 @@ export default {
   },
   data: function () {
     return {
+      position: {},
       isDetailLoading: true,
       titleArray: [],
       activeTitle: 1,
@@ -168,12 +169,15 @@ export default {
   created () {
     console.log('Name or Uuid')
     bus.$emit('header-go-black', 'white')
-
     this.getArticleDetail()
   },
   mounted () {
   },
   methods: {
+    onScroll: function (e, position) {
+      console.log(e, position)
+      this.position = position
+    },
     getArticleDetail () {
       this.isDetailLoading = true
       let uuid = this.$router.history.current.params.uuid
