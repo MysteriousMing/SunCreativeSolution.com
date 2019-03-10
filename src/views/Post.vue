@@ -85,12 +85,12 @@ export default {
       processLoading: false,
       editStatus: 'editing', // saved
       uploadHeaderImageData: {
-        identifier: '',
+        identifier: new Date().getTime(),
         image_type: 'sun/header'
       },
       headerImageUrl: '',
       uploadThumbImageData: {
-        identifier: '',
+        identifier: new Date().getTime(),
         image_type: 'sun/thumbnail'
       },
       ThumbImageUrl: '',
