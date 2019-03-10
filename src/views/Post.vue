@@ -225,6 +225,12 @@ export default {
             message: '你已成功修改文字',
             type: 'success'
           })
+          this.$router.push({
+            name: 'Project',
+            params: {
+              uuid: res.uuid
+            }
+          })
           this.processLoading = false
           this.editStatus = 'edited'
         })

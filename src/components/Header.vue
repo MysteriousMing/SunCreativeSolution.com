@@ -4,9 +4,9 @@
     <b-link class="navbar-brand logo" to="/">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg"></logo>
     </b-link>
-    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav(0)">ART</span>
-    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav(1)">RESEARCH</span>
-    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav(2)">COMMERCIAL</span>
+    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('art')">ART</span>
+    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('research')">RESEARCH</span>
+    <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('commercial')">COMMERCIAL</span>
     <button class="ml-auto navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">&#9776;</button>
   </header>
 </template>
@@ -37,7 +37,7 @@ export default {
     }
   },
   created () {
-    document.body.classList.toggle('sidebar-hidden')
+    document.body.classList.add('sidebar-hidden')
     bus.$on('header-go-black', isDown => {
       if (isDown === 'black') {
         this.topUpperBg = 'white'
@@ -55,10 +55,16 @@ export default {
     })
   },
   mounted () {
-    console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
+    // console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
   },
   methods: {
     selectNav (val) {
+      console.log(this.$router)
+      if (this.$router.history.current.name === 'Project') {
+        this.$router.push({
+          name: 'Home'
+        })
+      }
       bus.$emit('nav-router', val)
     },
     sidebarToggle (e) {
@@ -93,7 +99,7 @@ export default {
 
 @keyframes fromTopIn {
     from {
-        top: -70px;
+        top: -120px;
     }
     to {
         top: 0;
@@ -105,7 +111,7 @@ export default {
         top: 0;
     }
     to {
-        top: -70px;
+        top: -120px;
     }
 }
 
@@ -116,7 +122,7 @@ export default {
 }
 .app-header.hide {
   /* animation: toTopIn 200ms ease-out; */
-  transform: translateY(-66px);
+  transform: translateY(-126px);
   transition: transform 200ms ease;
 }
 </style>

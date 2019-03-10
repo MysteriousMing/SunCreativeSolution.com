@@ -4,7 +4,7 @@
     <section class="header">
         <figure 
         v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
-        class="left-col mb-0 pb-4">
+        class="left-col mb-0">
             <img class="align-self-center" height="auto" width="100px"
             :src="articleDetail.header_image" alt="Header photos - title">
         </figure>
@@ -51,11 +51,12 @@
 
 
   .left-col {
-      width: calc(100% - 270px);
+      // width: calc(100% - 270px);
+      width: 77%;
       float: left;
   }
   .right-col {
-      width: 270px;
+      width: 23%;
       float: left;
   }
   .header {
@@ -66,13 +67,15 @@
   }
   figure.left-col {
       background: black;
-      display: block;
-      line-height: $project-header-height;
       overflow: hidden;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
   }
   .left-col>img {
       min-width: 300px;
-      max-width: 1080px;
+      max-width: 100%;
       margin-left: auto;
       margin-right: auto;
       width: 100%;
@@ -80,7 +83,7 @@
       vertical-align: middle;
   }
   .right-col>.color-pattern {
-      border-left: 15px solid white;
+      border-left: 40px solid white;
       background: black;
       height: 100%;
       display: block;
@@ -122,7 +125,9 @@
     }
     figure.left-col {
       background: black;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       line-height: 200px;
       overflow: hidden;
     }
@@ -170,6 +175,7 @@ export default {
     console.log('Name or Uuid')
     bus.$emit('header-go-black', 'white')
     this.getArticleDetail()
+    document.body.classList.add('sidebar-hidden')
   },
   mounted () {
   },

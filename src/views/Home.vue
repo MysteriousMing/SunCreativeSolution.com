@@ -1,13 +1,6 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
   <Dashboard></Dashboard>
-  <section hidden class="selector">
-    <button class="btn btn-primary" type="primary" @click="filterData(0)">GROUP 1</button>
-    <button class="btn btn-primary" type="primary" @click="filterData(1)">GROUP 2</button>
-    <button class="btn btn-primary" type="primary" @click="filterData(2)">GROUP 3</button>
-    <button class="btn btn-secondary" type="primary" @click="filterData()">Clear</button>
-    <button class="btn btn-warning" type="primary" @click="shuffle()">Shuffle</button>
-  </section>
   <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
@@ -71,11 +64,14 @@ export default {
     bus.$emit('header-go-black', 'white')
 
     bus.$on('home-go-down', isDown => {
-      if (isDown) {
+      if (isDown && this.$refs.page) {
         this.$refs.page.scrollTop = this.windowHinnerHeight
       }
     })
     bus.$on('nav-router', nav => {
+      if (this.$refs.page) {
+        this.$refs.page.scrollTop = this.windowHinnerHeight
+      }
       this.filterData(nav)
     })
   },
@@ -150,35 +146,13 @@ export default {
             group: item.category || parseInt(Math.random() * 3)
           }
         })
+        this.picSaveArray = this.picArray
       })
-      console.log(this.picArray)
-      this.picSaveArray = this.picArray
     },
     filterData (val) {
-      if (val >= 0) {
-        let selectArray = this.picSaveArray.filter(each => each.group === val)
+      if (val) {
+        let selectArray = this.picSaveArray.filter(each => each.group.toLowerCase() === val)
         this.picArray = selectArray
-      } else {
-        this.picArray = this.picSaveArray
-      }
-    },
-    sliceData (val) {
-      if (val >= 0) {
-        let isExist = true
-        while (isExist) {
-          let notIndex = this.picArray.findIndex(item => item.group === val)
-          if (notIndex >= 0) {
-            console.log('not Index', notIndex)
-            setTimeout(() => {
-              this.picArray.splice(notIndex, 1)
-            //   this.imgsArr.splice(1,1)
-            }, 200)
-            // this.picArray.splice(notIndex, 1)
-            isExist = false
-          } else {
-            isExist = false
-          }
-        }
       } else {
         this.picArray = this.picSaveArray
       }
@@ -225,7 +199,7 @@ export default {
 .flud {
   margin-top: 118px;
   margin-bottom: 118px;
-  min-height: 8rem;
+  min-height: calc(100vh - 196px);
 }
 .grid-item,
 .grid-sizer {

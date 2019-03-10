@@ -62,35 +62,36 @@
       <el-button type="primary" round @click="handlePostNewArticle">发布新文章</el-button>
     </el-main>
     <el-main v-if="viewType === 'thumbnail'" v-loading="recordListLoading">
-      <section class="container masonry-arr">
-        <isotope ref="cpt" :options="getOptions()" :list="articleList">
-          <div v-for="(item,index) in articleList"
-          :key="item.uuid"
-          class="grid-item grid-sizer">
-            <el-card :body-style="{ padding: '0px' }" style="margin-bottom: 10px">
-              <img :src="item.header_image + '?x-oss-process=style/400wh'" class="image thumbnail">
-              <div style="border-top: 10px solid"
-              :style="{ padding: '14px', borderColor: item.theme_color }">
-                <span>{{index+1}}. {{item.title}}</span>
-                <p>{{item.explanation}}</p>
+      <isotope v-if="articleList && articleList.length" ref="cpt" :options="getOptions()" :list="articleList">
+        <div v-for="(item,index) in articleList"
+        :key="item.uuid"
+        class="grid-item grid-sizer">
+          <el-card :body-style="{ padding: '0px' }"
+          style="margin-bottom: 10px;min-height: 306px">
+            <img :src="item.header_image + '?x-oss-process=style/400wh'" class="image thumbnail">
+            <div style="border-top: 10px solid"
+            :style="{ padding: '14px', borderColor: item.theme_color }">
+              <span>{{index+1}}. {{item.title}}</span>
+              <p>{{item.explanation}}</p>
 
-                <p class="d-flex">
-                  <time class="time mr-auto">{{ item.date }}</time>
-                  <el-tag size="small" v-if="item.category === 'art'">art</el-tag>
-                  <el-tag size="small" v-else-if="item.category === 'research'" type="success">research</el-tag>
-                  <el-tag size="small" v-else-if="item.category === 'commercial'" type="danger">commercial</el-tag>
-                  <el-tag size="small" v-else type="info">{{item.category}}</el-tag>
-                </p>                
-                <div class="bottom clearfix d-flex">
-                  <el-button @click="handleClick(item)" type="text" size="small">查看</el-button>
-                  <el-button class="ml-auto" @click="handleClickEdit(item)" type="text" size="small">编辑</el-button>
-                  <el-button @click="handleClickDelete(item.uuid)" type="text" style="color: #F56C6C" size="small">删除</el-button>
-                </div>
+              <p class="d-flex">
+                <time class="time mr-auto">{{ item.date }}</time>
+                <el-tag size="small" v-if="item.category === 'art'">art</el-tag>
+                <el-tag size="small" v-else-if="item.category === 'research'" type="success">research</el-tag>
+                <el-tag size="small" v-else-if="item.category === 'commercial'" type="danger">commercial</el-tag>
+                <el-tag size="small" v-else type="info">{{item.category}}</el-tag>
+              </p>                
+              <div class="bottom clearfix d-flex">
+                <el-button @click="handleClick(item)" type="text" size="small">查看</el-button>
+                <el-button class="ml-auto" @click="handleClickEdit(item)" type="text" size="small">编辑</el-button>
+                <el-button @click="handleClickDelete(item.uuid)" type="text" style="color: #F56C6C" size="small">删除</el-button>
               </div>
-            </el-card>
-          </div>
-        </isotope>
-      </section>
+            </div>
+          </el-card>
+        </div>
+      </isotope>
+      <!-- <section class="container masonry-arr">
+      </section> -->
       <hr/>
       <el-button type="primary" round @click="handlePostNewArticle">发布新文章</el-button>
     </el-main>
@@ -115,6 +116,9 @@ export default {
       saveArticleList: [],
       lastSaveTime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
     }
+  },
+  created () {
+    document.body.classList.remove('sidebar-hidden')
   },
   mounted () {
     this.loadCategoryConfig()
