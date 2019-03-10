@@ -1,0 +1,77 @@
+body {
+    background: white;
+    width: 100vw;
+}
+body>header, body>section{
+    width: 100%;
+}
+@keyframes fromTopIn {
+    from {
+        top: -40px;
+    }
+    to {
+        top: 0;
+    }
+}
+@font-face{
+    font-family: centurygothic;
+    src: url("/static/font/Century Gothic");
+}
+p {
+    font-family: centurygothic;
+}
+header {
+    position: fixed;
+    font-family: centurygothic;
+}
+header .right-col{
+    height: 40px;
+}
+header {
+    animation: fromTopIn 200ms ease-out;
+}
+.nav {
+    background: #000000b7;
+}
+.nav a {
+    color: white;
+}
+.left-col {
+    width: 80%;
+    float: left;
+}
+.right-col {
+    width: 20%;
+    float: left;
+}
+.header {
+    height: 720px;
+}
+.header .left-col, .header .right-col {
+    height: 100%;
+}
+figure.left-col {
+    background: black;
+    display: block;
+    line-height: 720px;
+    overflow: hidden;
+}
+.left-col>img {
+    min-width: 300px;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+.right-col>.color-pattern {
+    border-left: 15px solid white;
+    background: black;
+    height: 100%;
+    display: block;
+    width: 100%;
+}
+.proj-content {
+    margin-left:10%;
+}

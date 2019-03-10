@@ -26,11 +26,13 @@
     </div>
     <div class="right-col d-md-down-none">
       <div style="height: 300px;"
-      class="pt-4 px-2">
+      class="pt-4">
         <ul v-scroll-spy-active="{selector: 'li.menu-item', class: 'custom-active'}"
          v-scroll-spy-link="{selector: 'a.title-nav-item'}">
-            <li class="menu-item" v-for="(item, index) in titleArray" :key="index">
-                <a class="title-nav-item">{{item.title}}</a>
+            <li class="menu-item"
+            :class="{'sub-menu-item': item.level !== 'first'}"
+            v-for="(item, index) in titleArray" :key="index">
+                <a class="title-nav-item" :class="{'sub-title-nav-item': item.level !== 'first'}">{{item.title}}</a>
             </li>
         </ul>
       </div>
@@ -42,101 +44,6 @@
     </section>
   </section>
 </template>
-<style lang="scss" scoped>
-  $project-header-height: 530px;
-
-  section.page-project {
-    margin: 0 -30px;
-  }
-
-
-  .left-col {
-      // width: calc(100% - 270px);
-      width: 77%;
-      float: left;
-  }
-  .right-col {
-      width: 23%;
-      float: left;
-  }
-  .header {
-      height: $project-header-height;
-  }
-  .header .left-col, .header .right-col {
-      height: 100%;
-  }
-  figure.left-col {
-      background: black;
-      overflow: hidden;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
-  .left-col>img {
-      min-width: 300px;
-      max-width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-      width: 100%;
-      text-align: center;
-      vertical-align: middle;
-  }
-  .right-col>.color-pattern {
-      border-left: 40px solid white;
-      background: black;
-      height: 100%;
-      display: block;
-      width: 100%;
-  }
-  .proj-content {
-    // position: relative;
-  }
-  .article-content {
-      padding-top: 50px;
-      padding-bottom: 150px;
-      padding-left:10%;
-  }
-  .title-nav-item {
-    cursor: pointer;
-    color: #010000;
-    font-size: 0.8125rem;
-  }
-  .menu-item {
-
-
-  }
-  .custom-active {
-    opacity: 0.6;
-    .title-nav-item {
-      font-size: 1rem;
-    }
-  }
-
-
-
-  @media (max-width: 991px) {
-    .left-col {
-        width: 100%;
-        float: left;
-    }
-    .header {
-      height: 284px;
-    }
-    figure.left-col {
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 200px;
-      overflow: hidden;
-    }
-  }
-
-  .clear {
-    clear: both;
-  }
-</style>
 <script>
 import bus from '@/router/bus'
 
@@ -203,21 +110,32 @@ export default {
       console.log(content)
 
       console.log(content.childNodes)
-      let titleArr = content.querySelectorAll('h1')
+      let titleArr = content.querySelectorAll('h1, h2')
       console.log(titleArr)
       this.titleArray = []
 
       titleArr.forEach((element, index) => {
         element.id = `title-${index}`
-        // console.log(element.id)
-        // console.log(element.textContent)
-        this.titleArray.push({
-          id: element.id,
-          title: element.textContent
-        })
+        console.log(element, element.tagName)
         if (index === 0) {
           element.innerText = title
         }
+        // console.log(element.textContent)
+        let tagObj = {
+          id: element.id,
+          title: element.textContent
+        }
+        switch (element.tagName.toLowerCase()) {
+          case 'h1':
+            tagObj.level = 'first'
+            break
+          case 'h2':
+            tagObj.level = 'second'
+            break
+          default:
+            break
+        }
+        this.titleArray.push(tagObj)
       })
     },
     gotoTitle (index) {
@@ -227,3 +145,85 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  $project-header-height: 530px;
+
+  section.page-project {
+    margin: 0 -30px;
+  }
+
+
+  .left-col {
+      // width: calc(100% - 270px);
+      width: 77%;
+      float: left;
+  }
+  .right-col {
+      width: 23%;
+      float: left;
+  }
+  .header {
+      height: $project-header-height;
+  }
+  .header .left-col, .header .right-col {
+      height: 100%;
+  }
+  figure.left-col {
+      background: black;
+      overflow: hidden;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .left-col>img {
+      min-width: 300px;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      text-align: center;
+      vertical-align: middle;
+  }
+  .right-col>.color-pattern {
+      border-left: 40px solid white;
+      background: black;
+      height: 100%;
+      display: block;
+      width: 100%;
+  }
+  .proj-content {
+    // position: relative;
+  }
+  .article-content {
+      padding-top: 50px;
+      padding-bottom: 150px;
+      padding-left:10%;
+  }
+
+  @media (max-width: 991px) {
+    .left-col {
+        width: 100%;
+        float: left;
+    }
+    .header {
+      height: 284px;
+    }
+    figure.left-col {
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 200px;
+      overflow: hidden;
+    }
+  }
+
+  .clear {
+    clear: both;
+  }
+</style>
+<style lang="scss">
+  @import '../style/project.scss';
+</style>

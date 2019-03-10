@@ -1,0 +1,48 @@
+.ql-snow .ql-editor h1 {
+  color: #010101;
+  font-size: 20px;
+  font-size: 1.25rem;
+  line-height: 30px;
+}
+
+.ql-snow .ql-editor h2 {
+  color: #919191;
+  font-size: 9px;
+  // font-size: 0.56rem;
+  line-height: 30px;
+font-style:italic;
+}
+
+.ql-snow .ql-editor p {
+  color: #606060;
+  font-size: 7px;
+  line-height: 12px;
+}
+
+
+a.title-nav-item{
+  cursor: pointer;
+  opacity:0.6;
+  font-weight:bold;
+
+  color: #010000;
+  font-size: 12px;
+  line-height: 15px
+}
+a.sub-title-nav-item{
+  color: #5E5E5E;
+  font-style:italic;
+  font-size: 8px;
+}
+
+.menu-item {}
+.sub-menu-item {
+  list-style: none;
+}
+.custom-active {
+  opacity: 1;
+
+  .title-nav-item {
+    font-size: 1rem;
+  }
+}
