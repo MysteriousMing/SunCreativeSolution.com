@@ -72,7 +72,7 @@
             <div style="border-top: 10px solid"
             :style="{ padding: '14px', borderColor: item.theme_color }">
               <span>{{index+1}}. {{item.title}}</span>
-              <p>{{item.explanation}}</p>
+              <p class="text-overflow">{{item.explanation}}</p>
 
               <p class="d-flex">
                 <time class="time mr-auto">{{ item.date }}</time>
@@ -254,6 +254,11 @@ export default {
   }
   .grid-item img {
     width: 100%;
+  }
+  .text-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal;
   }
 }
 

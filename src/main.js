@@ -22,7 +22,7 @@ Vue.use(VueScroll, {
   throttle: 100
 })
 Vue.prototype.Http = Http
-Vue.prototype.utils = utils
+Vue.prototype.Utils = utils
 
 /* eslint-disable no-new */
 new Vue({

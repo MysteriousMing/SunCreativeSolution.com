@@ -18,11 +18,32 @@
     <!-- body -->
     <div class="left-col article-content ql-snow">
       <br>
-      <article v-if="articleDetail"
+      <article v-if="articleDetail" v-show="false"
       class="proj-content ql-editor"
       ref="content"
       v-html="articleDetail.content"
       v-scroll-spy></article>
+
+      <article v-if="articleDetail"
+      class="proj-content ql-editor"
+      ref="contentNode"
+      v-scroll-spy
+      >
+        <div v-for="(section, index) of articleDetail.contentArr" :key="index">
+          <section v-if="section.styleClass === 'para-section'" class="para-section">
+            <div class="section-header-ctn">
+              <h1>{{section.header.name}}</h1>
+              <h2>{{section.subheader.name}}</h2>
+            </div>
+            <div>
+              <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>
+            </div>
+          </section>
+          <section v-else-if="section.styleClass === 'images-section'" class="images-section">
+            <div v-for="(image, image_index) in section.images" :key="image_index" v-html="image.innerHTML"></div>
+          </section>          
+        </div>
+      </article>
     </div>
     <div class="right-col d-md-down-none">
       <div style="height: 300px;"
@@ -96,30 +117,30 @@ export default {
       let uuid = this.$router.history.current.params.uuid
       this.Http.Get(`sun-create/article/${uuid}/`).then(res => {
         this.articleDetail = res
-        this.isDetailLoading = false
         setTimeout(() => {
-          this.formatTitleMenu(res.title)
-        }, 1000)
+          let promiseTitle = this.formatTitleMenu(res.title)
+          let promiseContent = this.formatContentNode()
+          Promise.all([promiseTitle, promiseContent]).then(res => {
+            this.isDetailLoading = false
+          })
+        }, 200)
       })
     },
-
+    formatContentNode () {
+      let content = this.$refs.content
+      this.articleDetail.contentArr = this.Utils.formatProject(content.childNodes)
+      console.log('contentArr - \n', this.articleDetail.contentArr)
+    },
     // titleList: this.formatTitleMenu(item.content)
-
     formatTitleMenu (title) {
       let content = this.$refs.content
-      console.log(content)
 
-      console.log(content.childNodes)
       let titleArr = content.querySelectorAll('h1, h2')
-      console.log(titleArr)
+      console.log('titleArr - \n', titleArr)
       this.titleArray = []
-
       titleArr.forEach((element, index) => {
         element.id = `title-${index}`
-        console.log(element, element.tagName)
-        if (index === 0) {
-          element.innerText = title
-        }
+        // console.log(element, element.tagName)
         // console.log(element.textContent)
         let tagObj = {
           id: element.id,
@@ -136,6 +157,10 @@ export default {
             break
         }
         this.titleArray.push(tagObj)
+
+        if (index === 0) {
+          element.innerText = title
+        }
       })
     },
     gotoTitle (index) {
@@ -197,7 +222,6 @@ export default {
     // position: relative;
   }
   .article-content {
-      padding-top: 50px;
       padding-bottom: 150px;
       padding-left:10%;
   }
