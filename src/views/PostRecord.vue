@@ -258,7 +258,7 @@ export default {
   .text-overflow {
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: normal;
+    white-space: nowrap;
   }
 }
 

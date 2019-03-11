@@ -10,12 +10,30 @@
     </quill-editor>
     <!-- Confirm -->
     <div class="my-3 d-flex justify-content-end">
-        <el-button type="primary" class="mr-auto" @click="showAddCarousel()">插入轮播图</el-button>
+        <!-- <el-button type="primary" class="mr-auto" @click="showAddCarousel()">插入轮播图</el-button> -->
+        <el-button type="primary" class="mr-auto" @click="showSplit()">插入分割</el-button>
         <button class="btn btn-secondary" @click="cancel()">Clear</button>
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
     </div>
     <b-card class="mb-3 animated fadeIn ql-container ql-snow" v-if="result">
-      <div class="col-12 col-md-8 ql-editor" v-html="result"></div>
+      <div ref="resultContent"
+      class="col-12 col-md-8 ql-editor" v-html="result"></div>
+      <article class="col-12 col-md-8 ql-editor">
+        <div v-for="(section, index) of contentArr" :key="index">
+          <section v-if="section.styleClass === 'para-section'" class="para-section">
+            <div class="section-header-ctn">
+              <h1>{{section.header.name}}</h1>
+              <h2>{{section.subheader.name}}</h2>
+            </div>
+            <div>
+              <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>
+            </div>
+          </section>
+          <section v-else-if="section.styleClass === 'images-section'" class="images-section">
+            <div v-for="(image, image_index) in section.images" :key="image_index" v-html="image.innerHTML"></div>
+          </section>          
+        </div>
+      </article>
     </b-card>
 
 
@@ -77,6 +95,7 @@ export default {
   data () {
     return {
       result: '',
+      contentArr: [],
       carouselData: [],
       isShowAddCarousel: false,
       uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
@@ -113,6 +132,15 @@ export default {
     }
   },
   methods: {
+    formatContentNode () {
+      let content = this.$refs.resultContent
+      if (!content || !content.childNodes) return
+      this.contentArr = this.Utils.formatProject(content.childNodes)
+      console.log('contentArr - \n', this.contentArr)
+    },
+    showSplit () {
+      this.content.push(`<p>!&hr&!</p>`)
+    },
     onEditorBlur (quill) {
       // console.log('editor blur!', quill)
     },
@@ -197,6 +225,7 @@ export default {
     confirmText: function (params) {
       console.log('CONTENT | ', this.content)
       this.result = this.content
+      // this.formatContentNode()
       this.$emit('confirmEditorRichText', this.content)
     },
     cancel: function (params) {
@@ -212,21 +241,7 @@ export default {
   mounted () {
     console.log('this is current quill instance object', this.editor)
     setTimeout(() => {
-      this.content = this.formContent || `<h1 class="ql-align-center">
-                          <span class="ql-font-serif" style="background-color: rgb(240, 102, 102); color: rgb(255, 255, 255);"> I am Example 1! </span>
-                        </h1>
-                        <p><br></p>
-                        <p><span class="ql-font-serif">W Can a man still be brave if he's afraid? That is the only time a man can be brave. </span></p>
-                        <p><br></p>
-                        <p><strong class="ql-font-serif ql-size-large">Courage and folly is </strong><strong class="ql-font-serif ql-size-large" style="color: rgb(230, 0, 0);">always</strong><strong class="ql-font-serif ql-size-large"> just a fine line.</strong></p>
-                        <p><br></p>
-                        <p><u class="ql-font-serif">There is only one God, and his name is Death. And there is only one thing we say to Death: "Not today."</u></p>
-                        <p><br></p>
-                        <p><em class="ql-font-serif">Fear cuts deeper than swords.</em></p>
-                        <p><br></p>
-                        <p><span class="ql-font-serif">Every flight begins with a fall.</span></p>
-                        <p><br></p>
-                        `
+      this.content = this.formContent || ''
     }, 1300)
   }
 }
@@ -235,11 +250,11 @@ export default {
 .quill-editor {
   // min-height: 500px;
   .ql-container {
-    // min-height: 500px
+    height: 500px
   }
 }
 img { width: 100%; height: auto;max-width: 100%; display: block; }
-
-  
-
+</style>
+<style lang="scss">
+  @import '../style/project.scss';
 </style>

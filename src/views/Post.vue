@@ -135,6 +135,7 @@ export default {
         this.form = res
         setTimeout(() => {
           // this.formatTitleMenu()
+          // this.formatContentNode()
           this.processLoading = false
         }, 1000)
       })
