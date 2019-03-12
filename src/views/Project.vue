@@ -1,7 +1,7 @@
 <template>
-  <section v-loading="isDetailLoading" on-scroll="onScroll" ref="project-page" class="page-project">
+  <section on-scroll="onScroll" ref="project-page" class="page-project">
     <!-- image banner -->
-    <section class="header">
+    <section class="header" v-loading="isDetailLoading">
         <figure 
         v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
         class="left-col mb-0">
@@ -21,14 +21,13 @@
       <article v-if="articleDetail" v-show="false"
       class="proj-content ql-editor"
       ref="content"
-      v-html="articleDetail.content"
-      v-scroll-spy></article>
+      v-html="articleDetail.content">
+      </article>
 
       <article v-if="articleDetail"
       class="proj-content ql-editor"
       ref="contentNode"
-      v-scroll-spy
-      >
+      v-scroll-spy>
         <div v-for="(section, index) of articleDetail.contentArr" :key="index">
           <section v-if="section.styleClass === 'para-section'" class="para-section">
             <div class="section-header-ctn">
@@ -45,13 +44,14 @@
         </div>
       </article>
     </div>
+    <!-- 右侧 TOC 目录 -->
     <div class="right-col d-md-down-none">
       <div style="height: 300px;"
-      class="pt-4">
+      :style="{ top : menuPositionY + 'px'}"
+      class="menu-ctn pt-4">
         <ul v-scroll-spy-active="{selector: 'li.menu-item', class: 'custom-active'}"
          v-scroll-spy-link="{selector: 'a.title-nav-item'}">
-            <li class="menu-item"
-            :class="{'sub-menu-item': item.level !== 'first'}"
+            <li class="menu-item" :class="{'first-menu-item': item.level === 'first','sub-menu-item': item.level !== 'first'}"
             v-for="(item, index) in titleArray" :key="index">
                 <a class="title-nav-item" :class="{'sub-title-nav-item': item.level !== 'first'}">{{item.title}}</a>
             </li>
@@ -87,9 +87,12 @@ export default {
   components: {
     AppFooter
   },
+  props: ['scrollTop'],
   data: function () {
     return {
       position: {},
+      menuPositionInitY: 600,
+      menuPositionY: 600,
       isDetailLoading: true,
       titleArray: [],
       activeTitle: 1,
@@ -106,6 +109,15 @@ export default {
     document.body.classList.add('sidebar-hidden')
   },
   mounted () {
+  },
+  watch: {
+    scrollTop (now, prev) {
+      if (now < this.menuPositionInitY) {
+        this.menuPositionY = this.menuPositionInitY - now + 20
+      } else {
+        this.menuPositionY = 70
+      }
+    }
   },
   methods: {
     onScroll: function (e, position) {
@@ -219,11 +231,22 @@ export default {
       width: 100%;
   }
   .proj-content {
-    // position: relative;
+    position: relative;
+    height: 100vh;
+    overflow: auto;
   }
   .article-content {
       padding-bottom: 150px;
       padding-left:10%;
+  }
+
+  .menu-ctn {
+    display: block;
+    // position: fixed;
+    // left: calc(77% + 20px);
+    // top: calc($project-header-height + 80px);
+    transition: all 200ms ease;
+    margin-left: 30px;
   }
 
   @media (max-width: 991px) {
@@ -241,6 +264,9 @@ export default {
       justify-content: center;
       line-height: 200px;
       overflow: hidden;
+    }
+    .menu-ctn {
+      display: none;
     }
   }
 

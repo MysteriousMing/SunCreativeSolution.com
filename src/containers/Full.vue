@@ -7,7 +7,7 @@
       <!-- <Sidebar :navItems="nav"/> -->
       <main class="main">
         <div class="container-fluid">
-          <router-view></router-view>
+          <router-view :scroll-top="position.scrollTop"></router-view>
         </div>
       </main>
     </div>
