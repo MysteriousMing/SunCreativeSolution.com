@@ -81,6 +81,7 @@ const formatProject = nodeArr => {
           } else {
             tagObj.styleClass = 'images-section'
             tagObj.images = [item]
+            console.log(item)
             newNodeArr.push(tagObj)
             flag++
           }

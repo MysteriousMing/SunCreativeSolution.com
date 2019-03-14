@@ -39,7 +39,13 @@
             </div>
           </section>
           <section v-else-if="section.styleClass === 'images-section'" class="images-section">
-            <div v-for="(image, image_index) in section.images" :key="image_index" v-html="image.innerHTML"></div>
+            <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
+            <el-carousel v-if="section.images.length > 1" indicator-position="outside">
+              <el-carousel-item v-for="(image, image_index) in section.images" :key="image_index">
+                <div v-html="image.innerHTML"></div>
+              </el-carousel-item>
+            </el-carousel>
+            <div v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
           </section>          
         </div>
       </article>
