@@ -1,0 +1,24 @@
+export default {
+  items: [
+    {
+      name: 'PostRecord',
+      url: 'articles',
+      icon: 'icon-book-open'
+    },
+    {
+      name: 'Post',
+      url: 'post',
+      icon: 'icon-paper-plane'
+    },
+    {
+      name: 'Dashboard',
+      url: 'dashboard',
+      icon: 'icon-layers'
+    }, {
+      name: 'Periodic',
+      url: 'periodic',
+      icon: 'icon-magic-wand'
+    }
+  ]
+}
+// https://coreui.io/v1/demo/AngularJS_Demo/#!/icons/simple-line-icons

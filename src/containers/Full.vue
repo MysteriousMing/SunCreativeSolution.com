@@ -1,0 +1,89 @@
+<template>
+  <div class="app" ref="full-page">
+    <AppHeader/>
+    <div class="app-body"
+    :class="{'full-height': name === 'Project', 'active-header': headerActive}"
+    v-scroll="onScroll">
+      <!-- <Sidebar :navItems="nav"/> -->
+      <main class="main">
+        <div class="container-fluid">
+          <router-view :scroll-top="position.scrollTop"></router-view>
+        </div>
+      </main>
+    </div>
+  </div>
+</template>
+
+<script>
+import bus from '@/router/bus'
+import nav from '../_nav'
+import { Header as AppHeader, Sidebar, Aside as AppAside } from '../components/'
+
+export default {
+  name: 'full',
+  components: {
+    AppHeader,
+    Sidebar,
+    AppAside
+  },
+  data () {
+    return {
+      nav: nav.items,
+      previousTop: 0,
+      position: {},
+      headerActive: true
+    }
+  },
+  computed: {
+    name () {
+      return this.$route.name
+    },
+    list () {
+      return this.$route.matched
+    }
+  },
+  methods: {
+    onScroll: function (e, position) {
+      if (this.name !== 'Project') {
+        return
+      }
+      this.position = position
+      let distance = this.position.scrollTop - this.previousTop
+      if (distance > 20) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: false
+        })
+        this.headerActive = false
+      } else if (distance < -80) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: true
+        })
+        this.headerActive = true
+      }
+      if (this.position.scrollTop < 20) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: true
+        })
+        this.headerActive = true
+      }
+
+      this.previousTop = this.position.scrollTop
+    }
+  }
+}
+</script>
+<style>
+.header-fixed .app-body.full-height {
+    margin-top: 0;
+    padding-top: 0;
+    height: 100vh;
+    transition: all 200ms ease;
+}
+.header-fixed .app-body.full-height.active-header {
+    padding-top: 66px;
+    height: 100vh;
+}
+</style>

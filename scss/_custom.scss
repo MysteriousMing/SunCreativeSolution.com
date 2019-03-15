@@ -1,0 +1,51 @@
+// Here you can add other styles
+/* Set customer font */
+@font-face {
+  font-family: CenturyGothic;
+  src: url("/static/font/centurygothic.ttf");
+}
+
+.pt-20px {
+  padding-top: 10px;
+}
+
+.flex-row {
+  display: flex;
+  flex-flow: row wrap;
+}
+.flex-start {
+  justify-content: flex-start;
+}
+* {
+  font-family: CenturyGothic,
+  "PingFang SC",
+  "Microsoft YaHei",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Roboto,
+  "Helvetica Neue",
+  Arial,
+  sans-serif;
+}
+// header
+.app-header {
+  .navbar-brand {
+    display: inline-block;
+    vertical-align: baseline;
+    width: $navbar-brand-width;
+    height: $navbar-height;
+    line-height: $navbar-height;
+    padding-bottom: 0 !important;
+    cursor: pointer;
+    user-select: none;
+    &:focus,
+    &:hover {
+      background-color: #fafafa15;
+    }
+  }
+  .navbar-brand.logo {
+    padding-left: 78px !important;
+    padding-right: 52px!important;
+  }
+}
