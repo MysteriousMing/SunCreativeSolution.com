@@ -2,28 +2,40 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-
+  flex-flow: nowrap;
   margin: 70px auto;
 }
 .section-header-ctn {
   min-width: 330px;
+  display: flex;
+  flex-flow: column;
 }
+// 适配手机
+@media (max-width: 991px) {
+  .para-section {
+    flex-flow: wrap;
+  }
+  .section-header-ctn {
+    min-width: 100%;
+  }
+}
+
 
 .ql-snow .ql-editor h1,
 .para-section h1 {
   color: #010101;
   font-size: 20px;
-  font-size: 2.5rem;
-  line-height: 30px;
+  font-size: 1.8rem;
+  line-height: 1;
   font-weight: bold;
 }
 
 .ql-snow .ql-editor h2,
 .para-section h2 {
   color: #919191;
-  font-size: 1.12rem;
+  font-size: 1.2rem;
   // font-size: 0.56rem;
-  line-height: 30px;
+  line-height: 2;
   font-style:italic;
 }
 
@@ -45,13 +57,13 @@ a {
     font-weight: bold;
 
     color: #010000;
-    font-size: 1.625rem;
-    line-height: 1;
+    font-size: 1.25rem;
+    line-height: 0.8;
   }
   &.sub-title-nav-item {
     color: #5E5E5E;
     font-style: italic;
-    font-size: 1rem;
+    font-size: 0.91rem;
   }
 }
 
@@ -59,13 +71,13 @@ a {
   opacity: 1;
   .title-nav-item {
     opacity: 1;
-    font-size: 2rem;
-    padding-left: 14px;
+    font-size: 1.8rem;
+    padding-left: 6px;
     color: #010000;
   }
   .sub-title-nav-item {
     opacity: 1;
-    font-size: 1.625rem;
+    font-size: 1.125rem;
     padding-left: 0;
     color: #010000;
     margin-top: 4px;
@@ -102,11 +114,52 @@ ul li.first-menu-item {
   }
   &.custom-active::before {
     background-color: #010000;
-    width: 32px;
-    height: 32px;
-    left: -40px;
+    width: 24px;
+    height: 24px;
+    left: -35px;
+    // width: 32px;
+    // height: 32px;
+    // left: -40px;
   }
 }
 ul li.sub-menu-item {
   list-style: none;
+}
+
+.ql-editor .el-carousel ul>li::before {
+  content: none;
+}
+.el-carousel__indicators {
+ display: flex;
+ justify-content: flex-end;
+ button.el-carousel__button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #D7D7D7;
+ }
+ .el-carousel__indicator {
+  padding: 8px!important;
+ }
+ .el-carousel__indicator.is-active button.el-carousel__button {
+   background-color: #000000;
+   opacity: 1;
+ }
+}
+.el-carousel__container {
+  background-color: rgba(215, 215, 215, 0.2);
+}
+.el-carousel__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+}
+.para-image {
+  text-align: center;
+}
+
+.proj-content button:focus {
+  outline: none;
+  box-shadow: 0 0 0 6px rgb(255, 251, 0);
 }

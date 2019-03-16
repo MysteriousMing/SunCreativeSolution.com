@@ -1,5 +1,6 @@
 <template>
-  <section on-scroll="onScroll" ref="project-page" class="page-project">
+  <section v-scroll="onScroll" ref="project-page" class="page-project proj-content"
+  v-scroll-spy>
     <!-- image banner -->
     <section class="header" v-loading="isDetailLoading">
         <figure 
@@ -19,13 +20,13 @@
     <div class="left-col article-content ql-snow">
       <br>
       <article v-if="articleDetail" v-show="false"
-      class="proj-content ql-editor"
+      class="ql-editor"
       ref="content"
       v-html="articleDetail.content">
       </article>
 
       <article v-if="articleDetail"
-      class="proj-content ql-editor"
+      class="ql-editor"
       ref="contentNode"
       v-scroll-spy>
         <div v-for="(section, index) of articleDetail.contentArr" :key="index">
@@ -40,9 +41,11 @@
           </section>
           <section v-else-if="section.styleClass === 'images-section'" class="images-section">
             <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
-            <el-carousel v-if="section.images.length > 1" indicator-position="outside">
+            <el-carousel v-if="section.images.length > 1"
+              :autoplay="false"
+              indicator-position="outside">
               <el-carousel-item v-for="(image, image_index) in section.images" :key="image_index">
-                <div v-html="image.innerHTML"></div>
+                <div class="para-image" v-html="image.innerHTML"></div>
               </el-carousel-item>
             </el-carousel>
             <div v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
@@ -54,7 +57,8 @@
     <div class="right-col d-md-down-none">
       <div style="height: 300px;"
       :style="{ top : menuPositionY + 'px'}"
-      class="menu-ctn pt-4">
+      class="menu-ctn pt-4"
+      :class="{fixed: menuPositionY == 70}">
         <ul v-scroll-spy-active="{selector: 'li.menu-item', class: 'custom-active'}"
          v-scroll-spy-link="{selector: 'a.title-nav-item'}">
             <li class="menu-item" :class="{'first-menu-item': item.level === 'first','sub-menu-item': item.level !== 'first'}"
@@ -93,9 +97,10 @@ export default {
   components: {
     AppFooter
   },
-  props: ['scrollTop'],
+  // props: ['scrollTop'],
   data: function () {
     return {
+      scrollTop: 0,
       position: {},
       menuPositionInitY: 600,
       menuPositionY: 600,
@@ -118,8 +123,8 @@ export default {
   },
   watch: {
     scrollTop (now, prev) {
-      if (now < this.menuPositionInitY) {
-        this.menuPositionY = this.menuPositionInitY - now + 20
+      if (now < this.menuPositionInitY - 70) {
+        this.menuPositionY = this.menuPositionInitY - now
       } else {
         this.menuPositionY = 70
       }
@@ -127,8 +132,30 @@ export default {
   },
   methods: {
     onScroll: function (e, position) {
-      console.log(e, position)
       this.position = position
+      this.scrollTop = position.scrollTop
+      let distance = this.position.scrollTop - this.previousTop
+      if (distance > 20) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: false,
+          headerActive: false
+        })
+      } else if (distance < -80) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: true,
+          headerActive: true
+        })
+      }
+      if (this.position.scrollTop < 20) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: true,
+          headerActive: true
+        })
+      }
+      this.previousTop = this.position.scrollTop
     },
     getArticleDetail () {
       this.isDetailLoading = true
@@ -188,14 +215,19 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  section.page-project {
+    margin: 0 -30px;
+    height: 100vh;
+    overflow: auto;
+  }
+  .active-header section.page-project {
+    height: calc(100vh - 66px);
+  }
+</style>
 
 <style lang="scss" scoped>
   $project-header-height: 530px;
-
-  section.page-project {
-    margin: 0 -30px;
-  }
-
 
   .left-col {
       // width: calc(100% - 270px);
@@ -230,7 +262,7 @@ export default {
       vertical-align: middle;
   }
   .right-col>.color-pattern {
-      border-left: 40px solid white;
+      border-left: 24px solid white;
       background: black;
       height: 100%;
       display: block;
@@ -238,8 +270,6 @@ export default {
   }
   .proj-content {
     position: relative;
-    height: 100vh;
-    overflow: auto;
   }
   .article-content {
       padding-bottom: 150px;
@@ -248,13 +278,15 @@ export default {
 
   .menu-ctn {
     display: block;
-    // position: fixed;
-    // left: calc(77% + 20px);
-    // top: calc($project-header-height + 80px);
+    
+    left: 77%;
+    top: 70px;
     transition: all 200ms ease;
     margin-left: 30px;
+    &.fixed {
+      position: fixed;
+    }
   }
-
   @media (max-width: 991px) {
     .left-col {
         width: 100%;

@@ -3,7 +3,8 @@
     <AppHeader/>
     <div class="app-body"
     :class="{'full-height': name === 'Project', 'active-header': headerActive}"
-    v-scroll="onScroll">
+    >
+    <!-- v-scroll="onScroll" -->
       <!-- <Sidebar :navItems="nav"/> -->
       <main class="main">
         <div class="container-fluid">
@@ -41,6 +42,11 @@ export default {
     list () {
       return this.$route.matched
     }
+  },
+  created () {
+    bus.$on('animate-info', animateInfo => {
+      this.headerActive = animateInfo.headerActive
+    })
   },
   methods: {
     onScroll: function (e, position) {
