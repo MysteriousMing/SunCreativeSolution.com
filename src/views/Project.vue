@@ -43,9 +43,11 @@
             <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
             <el-carousel v-if="section.images.length > 1"
               :autoplay="false"
+              ref="imageCarousel"
+              :height="(parseInt(carouselWidth * section.height / section.width) || 400) + 'px'"
               indicator-position="outside">
               <el-carousel-item v-for="(image, image_index) in section.images" :key="image_index">
-                <div class="para-image" v-html="image.innerHTML"></div>
+                <div class="para-image" v-html="image.innerHTML" ref="imgSize"></div>
               </el-carousel-item>
             </el-carousel>
             <div v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
@@ -110,7 +112,8 @@ export default {
       articleDetail: {
         content: ''
       },
-      categoryConfig: categoryConfig
+      categoryConfig: categoryConfig,
+      carouselWidth: 0
     }
   },
   created () {
@@ -120,6 +123,10 @@ export default {
     document.body.classList.add('sidebar-hidden')
   },
   mounted () {
+    const that = this
+    window.addEventListener('resize', function () {
+      that.setSize()
+    }, false)
   },
   watch: {
     scrollTop (now, prev) {
@@ -131,6 +138,14 @@ export default {
     }
   },
   methods: {
+    setSize: function () {
+      console.log(this.$refs.imageCarousel)
+      if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
+        console.log(this.$refs.imageCarousel[0])
+        console.log(this.$refs.imageCarousel[0].$el.clientWidth)
+        this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
+      }
+    },
     onScroll: function (e, position) {
       this.position = position
       this.scrollTop = position.scrollTop
@@ -167,6 +182,7 @@ export default {
           let promiseContent = this.formatContentNode()
           Promise.all([promiseTitle, promiseContent]).then(res => {
             this.isDetailLoading = false
+            this.setSize()
           })
         }, 200)
       })
@@ -272,8 +288,9 @@ export default {
     position: relative;
   }
   .article-content {
-      padding-bottom: 150px;
-      padding-left:10%;
+    min-height: 100vh;
+    padding-bottom: 150px;
+    padding-left:10%;
   }
 
   .menu-ctn {
@@ -305,6 +322,9 @@ export default {
     }
     .menu-ctn {
       display: none;
+    }
+    .article-content {
+      padding-left: 10px;
     }
   }
 

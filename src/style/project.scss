@@ -6,7 +6,7 @@
   margin: 70px auto;
 }
 .section-header-ctn {
-  min-width: 330px;
+  min-width: 30%;
   display: flex;
   flex-flow: column;
 }
@@ -14,6 +14,8 @@
 @media (max-width: 991px) {
   .para-section {
     flex-flow: wrap;
+    padding-left: 15px;
+    padding-right: 15px;
   }
   .section-header-ctn {
     min-width: 100%;
@@ -72,15 +74,17 @@ a {
   .title-nav-item {
     opacity: 1;
     font-size: 1.8rem;
+    padding: 4px 0;
     padding-left: 6px;
     color: #010000;
   }
   .sub-title-nav-item {
     opacity: 1;
     font-size: 1.125rem;
+    padding: 4px 0;
     padding-left: 0;
     color: #010000;
-    margin-top: 4px;
+    // margin-top: 4px;
   }
 }
 
@@ -161,5 +165,5 @@ ul li.sub-menu-item {
 
 .proj-content button:focus {
   outline: none;
-  box-shadow: 0 0 0 6px rgb(255, 251, 0);
+  box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.15);
 }
