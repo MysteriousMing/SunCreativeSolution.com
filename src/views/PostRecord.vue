@@ -118,6 +118,11 @@ export default {
     }
   },
   created () {
+    if (!window.localStorage.token) {
+      this.$router.push({
+        name: 'LoginPage'
+      })
+    }
     document.body.classList.remove('sidebar-hidden')
   },
   mounted () {
