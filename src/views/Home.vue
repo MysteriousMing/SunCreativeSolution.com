@@ -133,7 +133,7 @@ export default {
     getData () {
       // dataLoading
       this.dataLoading = true
-      this.Http.Get('sun-create/article/').then(res => {
+      this.Http.SimpleGet('sun-create/article/').then(res => {
         console.log(res)
         this.dataLoading = false
 

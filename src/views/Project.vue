@@ -175,7 +175,7 @@ export default {
     getArticleDetail () {
       this.isDetailLoading = true
       let uuid = this.$router.history.current.params.uuid
-      this.Http.Get(`sun-create/article/${uuid}/`).then(res => {
+      this.Http.SimpleGet(`sun-create/article/${uuid}/`).then(res => {
         this.articleDetail = res
         setTimeout(() => {
           let promiseTitle = this.formatTitleMenu(res.title)
