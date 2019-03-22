@@ -16,6 +16,7 @@ const formatProject = nodeArr => {
     let tagObj = {}
     switch (item.tagName.toLowerCase()) {
       case 'h1':
+        console.log('[+]H 1 -', item)
         tagObj.styleClass = 'para-section'
         tagObj.header = {
           name: item.textContent,
@@ -28,6 +29,7 @@ const formatProject = nodeArr => {
         flag++
         break
       case 'h2':
+        console.log('[+]H 2 -', item)
         if (flag === 0) {
           tagObj.styleClass = 'para-section'
           tagObj.header = {
@@ -76,12 +78,11 @@ const formatProject = nodeArr => {
         break
       default:
         if (item.querySelectorAll('img').length > 0) {
-          // console.log('[+]Image -', item)
+          console.log('[+]Image -', item)
           let lastSection = newNodeArr[flag - 1]
           if (lastSection.styleClass === 'images-section') {
             newNodeArr[flag - 1].images.push(item)
           } else {
-            console.log('[+]Image -', item)
             tagObj.styleClass = 'images-section'
             tagObj.height = '500px'
             tagObj.images = [item]
@@ -93,7 +94,6 @@ const formatProject = nodeArr => {
                 tagObj.width = res.width
               })
             }
-            console.log(tagObj)
             newNodeArr.push(tagObj)
             flag++
           }

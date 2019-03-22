@@ -64,13 +64,13 @@ a {
     font-weight: bold;
 
     color: #010000;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     line-height: 0.8;
   }
   &.sub-title-nav-item {
     color: #5E5E5E;
     font-style: italic;
-    font-size: 0.91rem;
+    font-size: 0.8125rem;
   }
 }
 
@@ -78,14 +78,14 @@ a {
   opacity: 1;
   .title-nav-item {
     opacity: 1;
-    font-size: 1.8rem;
+    font-size: 1.45rem;
     padding: 4px 0;
     padding-left: 6px;
     color: #010000;
   }
   .sub-title-nav-item {
     opacity: 1;
-    font-size: 1.125rem;
+    font-size: 1rem;
     padding: 4px 0;
     padding-left: 0;
     color: #010000;
@@ -103,6 +103,10 @@ a {
 .menu-ctn ul {
   padding-left: 22px;
   border-left: 2px #D7D7D7 solid;
+  li {
+    word-break: break-word;
+    white-space: normal;
+  }
 }
 // list style
 ul li.first-menu-item {

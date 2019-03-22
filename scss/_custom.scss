@@ -4,7 +4,9 @@
   font-family: CenturyGothic;
   src: url("/static/font/centurygothic.ttf");
 }
-
+html, body {
+  overflow-x: hidden;
+}
 .pt-20px {
   padding-top: 10px;
 }

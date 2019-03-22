@@ -59,7 +59,7 @@
     <div class="right-col d-md-down-none">
       <div style="height: 300px;"
       :style="{ top : menuPositionY + 'px'}"
-      class="menu-ctn pt-4"
+      class="menu-ctn pt-4 pr-2"
       :class="{fixed: menuPositionY == 70}">
         <ul v-scroll-spy-active="{selector: 'li.menu-item', class: 'custom-active'}"
          v-scroll-spy-link="{selector: 'a.title-nav-item'}">
@@ -139,10 +139,7 @@ export default {
   },
   methods: {
     setSize: function () {
-      console.log(this.$refs.imageCarousel)
       if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
-        console.log(this.$refs.imageCarousel[0])
-        console.log(this.$refs.imageCarousel[0].$el.clientWidth)
         this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
       }
     },
@@ -234,10 +231,12 @@ export default {
 <style lang="scss">
   .main .container-fluid {
     padding: 0;
+    overflow-x: hidden;
   }
   section.page-project {
     height: 100vh;
     overflow: auto;
+    overflow-x: hidden;
   }
   .active-header section.page-project {
     height: calc(100vh - 66px);
@@ -298,12 +297,14 @@ export default {
   .menu-ctn {
     display: block;
     
-    left: 77%;
-    top: 70px;
     transition: all 200ms ease;
     margin-left: 30px;
+    width: calc(100% - 30px);
     &.fixed {
       position: fixed;
+      left: 77%;
+      top: 70px;
+      width: 20%;
     }
   }
   @media (max-width: 991px) {
