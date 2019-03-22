@@ -232,8 +232,10 @@ export default {
 }
 </script>
 <style lang="scss">
+  .main .container-fluid {
+    padding: 0;
+  }
   section.page-project {
-    margin: 0 -30px;
     height: 100vh;
     overflow: auto;
   }
