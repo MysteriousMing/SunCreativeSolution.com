@@ -324,7 +324,9 @@ export default {
       display: none;
     }
     .article-content {
-      padding-left: 10px;
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-bottom: 30px;
     }
   }
 

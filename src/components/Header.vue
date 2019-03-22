@@ -50,8 +50,8 @@ export default {
     bus.$on('animate-info', animateInfo => {
       if (animateInfo && animateInfo.isShow) {
         this.headerAnimate = animateInfo.isShow
-        this.scrollUp = animateInfo.scrollUp
       }
+      this.scrollUp = animateInfo.scrollUp
     })
   },
   mounted () {
@@ -87,6 +87,9 @@ export default {
 }
 </script>
 <style>
+.app-header.navbar .navbar-brand {
+  line-height: 75px;
+}
 .navbar-brand.black {
   color: #ffffff;
 }
@@ -124,5 +127,11 @@ export default {
   /* animation: toTopIn 200ms ease-out; */
   transform: translateY(-126px);
   transition: transform 200ms ease;
+}
+
+@media (max-width: 991px) {
+  .app-header.navbar {
+    background: #000000;
+  }
 }
 </style>

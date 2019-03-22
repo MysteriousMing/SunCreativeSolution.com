@@ -9,6 +9,7 @@
   min-width: 30%;
   display: flex;
   flex-flow: column;
+  padding: 0 10px 0 0;
 }
 // 适配手机
 @media (max-width: 991px) {
@@ -16,9 +17,12 @@
     flex-flow: wrap;
     padding-left: 15px;
     padding-right: 15px;
+    margin: 20px auto;
   }
   .section-header-ctn {
     min-width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
   }
 }
 
@@ -35,10 +39,11 @@
 .ql-snow .ql-editor h2,
 .para-section h2 {
   color: #919191;
-  font-size: 1.2rem;
+  font-size: 1rem;
   // font-size: 0.56rem;
-  line-height: 2;
+  line-height: 1.1;
   font-style:italic;
+  margin-top: 5px;
 }
 
 .ql-snow .ql-editor p,

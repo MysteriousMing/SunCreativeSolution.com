@@ -62,6 +62,11 @@ export default {
     this.getData()
     console.log(this.windowHinnerHeight)
     bus.$emit('header-go-black', 'white')
+    bus.$emit('animate-info', {
+      isShow: true,
+      scrollUp: true,
+      headerActive: true
+    })
 
     bus.$on('home-go-down', isDown => {
       if (isDown && this.$refs.page) {
@@ -208,5 +213,18 @@ export default {
 .grid-item img {
   width: 100%;
   margin-bottom: 36px;
+}
+@media (max-width: 991px) {
+  .home-page .container {
+    max-width: calc(100% - 40px);
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+  .grid-item,
+  .grid-sizer {
+    width: 100%;
+  }
 }
 </style>
