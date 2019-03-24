@@ -6,7 +6,7 @@
         <figure 
         v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
         class="left-col mb-0">
-            <img class="align-self-center" height="auto" width="100px"
+            <img v-show="articleDetail.header_image" class="align-self-center" height="auto" width="100px"
             :src="articleDetail.header_image" alt="Header photos - title">
         </figure>
         <div class="right-col mb-0 d-md-down-none">
@@ -42,7 +42,7 @@
           <section v-else-if="section.styleClass === 'images-section'" class="images-section">
             <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
             <el-carousel v-if="section.images.length > 1"
-              :autoplay="false"
+              :autoplay="true"
               ref="imageCarousel"
               :height="(parseInt(carouselWidth * section.height / section.width) || 400) + 'px'"
               indicator-position="outside">

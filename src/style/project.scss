@@ -25,7 +25,11 @@
     margin-bottom: 20px;
   }
 }
-
+.ql-snow .ql-editor {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+}
 
 .ql-snow .ql-editor h1,
 .para-section h1 {
