@@ -214,7 +214,7 @@ export default {
   width: 100%;
   margin-bottom: 36px;
 }
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   .home-page .container {
     max-width: calc(100% - 40px);
     padding-left: 0;
