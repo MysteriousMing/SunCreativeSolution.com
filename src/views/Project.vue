@@ -1,6 +1,6 @@
 <template>
-  <section v-scroll="onScroll" ref="project-page" class="page-project proj-content"
-  v-scroll-spy>
+  <section v-scroll="onScroll" ref="projectPage" class="page-project proj-content"
+  id="proj-content">
     <!-- image banner -->
     <section class="header" v-loading="isDetailLoading">
         <figure 
@@ -19,7 +19,7 @@
     <!-- body -->
     <div class="left-col article-content ql-snow">
       <br>
-      <article v-if="articleDetail" v-show="false"
+      <article v-if="articleDetail && !articleDetail.contentArr" v-show="false"
       class="ql-editor"
       ref="content"
       v-html="articleDetail.content">
@@ -27,13 +27,12 @@
 
       <article v-if="articleDetail"
       class="ql-editor"
-      ref="contentNode"
-      v-scroll-spy>
+      ref="contentNode">
         <div v-for="(section, index) of articleDetail.contentArr" :key="index">
           <section v-if="section.styleClass === 'para-section'" class="para-section">
             <div class="section-header-ctn">
-              <h1>{{section.header.name}}</h1>
-              <h2>{{section.subheader.name}}</h2>
+              <h1 v-bind:id="section.header.idx">{{section.header.name}}</h1>
+              <h2 v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
             </div>
             <div>
               <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>
@@ -61,13 +60,17 @@
       :style="{ top : menuPositionY + 'px'}"
       class="menu-ctn pt-4 pr-2"
       :class="{fixed: menuPositionY == 70}">
-        <ul v-scroll-spy-active="{selector: 'li.menu-item', class: 'custom-active'}"
-         v-scroll-spy-link="{selector: 'a.title-nav-item'}">
-            <li class="menu-item" :class="{'first-menu-item': item.level === 'first','sub-menu-item': item.level !== 'first'}"
-            v-for="(item, index) in titleArray" :key="index">
-                <a class="title-nav-item" :class="{'sub-title-nav-item': item.level !== 'first'}">{{item.title}}</a>
-            </li>
-        </ul>
+        <b-nav v-b-scrollspy:proj-content>
+            <b-nav-item class="menu-item title-nav-item"
+            :class="{'first-menu-item': item.level === 'first','sub-menu-item': item.level !== 'first','sub-title-nav-item': item.level !== 'first'}"
+            v-for="(item, index) in titleArray" :key="index" 
+            :href="'#' + item.id"
+            @click="jumpTo(item.id, $event)"
+            >
+            {{item.title}}
+            </b-nav-item>
+        </b-nav>
+        <p>Current: {{section}}</p>
       </div>
 
     </div>
@@ -85,15 +88,18 @@ import { Footer as AppFooter } from '../components/'
 import categoryConfig from '../config/category'
 
 import Vue from 'vue'
-import Scrollspy, { Easing } from 'vue2-scrollspy'
+// import Scrollspy, { Easing } from 'vue2-scrollspy'
 // use default options
-Vue.use(Scrollspy)
-const scrollspyOptions = {
-  easing: Easing.Cubic.In,
-  offset: 120
-}
+// Vue.use(Scrollspy)
+// const scrollspyOptions = {
+//   easing: Easing.Cubic.In,
+//   offset: 120
+// }
 // or custom options
-Vue.use(Scrollspy, scrollspyOptions)
+// Vue.use(Scrollspy, scrollspyOptions)
+
+import vBScrollspy from 'bootstrap-vue/es/directives/scrollspy/scrollspy'
+Vue.directive('b-scrollspy', vBScrollspy)
 export default {
   name: 'project',
   components: {
@@ -102,6 +108,7 @@ export default {
   // props: ['scrollTop'],
   data: function () {
     return {
+      section: 0,
       scrollTop: 0,
       position: {},
       menuPositionInitY: 600,
@@ -138,6 +145,20 @@ export default {
     }
   },
   methods: {
+    jumpTo: function (idx, event) {
+      // preventDefaul()
+      console.log(this.$refs.projectPage.scrollTop)
+      let ele = this.$refs.projectPage.querySelector(`#${idx}`)
+      console.log(ele, ele.offsetTop)
+      if (ele.offsetTop > 0) {
+        // todo: ease jump
+        this.$refs.projectPage.scrollTop = ele.offsetTop - 100
+      }
+      event.preventDefault()
+    },
+    testJump: function (params) {
+      this.$scrollTo(5)
+    },
     setSize: function () {
       if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
         this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
@@ -194,22 +215,29 @@ export default {
       let content = this.$refs.content
 
       let titleArr = content.querySelectorAll('h1, h2')
-      console.log('titleArr - \n', titleArr)
+      // console.log('titleArr - \n', titleArr)
       this.titleArray = []
+      let titleIndex = -1
+      let subtitleIndex = -1
       titleArr.forEach((element, index) => {
         element.id = `title-${index}`
         // console.log(element, element.tagName)
         // console.log(element.textContent)
         let tagObj = {
-          id: element.id,
+          index: element.id,
           title: element.textContent
         }
         switch (element.tagName.toLowerCase()) {
           case 'h1':
+            titleIndex++
+            subtitleIndex = -1
             tagObj.level = 'first'
+            tagObj.id = `title-${titleIndex}`
             break
           case 'h2':
+            subtitleIndex++
             tagObj.level = 'second'
+            tagObj.id = `title-${titleIndex}-${subtitleIndex}`
             break
           default:
             break

@@ -10,17 +10,22 @@ const formatProject = nodeArr => {
   let stTime = new Date()
   let newNodeArr = []
   let flag = 0
+  let titleIndex = -1
+  let subTitleIndex = -1
   let currentHeader = ''
   let currentHeaderNodes = []
   nodeArr.forEach(item => {
     let tagObj = {}
     switch (item.tagName.toLowerCase()) {
       case 'h1':
-        console.log('[+]H 1 -', item)
+        titleIndex++
+        subTitleIndex = -1
+        // console.log('[+]H 1 -', item)
         tagObj.styleClass = 'para-section'
         tagObj.header = {
           name: item.textContent,
-          nodes: [item]
+          nodes: [item],
+          idx: `title-${titleIndex}`
         }
         tagObj.para = []
         currentHeader = item.textContent
@@ -29,12 +34,14 @@ const formatProject = nodeArr => {
         flag++
         break
       case 'h2':
-        console.log('[+]H 2 -', item)
+        subTitleIndex++
+        // console.log('[+]H 2 -', item)
         if (flag === 0) {
           tagObj.styleClass = 'para-section'
           tagObj.header = {
             name: item.textContent,
-            nodes: item
+            nodes: item,
+            idx: `title-${titleIndex}`
           }
           tagObj.para = []
           newNodeArr.push(tagObj)
@@ -45,7 +52,8 @@ const formatProject = nodeArr => {
           if (!lastSection.subheader) {
             newNodeArr[flag - 1].subheader = {
               name: item.textContent,
-              nodes: item
+              nodes: item,
+              idx: `title-${titleIndex}-${subTitleIndex}`
             }
           } else {
             tagObj.styleClass = 'para-section'
@@ -55,7 +63,8 @@ const formatProject = nodeArr => {
             }
             tagObj.subheader = {
               name: item.textContent,
-              nodes: item
+              nodes: item,
+              idx: `title-${titleIndex}-${subTitleIndex}`
             }
             tagObj.para = []
             newNodeArr.push(tagObj)
@@ -69,7 +78,8 @@ const formatProject = nodeArr => {
           }
           tagObj.subheader = {
             name: item.textContent,
-            nodes: item
+            nodes: item,
+            idx: `title-${titleIndex}-${subTitleIndex}`
           }
           tagObj.para = []
           newNodeArr.push(tagObj)
