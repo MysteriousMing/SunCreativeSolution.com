@@ -35,6 +35,7 @@ export default {
 <style>
 .nav-tag-item {
   font-weight: bold;
+  font-family: 'Mada SemiBold';
 }
 .footer-upper {
   margin-top: -66px;

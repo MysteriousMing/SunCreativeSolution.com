@@ -31,8 +31,8 @@
         <div v-for="(section, index) of articleDetail.contentArr" :key="index">
           <section v-if="section.styleClass === 'para-section'" class="para-section">
             <div class="section-header-ctn">
-              <h1 v-bind:id="section.header.idx">{{section.header.name}}</h1>
-              <h2 v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
+              <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
+              <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
             </div>
             <div>
               <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>

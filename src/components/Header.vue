@@ -89,6 +89,7 @@ export default {
 <style>
 .app-header.navbar .navbar-brand {
   line-height: 75px;
+  font-family: 'Mada SemiBold';
 }
 .navbar-brand.black {
   color: #ffffff;

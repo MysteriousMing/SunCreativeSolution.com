@@ -38,6 +38,7 @@
   font-size: 1.8rem;
   line-height: 1;
   font-weight: bold;
+  font-family: 'Mada SemiBold';
 }
 
 .ql-snow .ql-editor h2,
@@ -66,6 +67,7 @@ a.nav-link {
   .title-nav-item & {
     cursor: pointer;
     font-weight: bold;
+    font-family: 'Mada SemiBold';
     color: rgba(1, 0, 0, 0.6);
     font-size: 1.2rem;
     line-height: 0.8;
@@ -129,6 +131,7 @@ a.nav-link {
 .menu-ctn ul {
   padding-left: 22px;
   border-left: 2px #D7D7D7 solid;
+  flex-flow: column nowrap;
   li {
     word-break: break-word;
     white-space: normal;
