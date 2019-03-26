@@ -99,6 +99,7 @@ import Vue from 'vue'
 // Vue.use(Scrollspy, scrollspyOptions)
 
 import vBScrollspy from 'bootstrap-vue/es/directives/scrollspy/scrollspy'
+
 Vue.directive('b-scrollspy', vBScrollspy)
 export default {
   name: 'project',
@@ -147,12 +148,13 @@ export default {
   methods: {
     jumpTo: function (idx, event) {
       // preventDefaul()
-      console.log(this.$refs.projectPage.scrollTop)
       let ele = this.$refs.projectPage.querySelector(`#${idx}`)
-      console.log(ele, ele.offsetTop)
       if (ele.offsetTop > 0) {
-        // todo: ease jump
-        this.$refs.projectPage.scrollTop = ele.offsetTop - 100
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo
+        this.$refs.projectPage.scrollTo({
+          top: ele.offsetTop - 100,
+          behavior: 'smooth'
+        })
       }
       event.preventDefault()
     },
