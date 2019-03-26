@@ -71,7 +71,6 @@
             {{item.title}}
             </b-nav-item>
         </b-nav>
-        <p>Current: {{section}}</p>
       </div>
 
     </div>
