@@ -28,7 +28,7 @@ const formatProject = nodeArr => {
           idx: `title-${titleIndex}`
         }
         tagObj.para = []
-        currentHeader = item.textContent
+        currentHeader = item.textContwwent
         currentHeaderNodes = item
         newNodeArr.push(tagObj)
         flag++
@@ -89,8 +89,8 @@ const formatProject = nodeArr => {
       default:
         if (item.querySelectorAll('img').length > 0) {
           console.log('[+]Image -', item)
-          let lastSection = newNodeArr[flag - 1]
-          if (lastSection.styleClass === 'images-section') {
+          let lastSection = newNodeArr[flag - 1] || null
+          if (flag > 0 && lastSection && lastSection.styleClass === 'images-section') {
             newNodeArr[flag - 1].images.push(item)
           } else {
             tagObj.styleClass = 'images-section'

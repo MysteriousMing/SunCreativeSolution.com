@@ -41,7 +41,8 @@
           <section v-else-if="section.styleClass === 'images-section'" class="images-section">
             <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
             <el-carousel v-if="section.images.length > 1"
-              :autoplay="true"
+              :autoplay="section.images.length > 2 ? true : false"
+              :loop="section.images.length > 2 ? true : false"
               ref="imageCarousel"
               :height="(parseInt(carouselWidth * section.height / section.width) || 400) + 'px'"
               indicator-position="outside">
