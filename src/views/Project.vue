@@ -61,7 +61,7 @@
       :style="{ top : menuPositionY + 'px'}"
       class="menu-ctn pt-4 pr-2"
       :class="{fixed: menuPositionY == 70}">
-        <b-nav v-b-scrollspy:proj-content>
+        <b-nav v-b-scrollspy:proj-content.100>
             <b-nav-item class="menu-item title-nav-item"
             :class="{'first-menu-item': item.level === 'first','sub-menu-item': item.level !== 'first','sub-title-nav-item': item.level !== 'first'}"
             v-for="(item, index) in titleArray" :key="index" 

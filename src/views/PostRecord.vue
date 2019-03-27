@@ -186,7 +186,8 @@ export default {
         this.articleList = res.map(item => {
           return {
             date: new Date(item.created_at).toDateString(),
-            ...item
+            ...item,
+            header_image: item.header_image.replace('http://', 'https://')
           }
         })
         this.saveArticleList = this.articleList

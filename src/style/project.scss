@@ -79,13 +79,22 @@ a.nav-link {
   }
 
   opacity: 1;
+  &.active {
+    background-color: transparent !important;
+    color: #010000 !important;
+  }
 
+  &:hover {
+    background-color: transparent !important;
+    color: #010000 !important;
+    font-size: 1.45rem;
+  }
   .title-nav-item &.active{
     opacity: 1;
     font-size: 1.45rem;
     padding-bottom: 4px;
     padding-left: 6px;
-    color: #010000;
+    color: #010000 important;
   }
 
   .sub-title-nav-item &.active{
@@ -93,7 +102,7 @@ a.nav-link {
     font-size: 1rem;
     padding-bottom: 4px;
     padding-left: 0;
-    color: #010000;
+    color: #010000 !important;
     // margin-top: 4px;
   }
 

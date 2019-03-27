@@ -145,7 +145,7 @@ export default {
         this.picArray = res.results.map(item => {
           return {
             uuid: item.uuid,
-            src: item.header_image,
+            src: item.header_image.replace('Http://', 'Https://'),
             name: item.title,
             href: '/', // todo: single Article
             group: item.category || parseInt(Math.random() * 3)
@@ -194,23 +194,23 @@ export default {
   height: calc(100vh - 66px);
   overflow: auto;
 }
-.container {
+.home-page .container {
   min-height: 100vh;
   padding-bottom: 2rem;
 }
 .home-page .container {
   max-width: calc(100% - 132px);
 }
-.flud {
+.home-page .flud {
   margin-top: 118px;
   margin-bottom: 118px;
   min-height: calc(100vh - 196px);
 }
-.grid-item,
-.grid-sizer {
+.home-page .grid-item,
+.home-page .grid-sizer {
   width: calc(50% - 18px); 
 }
-.grid-item img {
+.home-page .grid-item img {
   width: 100%;
   margin-bottom: 36px;
 }
