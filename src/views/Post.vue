@@ -57,6 +57,7 @@
 
   <Editor 
   v-loading="processLoading"
+  v-if="!articleUuid || (articleUuid && form.content)"
   @confirmEditorRichText="confirmText" :form-content="form.content"></Editor>
 
   <b-card 
@@ -329,7 +330,7 @@ export default {
   text-align: center;
   background: white;
 }
-img.avatar { width: 100%; height: auto;max-width: 100%; display: block; }
+img.avatar { width: 100%; height: auto;max-width: 30%; display: block; }
 .avatar {
   display: block;
 }

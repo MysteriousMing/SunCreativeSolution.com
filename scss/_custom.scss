@@ -4,7 +4,21 @@
   font-family: CenturyGothic;
   src: url("/static/font/centurygothic.ttf");
 }
-
+@font-face {
+  font-family: 'Mada Regular';
+  src: url("/static/font/Mada-Regular.ttf");
+}
+@font-face {
+  font-family: 'Mada Light';
+  src: url("/static/font/Mada-Light.ttf");
+}
+@font-face {
+  font-family: 'Mada SemiBold';
+  src: url("/static/font/Mada-SemiBold.ttf");
+}
+html, body {
+  overflow-x: hidden;
+}
 .pt-20px {
   padding-top: 10px;
 }
@@ -17,7 +31,7 @@
   justify-content: flex-start;
 }
 * {
-  font-family: CenturyGothic,
+  font-family: 'Mada Regular',
   "PingFang SC",
   "Microsoft YaHei",
   -apple-system,

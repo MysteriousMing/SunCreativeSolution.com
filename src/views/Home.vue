@@ -62,6 +62,11 @@ export default {
     this.getData()
     console.log(this.windowHinnerHeight)
     bus.$emit('header-go-black', 'white')
+    bus.$emit('animate-info', {
+      isShow: true,
+      scrollUp: true,
+      headerActive: true
+    })
 
     bus.$on('home-go-down', isDown => {
       if (isDown && this.$refs.page) {
@@ -133,14 +138,14 @@ export default {
     getData () {
       // dataLoading
       this.dataLoading = true
-      this.Http.Get('sun-create/article/').then(res => {
+      this.Http.SimpleGet('sun-create/article/').then(res => {
         console.log(res)
         this.dataLoading = false
 
         this.picArray = res.results.map(item => {
           return {
             uuid: item.uuid,
-            src: item.header_image,
+            src: item.header_image.replace('Http://', 'Https://'),
             name: item.title,
             href: '/', // todo: single Article
             group: item.category || parseInt(Math.random() * 3)
@@ -189,24 +194,37 @@ export default {
   height: calc(100vh - 66px);
   overflow: auto;
 }
-.container {
+.home-page .container {
   min-height: 100vh;
   padding-bottom: 2rem;
 }
 .home-page .container {
   max-width: calc(100% - 132px);
 }
-.flud {
+.home-page .flud {
   margin-top: 118px;
   margin-bottom: 118px;
   min-height: calc(100vh - 196px);
 }
-.grid-item,
-.grid-sizer {
+.home-page .grid-item,
+.home-page .grid-sizer {
   width: calc(50% - 18px); 
 }
-.grid-item img {
+.home-page .grid-item img {
   width: 100%;
   margin-bottom: 36px;
+}
+@media (max-width: 768px) {
+  .home-page .container {
+    max-width: calc(100% - 40px);
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+  .grid-item,
+  .grid-sizer {
+    width: 100%;
+  }
 }
 </style>

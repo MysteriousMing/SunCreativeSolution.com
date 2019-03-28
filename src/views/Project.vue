@@ -1,11 +1,12 @@
 <template>
-  <section on-scroll="onScroll" ref="project-page" class="page-project">
+  <section v-scroll="onScroll" ref="projectPage" class="page-project proj-content"
+  id="proj-content">
     <!-- image banner -->
     <section class="header" v-loading="isDetailLoading">
         <figure 
         v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
         class="left-col mb-0">
-            <img class="align-self-center" height="auto" width="100px"
+            <img v-show="articleDetail.header_image" class="align-self-center" height="auto" width="100px"
             :src="articleDetail.header_image" alt="Header photos - title">
         </figure>
         <div class="right-col mb-0 d-md-down-none">
@@ -18,21 +19,20 @@
     <!-- body -->
     <div class="left-col article-content ql-snow">
       <br>
-      <article v-if="articleDetail" v-show="false"
-      class="proj-content ql-editor"
+      <article v-if="articleDetail && !articleDetail.contentArr" v-show="false"
+      class="ql-editor"
       ref="content"
       v-html="articleDetail.content">
       </article>
 
       <article v-if="articleDetail"
-      class="proj-content ql-editor"
-      ref="contentNode"
-      v-scroll-spy>
+      class="ql-editor"
+      ref="contentNode">
         <div v-for="(section, index) of articleDetail.contentArr" :key="index">
           <section v-if="section.styleClass === 'para-section'" class="para-section">
             <div class="section-header-ctn">
-              <h1>{{section.header.name}}</h1>
-              <h2>{{section.subheader.name}}</h2>
+              <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
+              <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
             </div>
             <div>
               <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>
@@ -40,9 +40,14 @@
           </section>
           <section v-else-if="section.styleClass === 'images-section'" class="images-section">
             <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
-            <el-carousel v-if="section.images.length > 1" indicator-position="outside">
+            <el-carousel v-if="section.images.length > 1"
+              :autoplay="section.images.length > 2 ? true : false"
+              :loop="section.images.length > 2 ? true : false"
+              ref="imageCarousel"
+              :height="(parseInt(carouselWidth * section.height / section.width) || 400) + 'px'"
+              indicator-position="outside">
               <el-carousel-item v-for="(image, image_index) in section.images" :key="image_index">
-                <div v-html="image.innerHTML"></div>
+                <div class="para-image" v-html="image.innerHTML" ref="imgSize"></div>
               </el-carousel-item>
             </el-carousel>
             <div v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
@@ -54,14 +59,18 @@
     <div class="right-col d-md-down-none">
       <div style="height: 300px;"
       :style="{ top : menuPositionY + 'px'}"
-      class="menu-ctn pt-4">
-        <ul v-scroll-spy-active="{selector: 'li.menu-item', class: 'custom-active'}"
-         v-scroll-spy-link="{selector: 'a.title-nav-item'}">
-            <li class="menu-item" :class="{'first-menu-item': item.level === 'first','sub-menu-item': item.level !== 'first'}"
-            v-for="(item, index) in titleArray" :key="index">
-                <a class="title-nav-item" :class="{'sub-title-nav-item': item.level !== 'first'}">{{item.title}}</a>
-            </li>
-        </ul>
+      class="menu-ctn pt-4 pr-2"
+      :class="{fixed: menuPositionY == 70}">
+        <b-nav v-b-scrollspy:proj-content.100>
+            <b-nav-item class="menu-item title-nav-item"
+            :class="{'first-menu-item': item.level === 'first','sub-menu-item': item.level !== 'first','sub-title-nav-item': item.level !== 'first'}"
+            v-for="(item, index) in titleArray" :key="index" 
+            :href="'#' + item.id"
+            @click="jumpTo(item.id, $event)"
+            >
+            {{item.title}}
+            </b-nav-item>
+        </b-nav>
       </div>
 
     </div>
@@ -79,23 +88,29 @@ import { Footer as AppFooter } from '../components/'
 import categoryConfig from '../config/category'
 
 import Vue from 'vue'
-import Scrollspy, { Easing } from 'vue2-scrollspy'
+// import Scrollspy, { Easing } from 'vue2-scrollspy'
 // use default options
-Vue.use(Scrollspy)
-const scrollspyOptions = {
-  easing: Easing.Cubic.In,
-  offset: 120
-}
+// Vue.use(Scrollspy)
+// const scrollspyOptions = {
+//   easing: Easing.Cubic.In,
+//   offset: 120
+// }
 // or custom options
-Vue.use(Scrollspy, scrollspyOptions)
+// Vue.use(Scrollspy, scrollspyOptions)
+
+import vBScrollspy from 'bootstrap-vue/es/directives/scrollspy/scrollspy'
+
+Vue.directive('b-scrollspy', vBScrollspy)
 export default {
   name: 'project',
   components: {
     AppFooter
   },
-  props: ['scrollTop'],
+  // props: ['scrollTop'],
   data: function () {
     return {
+      section: 0,
+      scrollTop: 0,
       position: {},
       menuPositionInitY: 600,
       menuPositionY: 600,
@@ -105,7 +120,8 @@ export default {
       articleDetail: {
         content: ''
       },
-      categoryConfig: categoryConfig
+      categoryConfig: categoryConfig,
+      carouselWidth: 0
     }
   },
   created () {
@@ -115,31 +131,78 @@ export default {
     document.body.classList.add('sidebar-hidden')
   },
   mounted () {
+    const that = this
+    window.addEventListener('resize', function () {
+      that.setSize()
+    }, false)
   },
   watch: {
     scrollTop (now, prev) {
-      if (now < this.menuPositionInitY) {
-        this.menuPositionY = this.menuPositionInitY - now + 20
+      if (now < this.menuPositionInitY - 70) {
+        this.menuPositionY = this.menuPositionInitY - now
       } else {
         this.menuPositionY = 70
       }
     }
   },
   methods: {
+    jumpTo: function (idx, event) {
+      // preventDefaul()
+      let ele = this.$refs.projectPage.querySelector(`#${idx}`)
+      if (ele.offsetTop > 0) {
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo
+        this.$refs.projectPage.scrollTo({
+          top: ele.offsetTop - 100,
+          behavior: 'smooth'
+        })
+      }
+      event.preventDefault()
+    },
+    testJump: function (params) {
+      this.$scrollTo(5)
+    },
+    setSize: function () {
+      if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
+        this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
+      }
+    },
     onScroll: function (e, position) {
-      console.log(e, position)
       this.position = position
+      this.scrollTop = position.scrollTop
+      let distance = this.position.scrollTop - this.previousTop
+      if (distance > 20) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: false,
+          headerActive: false
+        })
+      } else if (distance < -80) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: true,
+          headerActive: true
+        })
+      }
+      if (this.position.scrollTop < 20) {
+        bus.$emit('animate-info', {
+          isShow: true,
+          scrollUp: true,
+          headerActive: true
+        })
+      }
+      this.previousTop = this.position.scrollTop
     },
     getArticleDetail () {
       this.isDetailLoading = true
       let uuid = this.$router.history.current.params.uuid
-      this.Http.Get(`sun-create/article/${uuid}/`).then(res => {
+      this.Http.SimpleGet(`sun-create/article/${uuid}/`).then(res => {
         this.articleDetail = res
         setTimeout(() => {
           let promiseTitle = this.formatTitleMenu(res.title)
           let promiseContent = this.formatContentNode()
           Promise.all([promiseTitle, promiseContent]).then(res => {
             this.isDetailLoading = false
+            this.setSize()
           })
         }, 200)
       })
@@ -154,22 +217,29 @@ export default {
       let content = this.$refs.content
 
       let titleArr = content.querySelectorAll('h1, h2')
-      console.log('titleArr - \n', titleArr)
+      // console.log('titleArr - \n', titleArr)
       this.titleArray = []
+      let titleIndex = -1
+      let subtitleIndex = -1
       titleArr.forEach((element, index) => {
         element.id = `title-${index}`
         // console.log(element, element.tagName)
         // console.log(element.textContent)
         let tagObj = {
-          id: element.id,
+          index: element.id,
           title: element.textContent
         }
         switch (element.tagName.toLowerCase()) {
           case 'h1':
+            titleIndex++
+            subtitleIndex = -1
             tagObj.level = 'first'
+            tagObj.id = `title-${titleIndex}`
             break
           case 'h2':
+            subtitleIndex++
             tagObj.level = 'second'
+            tagObj.id = `title-${titleIndex}-${subtitleIndex}`
             break
           default:
             break
@@ -188,14 +258,23 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .main .container-fluid {
+    padding: 0;
+    overflow-x: hidden;
+  }
+  section.page-project {
+    height: 100vh;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+  .active-header section.page-project {
+    height: calc(100vh - 66px);
+  }
+</style>
 
 <style lang="scss" scoped>
   $project-header-height: 530px;
-
-  section.page-project {
-    margin: 0 -30px;
-  }
-
 
   .left-col {
       // width: calc(100% - 270px);
@@ -230,7 +309,7 @@ export default {
       vertical-align: middle;
   }
   .right-col>.color-pattern {
-      border-left: 40px solid white;
+      border-left: 24px solid white;
       background: black;
       height: 100%;
       display: block;
@@ -238,23 +317,26 @@ export default {
   }
   .proj-content {
     position: relative;
-    height: 100vh;
-    overflow: auto;
   }
   .article-content {
-      padding-bottom: 150px;
-      padding-left:10%;
+    min-height: 100vh;
+    padding-bottom: 150px;
+    padding-left:10%;
   }
 
   .menu-ctn {
     display: block;
-    // position: fixed;
-    // left: calc(77% + 20px);
-    // top: calc($project-header-height + 80px);
+    
     transition: all 200ms ease;
     margin-left: 30px;
+    width: calc(100% - 30px);
+    &.fixed {
+      position: fixed;
+      left: 77%;
+      top: 70px;
+      width: 20%;
+    }
   }
-
   @media (max-width: 991px) {
     .left-col {
         width: 100%;
@@ -273,6 +355,11 @@ export default {
     }
     .menu-ctn {
       display: none;
+    }
+    .article-content {
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-bottom: 30px;
     }
   }
 

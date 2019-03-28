@@ -84,7 +84,7 @@
               <div class="bottom clearfix d-flex">
                 <el-button @click="handleClick(item)" type="text" size="small">查看</el-button>
                 <el-button class="ml-auto" @click="handleClickEdit(item)" type="text" size="small">编辑</el-button>
-                <el-button @click="handleClickDelete(item.uuid)" type="text" style="color: #F56C6C" size="small">删除</el-button>
+                <el-button @click="showDeleteConfirm(item.uuid)" type="text" style="color: #F56C6C" size="small">删除</el-button>
               </div>
             </div>
           </el-card>
@@ -118,6 +118,11 @@ export default {
     }
   },
   created () {
+    if (!window.localStorage.token) {
+      this.$router.push({
+        name: 'LoginPage'
+      })
+    }
     document.body.classList.remove('sidebar-hidden')
   },
   mounted () {
@@ -181,7 +186,8 @@ export default {
         this.articleList = res.map(item => {
           return {
             date: new Date(item.created_at).toDateString(),
-            ...item
+            ...item,
+            header_image: item.header_image.replace('http://', 'https://')
           }
         })
         this.saveArticleList = this.articleList
@@ -218,6 +224,20 @@ export default {
         this.recordListLoading = false
       })
     },
+    showDeleteConfirm (uuid) {
+      this.$confirm('此操作将永久删除该页面, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.handleClickDelete(uuid)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     handlePostNewArticle: function (params) {
       // 引入 or 跳转 editor 页面
       this.$router.push({
@@ -252,13 +272,24 @@ export default {
   .grid-sizer {
     width: calc(33.3% - 9px);
   }
-  .grid-item img {
+  .grid-item img.thumbnail {
     width: 100%;
+    object-fit: cover;
+    height: 140px;
   }
   .text-overflow {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+  }
+  @media (max-width: 768px) {
+    .main .container-fluid {
+      
+    }
+    .grid-item,
+    .grid-sizer {
+      width: 100%;
+    }
   }
 }
 

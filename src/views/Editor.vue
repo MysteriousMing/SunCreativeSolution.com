@@ -12,10 +12,10 @@
     <div class="my-3 d-flex justify-content-end">
         <!-- <el-button type="primary" class="mr-auto" @click="showAddCarousel()">插入轮播图</el-button> -->
         <el-button type="primary" class="mr-auto" @click="showSplit()">插入分割</el-button>
-        <button class="btn btn-secondary" @click="cancel()">Clear</button>
+        <!-- <button class="btn btn-secondary" @click="cancel()">Clear</button> -->
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
     </div>
-    <b-card class="mb-3 animated fadeIn ql-container ql-snow" v-if="result">
+    <b-card class="mb-3 animated fadeIn ql-container ql-snow result-content" v-if="result">
       <div ref="resultContent"
       class="col-12 col-md-8 ql-editor" v-html="result"></div>
       <article class="col-12 col-md-8 ql-editor">
@@ -242,6 +242,7 @@ export default {
     console.log('this is current quill instance object', this.editor)
     setTimeout(() => {
       this.content = this.formContent || ''
+      console.log(this.formContent)
     }, 1300)
   }
 }
@@ -253,8 +254,23 @@ export default {
     height: 500px
   }
 }
-img { width: 100%; height: auto;max-width: 100%; display: block; }
+.result-content img { width: 100%; height: auto;max-width: 100%; display: block; }
 </style>
 <style lang="scss">
   @import '../style/project.scss';
+</style>
+
+<style lang="scss" >
+.editor-container {
+  .ql-snow {
+    .ql-editor {
+      // min-height: 500px;
+      height: 70vh;
+      overflow-y: auto;
+      img {
+        max-width: 30%;
+      }
+    }
+  }
+}
 </style>

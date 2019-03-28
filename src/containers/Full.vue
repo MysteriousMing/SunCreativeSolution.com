@@ -3,7 +3,8 @@
     <AppHeader/>
     <div class="app-body"
     :class="{'full-height': name === 'Project', 'active-header': headerActive}"
-    v-scroll="onScroll">
+    >
+    <!-- v-scroll="onScroll" -->
       <!-- <Sidebar :navItems="nav"/> -->
       <main class="main">
         <div class="container-fluid">
@@ -42,36 +43,13 @@ export default {
       return this.$route.matched
     }
   },
+  created () {
+    bus.$on('animate-info', animateInfo => {
+      this.headerActive = animateInfo.headerActive
+    })
+  },
   methods: {
-    onScroll: function (e, position) {
-      if (this.name !== 'Project') {
-        return
-      }
-      this.position = position
-      let distance = this.position.scrollTop - this.previousTop
-      if (distance > 20) {
-        bus.$emit('animate-info', {
-          isShow: true,
-          scrollUp: false
-        })
-        this.headerActive = false
-      } else if (distance < -80) {
-        bus.$emit('animate-info', {
-          isShow: true,
-          scrollUp: true
-        })
-        this.headerActive = true
-      }
-      if (this.position.scrollTop < 20) {
-        bus.$emit('animate-info', {
-          isShow: true,
-          scrollUp: true
-        })
-        this.headerActive = true
-      }
-
-      this.previousTop = this.position.scrollTop
-    }
+    onScroll: function (e, position) {}
   }
 }
 </script>

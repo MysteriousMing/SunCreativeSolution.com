@@ -10,11 +10,15 @@ import Construction from '@/containers/Construction'
 import Home from '@/views/Home'
 import Project from '@/views/Project'
 import Dashboard from '@/views/Dashboard'
+
 // Admin
 import PostRecord from '@/views/PostRecord'
 import Post from '@/views/Post'
 import Editor from '@/views/Editor'
 import Periodic from '@/views/Periodic'
+
+// Pages
+import Login from '@/views/pages/Login'
 
 Vue.use(Router)
 
@@ -59,7 +63,6 @@ export default new Router({
           name: 'Periodic',
           component: Periodic
         }
-
       ]
     },
     {
@@ -86,6 +89,12 @@ export default new Router({
       path: '/',
       name: 'Dev',
       component: Construction,
+      children: []
+    },
+    {
+      path: '/auth/login',
+      name: 'LoginPage',
+      component: Login,
       children: []
     }
   ]

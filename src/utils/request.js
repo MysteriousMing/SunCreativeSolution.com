@@ -91,6 +91,34 @@ function request (url, params, data, method) {
   })
 }
 
+function requestWithouToken (url, params, data, method) {
+  return new Promise((resolve, reject) => {
+    let config = {
+      url: baseUrl + url,
+      method,
+      params,
+      data
+    }
+    axios(config).then(res => {
+      if (isHttpSuccess(res.status)) {
+        resolve(res.data)
+      } else {
+        reject(res)
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+
+function SimpleGet (url, params, data) {
+  return requestWithouToken(url, params, data, 'get')
+}
+
+function SimplePost (url, params, data) {
+  return requestWithouToken(url, params, data, 'post')
+}
+
 function Get (url, params, data) {
   return this.request(url, params, data, 'get')
 }
@@ -136,5 +164,7 @@ export default {
   Post,
   Patch,
   Delete,
+  SimpleGet,
+  SimplePost,
   UploadFile
 }
