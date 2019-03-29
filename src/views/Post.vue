@@ -63,7 +63,6 @@
   <b-card 
   v-loading="processLoading"
   class="post-foot">
-    <span class="time-tips">当前: {{lastSaveTime}}</span>
     <button @click="cancelPost" class="btn btn-light" type="clear">{{!articleUuid ? '取消':'返回'}}</button>
     <button @click="beforeConfirmPost" v-if="editStatus.indexOf('edit') >= 0" class="btn btn-primary" type="submit">{{!articleUuid ? '提交':'修改'}}</button>
   </b-card>
@@ -124,9 +123,6 @@ export default {
     }
   },
   mounted () {
-    setInterval(() => {
-      this.loadTime()
-    }, 1000)
     console.log(categoryConfig)
   },
   methods: {
@@ -312,7 +308,8 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-.el-upload {
+.post-page {
+  .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
@@ -330,8 +327,11 @@ export default {
   text-align: center;
   background: white;
 }
-img.avatar { width: 100%; height: auto;max-width: 30%; display: block; }
+img.avatar { 
+  width: 100%; height: auto;max-width: 30%; display: block; 
+}
 .avatar {
   display: block;
+}
 }
 </style>

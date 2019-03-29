@@ -1,5 +1,5 @@
 <template>
-  <div class="animated fadeIn">
+  <div  v-loading="processLoading" class="animated fadeIn">
     <quill-editor v-model="content"
                   class="editor-container"
                   ref="myQuillEditor"
@@ -10,8 +10,22 @@
     </quill-editor>
     <!-- Confirm -->
     <div class="my-3 d-flex justify-content-end">
+      <el-upload
+        id="uploadQuillImage"
+        name="img"
+        class="upload-demo mr-2"
+        :headers="uploadHeader"
+        :action="uploadImage"
+        :data="uploadImageData"
+        :before-upload="handleBeforeUpdate"
+        :on-progress="handleUploadProcess"
+        :on-error="handleUploadError"
+        :on-success="handleImageSuccess"
+        multiple>
+          <el-button size="small" type="primary">插入图片</el-button>
+        </el-upload>
         <!-- <el-button type="primary" class="mr-auto" @click="showAddCarousel()">插入轮播图</el-button> -->
-        <el-button type="primary" class="mr-auto" @click="showSplit()">插入分割</el-button>
+        <el-button type="primary" size="small" class="mr-auto" @click="showSplit()">插入分割</el-button>
         <!-- <button class="btn btn-secondary" @click="cancel()">Clear</button> -->
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
     </div>
@@ -37,42 +51,6 @@
     </b-card>
 
 
-<el-dialog
-  title="轮播图插件"
-  :visible.sync="isShowAddCarousel"
-  width="80%"
-  :before-close="handleClose">
-  <span>选择需要插入轮播图的图片们</span>
-
-  <el-upload
-  class="upload-demo"
-  drag
-  :headers="uploadHeader"
-  :action="uploadImage"
-  :data="uploadImageData"
-  :before-upload="handleBeforeUpdate"
-  :on-progress="handleUploadProcess"
-  :on-error="handleUploadError"
-  :on-success="handleImageSuccess"
-  multiple>
-    <i class="el-icon-upload"></i>
-    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-  </el-upload>
-
-  <el-carousel v-loading="processLoading"
-  indicator-position="outside">
-    <el-carousel-item v-for="(item, index) in carouselData" :key="index">
-      <img v-if="item.type == 'image'" :src="item.url"/>
-      <h3 v-else>{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
-  {{carouselData}}
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="closeAddCarousel">取 消</el-button>
-    <el-button type="primary" @click="confirmCarouselText">确 定</el-button>
-  </span>
-</el-dialog>
   </div>
 </template>
 
@@ -179,12 +157,29 @@ export default {
       console.warn(res)
       // this.$message.error(res)
       this.processLoading = false
+      this.$message.error('图片插入失败')
     },
     handleImageSuccess (res, file) {
       console.log(res, file)
       // this.imageUrl = URL.createObjectURL(file.raw)
+      this.addImageToQuill(res)
       this.addCarouselImage(res)
       this.processLoading = false
+    },
+    addImageToQuill: function (res) {
+      let quill = this.$refs.myQuillEditor.quill
+      // 如果上传成功
+      if (res.code === '200' && res.info !== null) {
+        // 获取光标所在位置
+        let length = quill.getSelection().index
+        // 插入图片  res.info为服务器返回的图片地址
+        quill.insertEmbed(length, 'image', res.info)
+        // 调整光标到最后
+        quill.setSelection(length + 1)
+      } else {
+        this.$message.error('图片插入失败')
+      }
+      // loading动画消失
     },
     addCarouselImage: function (params) {
       let imgItem = {
@@ -231,6 +226,17 @@ export default {
     cancel: function (params) {
       this.result = ''
       this.content = ''
+    },
+    imgHandler: function (state) {
+      if (state) {
+        // button is clicked
+        console.log(document.querySelector('.upload-demo input'))
+        document.querySelector('.upload-demo input').click()
+        console.log('Btn', state)
+      } else {
+        console.log('????', state)
+        this.quill.format('image', false)
+      }
     }
   },
   computed: {
@@ -242,8 +248,9 @@ export default {
     console.log('this is current quill instance object', this.editor)
     setTimeout(() => {
       this.content = this.formContent || ''
-      console.log(this.formContent)
     }, 1300)
+    var vm = this
+    vm.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image', this.imgHandler)
   }
 }
 </script>
