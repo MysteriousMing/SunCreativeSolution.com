@@ -12,7 +12,6 @@
     <div class="my-3 d-flex justify-content-end">
       <el-upload
         id="uploadQuillImage"
-        name="img"
         class="upload-demo mr-2"
         :headers="uploadHeader"
         :action="uploadImage"
@@ -79,7 +78,7 @@ export default {
       uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
       uploadImageData: {
         identifier: '',
-        image_type: 'sun/carousel'
+        image_type: 'sun/content'
       },
       uploadHeader: {
         Authorization: `Token ${window.localStorage.token}`
@@ -163,17 +162,17 @@ export default {
       console.log(res, file)
       // this.imageUrl = URL.createObjectURL(file.raw)
       this.addImageToQuill(res)
-      this.addCarouselImage(res)
+      // this.addCarouselImage(res)
       this.processLoading = false
     },
     addImageToQuill: function (res) {
       let quill = this.$refs.myQuillEditor.quill
       // 如果上传成功
-      if (res.code === '200' && res.info !== null) {
+      if (res) {
         // 获取光标所在位置
         let length = quill.getSelection().index
         // 插入图片  res.info为服务器返回的图片地址
-        quill.insertEmbed(length, 'image', res.info)
+        quill.insertEmbed(length, 'image', res)
         // 调整光标到最后
         quill.setSelection(length + 1)
       } else {
