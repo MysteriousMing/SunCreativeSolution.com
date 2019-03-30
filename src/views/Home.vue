@@ -67,6 +67,7 @@ export default {
   },
   mounted () {
     console.log('hhhh')
+    document.body.querySelector('.logo').classList.remove('active')
   },
   created () {
     this.getData()
@@ -269,13 +270,14 @@ export default {
 }
 .mobile-home p {
   padding-left: 53px;
-  font-size: 18px;
+  font-size: 1.5rem;
+  margin-bottom: 0;
 }
 .mobile-home p.mt-100 {
   padding-top: 300px;
 }
 .mobile-home p.mt-4 {
-  font-size: 22.5px;
+  font-size: 2.2rem;
 }
 </style>
 <style lang="scss">

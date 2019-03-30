@@ -112,4 +112,35 @@ export default {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .stella-item {
+    &.stella-left-top {
+      background: #000000 !important;
+    }
+    &.stella-right-top {
+      background: #000000 !important;      
+    }
+    &.stella-left-bottom {
+      background: #ffffff !important;      
+    }
+    &.stella-right-bottom {
+      background: #ffffff !important;      
+    }
+  }
+  .stella-upper-item {
+    &.stella-left-top {
+      background: #ffffff !important;
+    }
+    &.stella-right-top {
+      background: #ffffff !important;      
+    }
+    &.stella-left-bottom {
+      background: #000000 !important;      
+    }
+    &.stella-right-bottom {
+      background: #000000 !important;      
+    }
+  }
+}
 </style>

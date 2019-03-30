@@ -132,6 +132,7 @@ export default {
   },
   mounted () {
     const that = this
+    document.body.querySelector('.logo').classList.add('active')
     window.addEventListener('resize', function () {
       that.setSize()
     }, false)

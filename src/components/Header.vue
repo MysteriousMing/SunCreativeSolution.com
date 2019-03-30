@@ -1,13 +1,14 @@
 <template>
   <header class="app-header navbar animated"
   :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true }">
-    <b-link class="navbar-brand logo" to="/">
-      <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg"></logo>
+    <b-link class="navbar-brand logo-ctn" to="/">
+      <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg" class="logo"></logo>
     </b-link>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('art')">ART</span>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('research')">RESEARCH</span>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('commercial')">COMMERCIAL</span>
     <button class="ml-auto mr-4 navbar-toggler mobile-sidebar-toggler d-lg-none menu-btn" @click="mobileSidebarToggle">
+      <span></span>
       <span></span>
       <span></span>
       <span></span>
@@ -60,6 +61,8 @@ export default {
   },
   mounted () {
     // console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
+    document.body.querySelector('.menu-btn').classList.remove('open')
+    document.body.querySelector('.logo').classList.add('active')
   },
   methods: {
     selectNav (val) {
@@ -83,6 +86,7 @@ export default {
       e.preventDefault()
       // document.body.classList.toggle('sidebar-mobile-show')
       document.body.querySelector('.menu-btn').classList.toggle('open')
+      document.body.querySelector('.logo').classList.toggle('active')
     },
     asideToggle (e) {
       e.preventDefault()
@@ -143,16 +147,22 @@ export default {
 
 @media (max-width: 768px) {
   .app-header.navbar {
-    padding-top: 70px;
+    padding-top: 14px;
   }
-  .app-header .navbar-brand.logo {
+  .app-header .navbar-brand.logo-ctn {
     padding-left: 40px !important;
   }
 }
-
+.logo {
+  transition: transform 250ms ease-in-out;
+  transform-origin: 0 0;
+}
+.logo.active {
+  transform: scale(0.5);
+}
 .menu-btn {
-  width: 40px;
-  height: 30px;
+  width: 45px;
+  height: 35px;
   position: relative;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
@@ -185,37 +195,45 @@ button.menu-btn:focus {
   -o-transition: .25s ease-in-out;
   transition: .25s ease-in-out;
 }
+
+/* Icon 3 */
+
 .menu-btn span:nth-child(1) {
   top: 0px;
 }
 
-.menu-btn span:nth-child(2) {
-  top: 15px;
+.menu-btn span:nth-child(2),.menu-btn span:nth-child(3) {
+  top: 18px;
 }
 
-.menu-btn span:nth-child(3) {
-  top: 30px;
+.menu-btn span:nth-child(4) {
+  top: 36px;
 }
 
 .menu-btn.open span:nth-child(1) {
-  top: 15px;
-  -webkit-transform: rotate(135deg);
-  -moz-transform: rotate(135deg);
-  -o-transform: rotate(135deg);
-  transform: rotate(135deg);
+  top: 18px;
+  width: 0%;
+  left: 50%;
 }
 
 .menu-btn.open span:nth-child(2) {
-  opacity: 0;
-  left: -60px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .menu-btn.open span:nth-child(3) {
-  top: 15px;
-  -webkit-transform: rotate(-135deg);
-  -moz-transform: rotate(-135deg);
-  -o-transform: rotate(-135deg);
-  transform: rotate(-135deg);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.menu-btn.open span:nth-child(4) {
+  top: 18px;
+  width: 0%;
+  left: 50%;
 }
 
 </style>
