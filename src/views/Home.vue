@@ -5,9 +5,13 @@
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
       <div v-for="element in picArray" :key="element.name"
-      class="grid-item grid-sizer" @click="handleClick(element)">
+      class="grid-item grid-sizer project-item" @click="handleClick(element)">
           <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
           <img :src="element.src" alt="Not found">
+          <section class="hover-show">
+            <p class="item-title">{{element.name}}</p>
+            <p class="item-desc">{{element.discribe}}</p>
+          </section>
       </div>
     </isotope>
   </section>
@@ -70,7 +74,11 @@ export default {
 
     bus.$on('home-go-down', isDown => {
       if (isDown && this.$refs.page) {
-        this.$refs.page.scrollTop = this.windowHinnerHeight
+        // this.$refs.page.scrollTop = this.windowHinnerHeight
+        this.$refs.page.scrollTo({
+          top: this.windowHinnerHeight,
+          behavior: 'smooth'
+        })
       }
     })
     bus.$on('nav-router', nav => {
@@ -147,6 +155,7 @@ export default {
             uuid: item.uuid,
             src: item.header_image.replace('Http://', 'Https://'),
             name: item.title,
+            discribe: item.explanation,
             href: '/', // todo: single Article
             group: item.category || parseInt(Math.random() * 3)
           }
@@ -212,7 +221,6 @@ export default {
 }
 .home-page .grid-item img {
   width: 100%;
-  margin-bottom: 36px;
 }
 @media (max-width: 768px) {
   .home-page .container {
@@ -227,4 +235,36 @@ export default {
     width: 100%;
   }
 }
+</style>
+<style lang="scss">
+.home-page .project-item {
+  position: relative;
+  margin-bottom: 36px;
+  overflow: hidden;
+  .hover-show {
+    position: absolute;
+    top: 100%;
+    color: #ffffff;
+    background: rgba(115, 115, 115, 0.61);
+    transition: all 300ms cubic-bezier(0.23, 0.06, 0, 1.34) 100ms;
+    width: 100%;
+    height: 100%;
+    padding: 10px 14px;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    .item-title {
+      font-family: 'Mada SemiBold'
+    }
+  }
+
+  &:hover .hover-show {
+    // display: block;
+    top: 0;
+  }
+}
+
 </style>
