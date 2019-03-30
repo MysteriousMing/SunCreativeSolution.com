@@ -1,6 +1,12 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
-  <Dashboard></Dashboard>
+  <Dashboard class="d-md-down-none"></Dashboard>
+  <section class="d-lg-none mobile-home">
+    <p class="mt-100">Research-based,</p>
+    <p class="mt-1">Problem-solving,</p>
+    <p class="mt-1">Experience-creating,</p>
+    <p class="mt-4">DESIGNER.</p>
+  </section>
   <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
@@ -207,10 +213,10 @@ export default {
   min-height: 100vh;
   padding-bottom: 2rem;
 }
-.home-page .container {
-  max-width: calc(100% - 132px);
-}
+/* .home-page .container {
+} */
 .home-page .flud {
+  max-width: calc(100% - 132px);
   margin-top: 118px;
   margin-bottom: 118px;
   min-height: calc(100vh - 196px);
@@ -222,24 +228,59 @@ export default {
 .home-page .grid-item img {
   width: 100%;
 }
-@media (max-width: 768px) {
-  .home-page .container {
+.home-page .project-item {
+  margin-bottom: 36px;
+}
+@media (max-width: 991px) {
+  .home-page .flud {
     max-width: calc(100% - 40px);
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 48px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 768px) {
+  .home-page .flud {
+    max-width: 100%;
     padding-left: 0;
     padding-right: 0;
     padding-bottom: 20px;
     margin-bottom: 30px;
   }
-  .grid-item,
-  .grid-sizer {
+  .home-page .grid-item,
+  .home-page .grid-sizer {
     width: 100%;
   }
+  .home-page .project-item {
+    margin-bottom: 22px;
+  }
+}
+.mobile-home {
+  height: 700px;
+  width: 100%;
+  background-color: black;
+  background-image: url(/static/images/project/img2.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  background-position: center;
+}
+.mobile-home p {
+  padding-left: 53px;
+  font-size: 18px;
+}
+.mobile-home p.mt-100 {
+  padding-top: 300px;
+}
+.mobile-home p.mt-4 {
+  font-size: 22.5px;
 }
 </style>
 <style lang="scss">
 .home-page .project-item {
   position: relative;
-  margin-bottom: 36px;
   overflow: hidden;
   .hover-show {
     position: absolute;
@@ -252,6 +293,7 @@ export default {
     padding: 10px 14px;
 
     display: flex;
+    overflow: hidden;
     flex-flow: column nowrap;
     justify-content: flex-end;
     align-items: flex-start;
@@ -266,5 +308,9 @@ export default {
     top: 0;
   }
 }
-
+@media (max-width: 991px) {
+  .hover-show {
+    font-size: 0.8rem;
+  }
+}
 </style>
