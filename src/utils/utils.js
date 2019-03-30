@@ -28,7 +28,7 @@ const formatProject = nodeArr => {
           idx: `title-${titleIndex}`
         }
         tagObj.para = []
-        currentHeader = item.textContwwent
+        currentHeader = item.textContent
         currentHeaderNodes = item
         newNodeArr.push(tagObj)
         flag++
