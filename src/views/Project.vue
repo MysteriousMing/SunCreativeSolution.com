@@ -1,6 +1,6 @@
 <template>
   <section v-scroll="onScroll" ref="projectPage" class="page-project proj-content"
-  id="proj-content">
+  id="proj-content" :style="'--current-theme-color:' + articleDetail.theme_color">
     <!-- image banner -->
     <section class="header" v-loading="isDetailLoading">
         <figure 
@@ -118,7 +118,8 @@ export default {
       titleArray: [],
       activeTitle: 1,
       articleDetail: {
-        content: ''
+        content: '',
+        theme_color: '#000000'
       },
       categoryConfig: categoryConfig,
       carouselWidth: 0
@@ -370,4 +371,32 @@ export default {
 </style>
 <style lang="scss">
   @import '../style/project.scss';
+</style>
+<style lang="scss">
+  a.nav-link {
+    .title-nav-item & {
+      color: rgba(1, 0, 0, 0.6);
+    }
+    .sub-title-nav-item & {
+      color: rgba(94, 94, 94, 0.6);
+    }
+
+    &.active {
+      color: var(--current-theme-color) !important;
+    }
+
+    &:hover {
+      color: var(--current-theme-color) !important;
+    }
+    .title-nav-item &.active{
+      color: var(--current-theme-color) !important;
+    }
+
+    .sub-title-nav-item &.active{
+      color: var(--current-theme-color) !important;
+    }
+    .first-menu-item &.active::before {
+      background-color: var(--current-theme-color) !important;
+    }
+  }
 </style>
