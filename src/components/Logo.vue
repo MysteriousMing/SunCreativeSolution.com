@@ -48,6 +48,7 @@ export default {
   position: relative;
   width: 90px;
   height: 90px;
+  z-index: 100;
   .animated {
     transition: all 100ms ease-in;
   }

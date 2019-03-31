@@ -1,7 +1,7 @@
 <template>
   <header class="app-header navbar animated"
   :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true }">
-    <b-link class="navbar-brand logo-ctn" to="/">
+    <b-link class="navbar-brand logo-ctn" to="/index">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg" class="logo"></logo>
     </b-link>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('art')">ART</span>
@@ -13,6 +13,12 @@
       <span></span>
       <span></span>
     </button>
+    <section class="mobile-full  d-lg-none">
+      <span class="mobile-full-item" @click="selectNav('art')">ART</span>
+      <span class="mobile-full-item" @click="selectNav('research')">RESEARCH</span>
+      <span class="mobile-full-item" @click="selectNav('commercial')">COMMERCIAL</span>
+      <span class="mobile-full-item mt-auto" @click="gotoContact()">CONTACT</span>
+    </section>
   </header>
 </template>
 <script>
@@ -67,6 +73,10 @@ export default {
   methods: {
     selectNav (val) {
       console.log(this.$router)
+      document.body.querySelector('.mobile-full').classList.remove('show')
+      document.body.querySelector('.menu-btn').classList.remove('open')
+      document.body.querySelector('.logo').classList.remove('active')
+
       if (this.$router.history.current.name === 'Project') {
         this.$router.push({
           name: 'Home'
@@ -87,10 +97,16 @@ export default {
       // document.body.classList.toggle('sidebar-mobile-show')
       document.body.querySelector('.menu-btn').classList.toggle('open')
       document.body.querySelector('.logo').classList.toggle('active')
+      document.body.querySelector('.mobile-full').classList.toggle('show')
     },
     asideToggle (e) {
       e.preventDefault()
       document.body.classList.toggle('aside-menu-hidden')
+    },
+    gotoContact () {
+      this.$router.push({
+        name: 'Contact'
+      })
     }
   }
 }
@@ -99,6 +115,9 @@ export default {
 .app-header.navbar .navbar-brand {
   line-height: 79px;
   font-family: 'Mada SemiBold';
+}
+.app-header.navbar .navbar-brand.logo-ctn {
+  padding-left: 78px;
 }
 .navbar-brand.black {
   color: #ffffff;
@@ -147,19 +166,71 @@ export default {
 
 @media (max-width: 768px) {
   .app-header.navbar {
-    padding-top: 14px;
+    /* padding-top: 14px; */
   }
   .app-header .navbar-brand.logo-ctn {
     padding-left: 40px !important;
   }
+  .logo {
+    transition: transform 250ms ease-in-out;
+    transform-origin: 0 0;
+  }
+  .logo.active {
+    transform: scale(0.5);
+  }
+  .mobile-full {
+    position: fixed;
+    top: 66px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-flow: column;
+    color:white;
+    background: black;
+    transition: all 250ms ease 100ms;
+    overflow: hidden;
+    height: 0;
+    z-index: 10;
+  }
+  .mobile-full.show {
+    height: calc(100vh - 66px);
+  }
+  .mobile-full-item {
+    transition: all 250ms ease-in 200ms;
+    font-size: 0.5rem;
+    margin-top: 34px;
+    padding-left: 0;
+    text-align: left;
+    opacity: 0;
+  }
+  .mobile-full-item:hover {
+    color: #fafafa;
+  }
+  .mobile-full.show .mobile-full-item {
+    opacity: 1;
+    padding-left: 52px;
+    font-size: 2.5rem;
+  }
+  .mobile-full-item:first-child {
+    margin-top: 105px;
+  }
+  .mobile-full-item:last-child {
+    margin-bottom: 75px;
+  }
+  .mobile-full-item:nth-child(1) {
+    transition-duration: 200ms;
+  }
+  .mobile-full-item:nth-child(2) {
+    transition-duration: 250ms;
+  }
+  .mobile-full-item:nth-child(3) {
+    transition-duration: 350ms;
+  }
+  .mobile-full-item:nth-child(4) {
+    transition-duration: 450ms;
+  }
 }
-.logo {
-  transition: transform 250ms ease-in-out;
-  transform-origin: 0 0;
-}
-.logo.active {
-  transform: scale(0.5);
-}
+
 .menu-btn {
   width: 45px;
   height: 35px;
