@@ -47,7 +47,7 @@
 .ql-snow .ql-editor h2,
 .para-section h2 {
   color: #919191;
-  font-size: 1rem;
+  font-size: 0.9rem;
   // font-size: 0.56rem;
   line-height: 1.1;
   font-style:italic;
@@ -76,6 +76,7 @@ a.nav-link {
     line-height: 0.8;
   }
   .sub-title-nav-item & {
+    font-family: 'Mada Light';
     color: rgba(94, 94, 94, 0.6);
     font-style: italic;
     font-size: 0.8125rem;
@@ -102,7 +103,7 @@ a.nav-link {
 
   .sub-title-nav-item &.active{
     opacity: 1;
-    font-size: 1rem;
+    font-size: 0.8125rem;
     padding-bottom: 4px;
     padding-left: 0;
     color: #010000 !important;
