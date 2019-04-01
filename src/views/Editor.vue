@@ -116,7 +116,17 @@ export default {
       console.log('contentArr - \n', this.contentArr)
     },
     showSplit () {
-      this.content.push(`<p>!&hr&!</p>`)
+      let quill = this.$refs.myQuillEditor.quill
+      let content = `\n!&hr&!`
+      // 获取光标所在位置
+      let length = quill.getSelection().index
+      // 插入
+      quill.insertText(length, content, {
+        'color': 'transparent',
+        'italic': true
+      })
+      // 调整光标到最后
+      quill.setSelection(length + 1)
     },
     onEditorBlur (quill) {
       // console.log('editor blur!', quill)
