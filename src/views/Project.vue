@@ -1,6 +1,9 @@
 <template>
   <section v-scroll="onScroll" ref="projectPage" class="page-project proj-content"
   id="proj-content" :style="'--current-theme-color:' + articleDetail.theme_color">
+    <section class="project-progress d-md-none">
+      <div class="project-progress-inner" :style="'width: ' + readingProgress +'%'"></div>
+    </section>
     <!-- image banner -->
     <section class="header" v-loading="isDetailLoading">
         <figure 
@@ -75,7 +78,7 @@
 
     </div>
 
-    <section class="clear">
+    <section class="clear" ref="bottomFooter" >
       <AppFooter/>
     </section>
   </section>
@@ -109,6 +112,8 @@ export default {
   // props: ['scrollTop'],
   data: function () {
     return {
+      totalHeight: 1200,
+      readingProgress: 1,
       section: 0,
       scrollTop: 0,
       position: {},
@@ -137,6 +142,7 @@ export default {
     window.addEventListener('resize', function () {
       that.setSize()
     }, false)
+    this.totalHeight = this.$refs.bottomFooter.offsetTop
   },
   watch: {
     scrollTop (now, prev) {
@@ -192,6 +198,7 @@ export default {
           headerActive: true
         })
       }
+      this.readingProgress = position.scrollTop * 100 / this.totalHeight
       this.previousTop = this.position.scrollTop
     },
     getArticleDetail () {
@@ -212,6 +219,10 @@ export default {
     formatContentNode () {
       let content = this.$refs.content
       this.articleDetail.contentArr = this.Utils.formatProject(content.childNodes)
+      let that = this
+      setTimeout(() => {
+        that.totalHeight = this.$refs.bottomFooter.offsetTop - window.innerHeight
+      }, 1000)
       console.log('contentArr - \n', this.articleDetail.contentArr)
     },
     // titleList: this.formatTitleMenu(item.content)
@@ -398,5 +409,20 @@ export default {
     .first-menu-item &.active::before {
       background-color: var(--current-theme-color) !important;
     }
+  }
+
+  .project-progress {
+    width: 100%;
+    height: 3px;
+    position: fixed;
+    top: 0;
+    z-index: 1111;
+    background-color: white;
+  }
+  .project-progress-inner {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 100%;
+    background-color: var(--current-theme-color) !important;
   }
 </style>
