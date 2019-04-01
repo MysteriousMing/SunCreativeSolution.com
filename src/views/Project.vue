@@ -53,7 +53,7 @@
                 <div class="para-image" v-html="image.innerHTML" ref="imgSize"></div>
               </el-carousel-item>
             </el-carousel>
-            <div v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
+            <div class="para-image" v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
           </section>          
         </div>
       </article>
