@@ -124,6 +124,10 @@ export default {
   },
   mounted () {
     console.log(categoryConfig)
+    // app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden
+    // app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-minimized brand-minimized
+    document.body.classList.add('sidebar-minimized')
+    document.body.classList.add('brand-minimized')
   },
   methods: {
     loadArticleDetail: function (uuid) {

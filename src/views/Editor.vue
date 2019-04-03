@@ -1,30 +1,31 @@
 <template>
-  <div  v-loading="processLoading" class="animated fadeIn">
-    <quill-editor v-model="content"
-                  class="editor-container"
-                  ref="myQuillEditor"
-                  :options="editorOption"
-                  @blur="onEditorBlur($event)"
-                  @focus="onEditorFocus($event)"
-                  @ready="onEditorReady($event)">
-    </quill-editor>
+  <div v-loading="processLoading" class="animated fadeIn editor-page">
+    <section class="editor-whole-ctn">
+      <quill-editor v-model="content"
+                    class="editor-container"
+                    ref="myQuillEditor"
+                    :options="editorOption"
+                    @blur="onEditorBlur($event)"
+                    @focus="onEditorFocus($event)"
+                    @ready="onEditorReady($event)">
+      </quill-editor>
+      <el-button type="danger" class="editor-split" :class="{'fixed': isEditorToolboxFixed}" circle @click="showSplit()">hr</el-button>
+    </section>
     <!-- Confirm -->
     <div class="my-3 d-flex justify-content-end">
-      <el-upload
-        id="uploadQuillImage"
-        class="upload-demo mr-2"
-        :headers="uploadHeader"
-        :action="uploadImage"
-        :data="uploadImageData"
-        :before-upload="handleBeforeUpdate"
-        :on-progress="handleUploadProcess"
-        :on-error="handleUploadError"
-        :on-success="handleImageSuccess"
-        multiple>
+        <el-upload
+          id="uploadQuillImage"
+          class="upload-quill-image upload-demo mr-2"
+          :headers="uploadHeader"
+          :action="uploadImage"
+          :data="uploadImageData"
+          :before-upload="handleBeforeUpdate"
+          :on-progress="handleUploadProcess"
+          :on-error="handleUploadError"
+          :on-success="handleImageSuccess"
+          multiple>
           <el-button size="small" type="primary">插入图片</el-button>
         </el-upload>
-        <!-- <el-button type="primary" class="mr-auto" @click="showAddCarousel()">插入轮播图</el-button> -->
-        <el-button type="primary" size="small" class="mr-auto" @click="showSplit()">插入分割</el-button>
         <!-- <button class="btn btn-secondary" @click="cancel()">Clear</button> -->
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
     </div>
@@ -74,6 +75,7 @@ export default {
       result: '',
       contentArr: [],
       carouselData: [],
+      isEditorToolboxFixed: false,
       isShowAddCarousel: false,
       uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
       uploadImageData: {
@@ -117,12 +119,12 @@ export default {
     },
     showSplit () {
       let quill = this.$refs.myQuillEditor.quill
-      let content = `\n!&hr&!`
+      let content = `\n------------- 图片分割 ------------- !&hr&! ------------- 图片分割 -------------\n`
       // 获取光标所在位置
       let length = quill.getSelection().index
       // 插入
       quill.insertText(length, content, {
-        'color': 'transparent',
+        'color': '#F56C6C',
         'italic': true
       })
       // 调整光标到最后
@@ -264,6 +266,20 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.upload-quill-image {
+  display: none;
+}
+.editor-whole-ctn {
+  position: relative;
+  .editor-container {
+    position: initial;
+  }
+  .editor-split {
+    position: absolute;
+    top: 90px;
+    right: 20px;
+  }
+}
 .quill-editor {
   // min-height: 500px;
   .ql-container {

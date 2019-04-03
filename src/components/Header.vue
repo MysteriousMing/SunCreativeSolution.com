@@ -115,6 +115,8 @@ export default {
 .app-header.navbar .navbar-brand {
   line-height: 79px;
   font-family: 'Mada SemiBold';
+  width: auto !important;
+  background: none !important;
 }
 .app-header.navbar .navbar-brand.logo-ctn {
   padding-left: 78px;
