@@ -1,7 +1,7 @@
 <template>
   <section v-scroll="onScroll" ref="projectPage" class="page-project proj-content"
   id="proj-content" :style="'--current-theme-color:' + articleDetail.theme_color">
-    <section class="project-progress d-md-none">
+    <section class="project-progress d-md-none" v-show="showMobileProgress">
       <div class="project-progress-inner" :style="'width: ' + readingProgress +'%'"></div>
     </section>
     <!-- image banner -->
@@ -112,6 +112,7 @@ export default {
   // props: ['scrollTop'],
   data: function () {
     return {
+      showMobileProgress: false,
       totalHeight: 1200,
       readingProgress: 1,
       section: 0,
@@ -198,6 +199,8 @@ export default {
           headerActive: true
         })
       }
+      let articleTop = document.body.querySelector('.article-content').offsetTop
+      this.showMobileProgress = (articleTop - position.scrollTop - 10) < 0
       this.readingProgress = position.scrollTop * 100 / this.totalHeight
       this.previousTop = this.position.scrollTop
     },
@@ -424,5 +427,6 @@ export default {
     border-bottom-right-radius: 5px;
     height: 100%;
     background-color: var(--current-theme-color) !important;
+    transition: all 100ms ease;
   }
 </style>
