@@ -187,10 +187,15 @@ export default {
           return {
             date: new Date(item.created_at).toDateString(),
             ...item,
-            header_image: item.header_image.replace('http://', 'https://')
+            header_image: item.header_image ? item.header_image.replace('http://', 'https://') : ''
           }
         })
         this.saveArticleList = this.articleList
+      }, err => {
+        console.error('GETADMIN', err)
+        this.$router.push({
+          name: 'LoginPage'
+        })
       })
     },
     handleClick (row) {

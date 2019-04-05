@@ -323,6 +323,9 @@ export default {
       width: 100%;
       text-align: center;
       vertical-align: middle;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
   }
   .right-col>.color-pattern {
       border-left: 24px solid white;
@@ -342,7 +345,7 @@ export default {
 
   .menu-ctn {
     display: block;
-    
+    margin-top: 70px;    
     transition: all 200ms ease;
     margin-left: 30px;
     width: calc(100% - 30px);
@@ -351,15 +354,13 @@ export default {
       left: 77%;
       top: 70px;
       width: 20%;
+      margin-top: 0;
     }
   }
   @media (max-width: 991px) {
     .left-col {
         width: 100%;
         float: left;
-    }
-    .header {
-      height: 284px;
     }
     figure.left-col {
       background: black;
@@ -377,8 +378,12 @@ export default {
       padding-right: 5px;
       padding-bottom: 30px;
     }
+  } 
+  @media (max-width: 767px) {
+    .header {
+      height: 284px;
+    }
   }
-
   .clear {
     clear: both;
   }
@@ -395,11 +400,11 @@ export default {
       color: rgba(94, 94, 94, 0.6);
     }
 
-    &.active {
+    .title-nav-item &.active {
       color: var(--current-theme-color) !important;
     }
 
-    &:hover {
+    .title-nav-item &:hover {
       color: var(--current-theme-color) !important;
     }
     .title-nav-item &.active{

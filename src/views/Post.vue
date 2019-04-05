@@ -104,8 +104,8 @@ export default {
         theme_color: '#409EFF',
         // category: 'art',
         // explanation: 'hhhhh',
-        // header_image: 'https://static.dubheee.cn/sun/header-image/正式测试.jpg',
-        // thumbnail: 'https://static.dubheee.cn/sun/thumbnail-image/正式测试.jpg',
+        header_image: 'https://static.dubheee.cn/sun/header-image/default.png',
+        thumbnail: 'https://static.dubheee.cn/sun/thumbnail-image/default.png',
         title: ''
       },
       categoryConfig: categoryConfig,
