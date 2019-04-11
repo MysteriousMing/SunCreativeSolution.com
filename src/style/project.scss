@@ -207,6 +207,12 @@ ul li.sub-menu-item {
 .images-section {
   margin-bottom: 20px;
 }
+.image-header-section {
+  height: 0;
+}
+.images-section + .image-header-section {
+  margin-top: -20px;
+}
 .para-image {
   text-align: center;
 }

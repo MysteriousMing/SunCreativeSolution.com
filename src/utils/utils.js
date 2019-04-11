@@ -86,6 +86,75 @@ const formatProject = nodeArr => {
           flag++
         }
         break
+      case 'h3':
+        titleIndex++
+        subTitleIndex = -1
+        // console.log('[+]H 1 -', item)
+        tagObj.styleClass = 'image-header-section'
+        tagObj.header = {
+          name: item.textContent,
+          nodes: [item],
+          idx: `title-${titleIndex}`
+        }
+        tagObj.para = []
+        currentHeader = item.textContent
+        currentHeaderNodes = item
+        newNodeArr.push(tagObj)
+        flag++
+        break
+      case 'h4':
+        subTitleIndex++
+        // console.log('[+]H 2 -', item)
+        if (flag === 0) {
+          tagObj.styleClass = 'image-header-section'
+          tagObj.header = {
+            name: item.textContent,
+            nodes: item,
+            idx: `title-${titleIndex}`
+          }
+          tagObj.para = []
+          newNodeArr.push(tagObj)
+          flag++
+        }
+        let lastImageHeaderSection = newNodeArr[flag - 1]
+        if (lastImageHeaderSection.styleClass === 'image-header-section' && lastImageHeaderSection.header) {
+          if (!lastImageHeaderSection.subheader) {
+            newNodeArr[flag - 1].subheader = {
+              name: item.textContent,
+              nodes: item,
+              idx: `title-${titleIndex}-${subTitleIndex}`
+            }
+          } else {
+            tagObj.styleClass = 'image-header-section'
+            tagObj.header = {
+              name: currentHeader,
+              nodes: currentHeaderNodes
+            }
+            tagObj.subheader = {
+              name: item.textContent,
+              nodes: item,
+              idx: `title-${titleIndex}-${subTitleIndex}`
+            }
+            tagObj.para = []
+            newNodeArr.push(tagObj)
+            flag++
+          }
+        } else {
+          tagObj.styleClass = 'image-header-section'
+          tagObj.header = {
+            name: currentHeader,
+            nodes: currentHeaderNodes
+          }
+          tagObj.subheader = {
+            name: item.textContent,
+            nodes: item,
+            idx: `title-${titleIndex}-${subTitleIndex}`
+          }
+          tagObj.para = []
+          newNodeArr.push(tagObj)
+          flag++
+        }
+        break
       default:
         if (item.querySelectorAll('img').length > 0) {
           console.log('[+]Image -', item)

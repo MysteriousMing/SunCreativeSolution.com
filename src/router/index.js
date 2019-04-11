@@ -10,6 +10,7 @@ import Construction from '@/containers/Construction'
 import Home from '@/views/Home'
 import Project from '@/views/Project'
 import Dashboard from '@/views/Dashboard'
+import Catograph from '@/views/Catograph'
 
 // Admin
 import PostRecord from '@/views/PostRecord'
@@ -89,6 +90,12 @@ export default new Router({
       path: '/',
       name: 'Dev',
       component: Construction,
+      children: []
+    },
+    {
+      path: '/cat',
+      name: 'Cat',
+      component: Catograph,
       children: []
     },
     {

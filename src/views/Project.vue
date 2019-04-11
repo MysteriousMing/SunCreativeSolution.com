@@ -31,8 +31,8 @@
       <article v-if="articleDetail"
       class="ql-editor"
       ref="contentNode">
-        <div v-for="(section, index) of articleDetail.contentArr" :key="index">
-          <section v-if="section.styleClass === 'para-section'" class="para-section">
+        <div v-for="(section, index) of articleDetail.contentArr" :key="index" :class="section.styleClass">
+          <section v-if="section.styleClass === 'para-section'">
             <div class="section-header-ctn">
               <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
               <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
@@ -41,7 +41,13 @@
               <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>
             </div>
           </section>
-          <section v-else-if="section.styleClass === 'images-section'" class="images-section">
+          <section v-else-if="section.styleClass === 'image-header-section'">
+            <div class="section-header-ctn">
+              <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
+              <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
+            </div>
+          </section>
+          <section v-else-if="section.styleClass === 'images-section'">
             <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
             <el-carousel v-if="section.images.length > 1"
               :autoplay="section.images.length > 2 ? true : false"
@@ -232,14 +238,14 @@ export default {
     formatTitleMenu (title) {
       let content = this.$refs.content
 
-      let titleArr = content.querySelectorAll('h1, h2')
-      // console.log('titleArr - \n', titleArr)
+      let titleArr = content.querySelectorAll('h1, h2, h3, h4')
+      console.log('titleArr - \n', titleArr)
       this.titleArray = []
       let titleIndex = -1
       let subtitleIndex = -1
       titleArr.forEach((element, index) => {
         element.id = `title-${index}`
-        // console.log(element, element.tagName)
+        console.log(element, element.tagName)
         // console.log(element.textContent)
         let tagObj = {
           index: element.id,
@@ -253,6 +259,17 @@ export default {
             tagObj.id = `title-${titleIndex}`
             break
           case 'h2':
+            subtitleIndex++
+            tagObj.level = 'second'
+            tagObj.id = `title-${titleIndex}-${subtitleIndex}`
+            break
+          case 'h3':
+            titleIndex++
+            subtitleIndex = -1
+            tagObj.level = 'first'
+            tagObj.id = `title-${titleIndex}`
+            break
+          case 'h4':
             subtitleIndex++
             tagObj.level = 'second'
             tagObj.id = `title-${titleIndex}-${subtitleIndex}`

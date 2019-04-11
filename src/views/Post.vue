@@ -64,7 +64,7 @@
   v-loading="processLoading"
   class="post-foot">
     <button @click="cancelPost" class="btn btn-light" type="clear">{{!articleUuid ? '取消':'返回'}}</button>
-    <button @click="beforeConfirmPost" v-if="editStatus.indexOf('edit') >= 0" class="btn btn-primary" type="submit">{{!articleUuid ? '提交':'修改'}}</button>
+    <button @click="beforeConfirmPost" v-if="editStatus.indexOf('edit') >= 0 && form.content" class="btn btn-primary" type="submit">{{!articleUuid ? '提交':'修改'}}</button>
   </b-card>
 </div>
 </template>
@@ -150,7 +150,8 @@ export default {
       this.uploadHeaderImageData.identifier = this.form.title.replace(/\s+/g, '')
     },
     confirmText (data) {
-      this.form.content = data
+      this.$set(this.form, 'content', data)
+      // this.form.content = data
       console.log(this.form)
     },
     handleHeaderSuccess (res, file) {

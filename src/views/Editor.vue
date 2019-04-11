@@ -9,7 +9,13 @@
                     @focus="onEditorFocus($event)"
                     @ready="onEditorReady($event)">
       </quill-editor>
-      <el-button type="danger" class="editor-split" :class="{'fixed': isEditorToolboxFixed}" circle @click="showSplit()">hr</el-button>
+      <div class="editor-split" :class="{'fixed': isEditorToolboxFixed}">
+        <el-button type="danger" circle @click="showSplit()">hr</el-button>
+        <el-tooltip class="item" effect="dark" content="H1H2/H3H4分别为文字和图片标题, 图片标题正文不可见.相邻图片会转为轮播图, 需要分割相邻图片使用左侧 hr." placement="top-start">
+          <el-button  type="warning" icon="el-icon-view" circle></el-button>
+        </el-tooltip>
+      </div>
+      
     </section>
     <!-- Confirm -->
     <div class="my-3 d-flex justify-content-end">
@@ -93,12 +99,12 @@ export default {
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],
             [{ 'header': 1 }, { 'header': 2 }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
             [{ 'script': 'sub' }, { 'script': 'super' }],
             [{ 'indent': '-1' }, { 'indent': '+1' }],
             [{ 'direction': 'rtl' }],
             [{ 'size': ['small', false, 'large', 'huge'] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'font': [] }],
             [{ 'color': [] }, { 'background': [] }],
             [{ 'align': [] }],
