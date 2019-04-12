@@ -1,4 +1,4 @@
-.para-section {
+.para-section>section {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -14,7 +14,7 @@
 }
 // 适配手机
 @media (max-width: 991px) {
-  .para-section {
+  .para-section>section {
     flex-flow: wrap;
     padding-left: 15px;
     padding-right: 15px;
