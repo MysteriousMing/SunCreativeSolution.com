@@ -56,6 +56,11 @@
   font-family: 'Mada Regular';
 }
 
+.image-header-section h1,
+.image-header-section h2 {
+    color: transparent!important;
+    font-size: 1px!important;
+}
 .ql-snow .ql-editor p,
 .para-section p {
   color: #606060;
