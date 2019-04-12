@@ -7,7 +7,7 @@ const formatNumber = n => {
 const formatProject = nodeArr => {
   // h1 h2 分在一个 section 里 - .para-section
   // h2 之后, 下一个图片之前的 p 分在一个 section 里 .images-section
-  let stTime = new Date()
+  let stTime = Date.now()
   let newNodeArr = []
   let flag = 0
   let titleIndex = -1
@@ -157,7 +157,7 @@ const formatProject = nodeArr => {
         break
       default:
         if (item.querySelectorAll('img').length > 0) {
-          console.log('[+]Image -', item)
+          // console.log('[+]Image -', item)
           let lastSection = newNodeArr[flag - 1] || null
           if (flag > 0 && lastSection && lastSection.styleClass === 'images-section') {
             newNodeArr[flag - 1].images.push(item)
@@ -180,16 +180,24 @@ const formatProject = nodeArr => {
           newNodeArr.push(tagObj)
           flag++
         } else {
-          let lastSection = newNodeArr[flag - 1]
-          if (lastSection.styleClass === 'para-section' && item.textContent !== '') {
-            newNodeArr[flag - 1].para.push(item)
+          if (flag > 0) {
+            let lastSection = newNodeArr[flag - 1]
+            if (lastSection.styleClass === 'para-section' && item.textContent !== '') {
+              newNodeArr[flag - 1].para.push(item)
+            }
+          } else {
+            newNodeArr[flag] = {
+              styleClass: 'para-section',
+              para: [item]
+            }
+            flag++
           }
         }
         break
     }
   })
 
-  console.log(new Date() - stTime)
+  console.log('[ + ] 处理耗时: ', Date.now() - stTime, 'ms')
   // 返回的结果不直接渲染进入 v-html, 而是在 v-for 里根据是图片还是文字进行分别的渲染
   return newNodeArr
 }

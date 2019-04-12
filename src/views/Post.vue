@@ -10,48 +10,74 @@
       <el-form-item label="标题">
         <el-input v-model="form.title" @change="inputTitle"></el-input>
       </el-form-item>
-      <el-form-item label="类型">
-        <el-select v-model="form.category" placeholder="请选择类型">
-        <el-option v-for="item in categoryConfig" :key="item" :label="item" :value="item"></el-option>
-        </el-select>
+      <el-form-item v-if="form.url_params" label="url 地址">
+        <el-input v-model="form.url_params"></el-input>
       </el-form-item>
       <el-form-item label="简介">
         <el-input type="textarea" v-model="form.explanation"></el-input>
       </el-form-item>
-      <el-form-item label="主题色">
-        <el-color-picker v-model="form.theme_color"></el-color-picker>
-      </el-form-item>
-
-      <el-form-item v-if="this.form.title" label="缩略图">
-        <el-upload
-          class="avatar-uploader"
-          :headers="uploadHeader"
-          :action="uploadImage"
-          :data="uploadThumbImageData"
-          :show-file-list="false"
-          :on-progress="uploadProcess"
-          :on-error="handleUploadError"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="form.thumbnail" :src="form.thumbnail" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </el-form-item>
-      <el-form-item v-if="this.form.title" label="头部图">
-        <el-upload
-          class="avatar-uploader"
-          :headers="uploadHeader"
-          :action="uploadImage"
-          :data="uploadHeaderImageData"
-          :show-file-list="false"
-          :on-progress="uploadProcess"
-          :on-error="handleUploadError"
-          :on-success="handleHeaderSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="form.header_image" :src="form.header_image" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </el-form-item>
+      <el-row :gutter="20">
+        <el-col :span="4">
+          <el-form-item label="主题色">
+            <el-color-picker v-model="form.theme_color"></el-color-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="类型">
+            <el-select v-model="form.category" placeholder="请选择类型">
+            <el-option v-for="item in categoryConfig" :key="item" :label="item" :value="item"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="排序">
+            <el-select v-model="form.sort_index" placeholder="默认传入 0, 长度为当前文章数量">
+              <el-option
+                v-for="item in sortArr"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item v-if="this.form.title" label="缩略图">
+            <el-upload
+              class="avatar-uploader"
+              :headers="uploadHeader"
+              :action="uploadImage"
+              :data="uploadThumbImageData"
+              :show-file-list="false"
+              :on-progress="uploadProcess"
+              :on-error="handleUploadError"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload">
+              <img v-if="form.thumbnail" :src="form.thumbnail" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item v-if="this.form.title" label="头部图">
+            <el-upload
+              class="avatar-uploader"
+              :headers="uploadHeader"
+              :action="uploadImage"
+              :data="uploadHeaderImageData"
+              :show-file-list="false"
+              :on-progress="uploadProcess"
+              :on-error="handleUploadError"
+              :on-success="handleHeaderSuccess"
+              :before-upload="beforeAvatarUpload">
+              <img v-if="form.header_image" :src="form.header_image" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>    
   </b-card>
 
@@ -64,7 +90,7 @@
   v-loading="processLoading"
   class="post-foot">
     <button @click="cancelPost" class="btn btn-light" type="clear">{{!articleUuid ? '取消':'返回'}}</button>
-    <button @click="beforeConfirmPost" v-if="editStatus.indexOf('edit') >= 0 && form.content" class="btn btn-primary" type="submit">{{!articleUuid ? '提交':'修改'}}</button>
+    <button @click="beforeConfirmPost" v-if="editStatus.indexOf('edit') >= 0 && form.content" class="btn btn-primary" :class="{'btn-primary': articleUuid }" type="submit">{{!articleUuid ? '提交':'修改'}}</button>
   </b-card>
 </div>
 </template>
@@ -99,31 +125,38 @@ export default {
       },
       articleUuid: null,
       uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
+      sortArr: [0, 1, 2],
       form: {
-        sort_index: 2,
+        sort_index: 0,
         theme_color: '#409EFF',
         // category: 'art',
         // explanation: 'hhhhh',
         header_image: 'https://static.dubheee.cn/sun/header-image/default.png',
         thumbnail: 'https://static.dubheee.cn/sun/thumbnail-image/default.png',
-        title: ''
+        title: '',
+        url_params: null
       },
       categoryConfig: categoryConfig,
       lastSaveTime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
     }
   },
   created () {
-    console.log('Created Post Page')
     let uuid = this.$router.history.current.params.uuid
+    let articleLength = localStorage.getItem('articles_length') || 10
+    this.sortArr = []
+    while (articleLength >= 0) {
+      this.sortArr.push(articleLength)
+      articleLength--
+    }
     if (uuid) {
-      console.log('uuid - ', uuid)
+      console.log('article uuid - ', uuid)
       this.editStatus = 'editing'
       this.articleUuid = uuid
       this.loadArticleDetail(uuid)
     }
   },
   mounted () {
-    console.log(categoryConfig)
+    // console.log(categoryConfig)
     // app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden
     // app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-minimized brand-minimized
     document.body.classList.add('sidebar-minimized')
@@ -145,7 +178,7 @@ export default {
       this.lastSaveTime = new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
     },
     inputTitle (val) {
-      console.log(val)
+      // console.log(val)
       this.uploadThumbImageData.identifier = this.form.title.replace(/\s+/g, '')
       this.uploadHeaderImageData.identifier = this.form.title.replace(/\s+/g, '')
     },
@@ -223,19 +256,34 @@ export default {
       this.processLoading = true
       this.Http.Patch(`sun-create/article-admin/${this.articleUuid}/`, {}, this.form)
         .then(res => {
-          this.$notify({
-            title: '成功',
-            message: '你已成功修改文字',
-            type: 'success'
-          })
-          this.$router.push({
-            name: 'Project',
-            params: {
-              uuid: res.uuid
-            }
-          })
           this.processLoading = false
           this.editStatus = 'edited'
+          this.$alert('你已成功修改', '成功', {
+            confirmButtonText: '跳转查看',
+            cancelButtonText: '继续修改',
+            showCancelButton: true,
+            callback: action => {
+              console.log('action', action)
+              if (action === 'confirm') {
+                this.$notify({
+                  title: '成功',
+                  message: '修改已保存',
+                  type: 'success'
+                })
+                this.$router.push({
+                  name: 'Project',
+                  params: {
+                    uuid: res.url_params
+                  }
+                })
+              } else {
+                this.$message({
+                  type: 'info',
+                  message: `继续修改`
+                })
+              }
+            }
+          })
         })
     },
     confirmPost () {
@@ -249,7 +297,7 @@ export default {
       }
       this.processLoading = true
 
-      console.log(this.form)
+      // console.log(this.form)
       this.Http.Post('sun-create/article-admin/', {}, this.form)
         .then(res => {
           this.$notify({
@@ -258,7 +306,10 @@ export default {
             type: 'success'
           })
           this.processLoading = false
-          this.editStatus = 'saved'
+          console.log(res)
+          this.articleUuid = res.uuid
+          this.form = res
+          this.editStatus = 'editing'
         })
         .catch(err => {
           this.processLoading = false
@@ -333,7 +384,7 @@ export default {
   background: white;
 }
 img.avatar { 
-  width: 100%; height: auto;max-width: 30%; display: block; 
+  width: 100%; height: auto; max-width: 80%; display: block; 
 }
 .avatar {
   display: block;

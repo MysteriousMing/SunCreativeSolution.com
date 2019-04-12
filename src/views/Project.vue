@@ -138,7 +138,7 @@ export default {
     }
   },
   created () {
-    console.log('Name or Uuid')
+    // console.log('Name or Uuid')
     bus.$emit('header-go-black', 'white')
     this.getArticleDetail()
     document.body.classList.add('sidebar-hidden')
@@ -232,20 +232,20 @@ export default {
       setTimeout(() => {
         that.totalHeight = this.$refs.bottomFooter.offsetTop - window.innerHeight
       }, 1000)
-      console.log('contentArr - \n', this.articleDetail.contentArr)
+      // console.log('contentArr - \n', this.articleDetail.contentArr)
     },
     // titleList: this.formatTitleMenu(item.content)
     formatTitleMenu (title) {
       let content = this.$refs.content
 
       let titleArr = content.querySelectorAll('h1, h2, h3, h4')
-      console.log('titleArr - \n', titleArr)
+      // console.log('titleArr - \n', titleArr)
       this.titleArray = []
       let titleIndex = -1
       let subtitleIndex = -1
       titleArr.forEach((element, index) => {
         element.id = `title-${index}`
-        console.log(element, element.tagName)
+        // console.log(element, element.tagName)
         // console.log(element.textContent)
         let tagObj = {
           index: element.id,
@@ -286,7 +286,7 @@ export default {
     },
     gotoTitle (index) {
       this.activeTitle = index + 1
-      console.log('2333', this.titleArray[index].id)
+      // console.log('2333', this.titleArray[index].id)
     }
   }
 }

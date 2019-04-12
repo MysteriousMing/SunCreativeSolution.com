@@ -49,6 +49,12 @@
           width="140">
         </el-table-column>
         <el-table-column
+          prop="sort_index"
+          label="排序"
+          sortable
+          width="60">
+        </el-table-column>
+        <el-table-column
           fixed="right"
           label="操作"
           width="100">
@@ -181,7 +187,8 @@ export default {
     },
     loadArtcleList: function (params) {
       this.recordListLoading = true
-      this.Http.Get('sun-create/article-admin/', {}).then(res => {
+      this.Http.Get('sun-create/article-admin/').then(res => {
+        window.localStorage.setItem('articles_length', res.length)
         this.recordListLoading = false
         this.articleList = res.map(item => {
           return {
@@ -203,7 +210,7 @@ export default {
       this.$router.push({
         name: 'Project',
         params: {
-          uuid: row.uuid
+          uuid: row.url_params
         }
       })
     },
@@ -288,9 +295,9 @@ export default {
     white-space: nowrap;
   }
   @media (max-width: 768px) {
-    .main .container-fluid {
+    // .main .container-fluid {
       
-    }
+    // }
     .grid-item,
     .grid-sizer {
       width: 100%;
