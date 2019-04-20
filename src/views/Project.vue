@@ -1,6 +1,9 @@
 <template>
   <section v-scroll="onScroll" ref="projectPage" class="page-project proj-content"
-  id="proj-content">
+  id="proj-content" :style="'--current-theme-color:' + articleDetail.theme_color">
+    <section class="project-progress d-md-none" v-show="showMobileProgress">
+      <div class="project-progress-inner" :style="'width: ' + readingProgress +'%'"></div>
+    </section>
     <!-- image banner -->
     <section class="header" v-loading="isDetailLoading">
         <figure 
@@ -28,8 +31,8 @@
       <article v-if="articleDetail"
       class="ql-editor"
       ref="contentNode">
-        <div v-for="(section, index) of articleDetail.contentArr" :key="index">
-          <section v-if="section.styleClass === 'para-section'" class="para-section">
+        <div v-for="(section, index) of articleDetail.contentArr" :key="index" :class="section.styleClass">
+          <section v-if="section.styleClass === 'para-section'">
             <div class="section-header-ctn">
               <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
               <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
@@ -38,7 +41,13 @@
               <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>
             </div>
           </section>
-          <section v-else-if="section.styleClass === 'images-section'" class="images-section">
+          <section v-else-if="section.styleClass === 'image-header-section'">
+            <div class="section-header-ctn">
+              <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
+              <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
+            </div>
+          </section>
+          <section v-else-if="section.styleClass === 'images-section'">
             <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
             <el-carousel v-if="section.images.length > 1"
               :autoplay="section.images.length > 2 ? true : false"
@@ -50,7 +59,7 @@
                 <div class="para-image" v-html="image.innerHTML" ref="imgSize"></div>
               </el-carousel-item>
             </el-carousel>
-            <div v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
+            <div class="para-image" v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
           </section>          
         </div>
       </article>
@@ -75,7 +84,7 @@
 
     </div>
 
-    <section class="clear">
+    <section class="clear" ref="bottomFooter" >
       <AppFooter/>
     </section>
   </section>
@@ -109,6 +118,9 @@ export default {
   // props: ['scrollTop'],
   data: function () {
     return {
+      showMobileProgress: false,
+      totalHeight: 1200,
+      readingProgress: 1,
       section: 0,
       scrollTop: 0,
       position: {},
@@ -118,23 +130,26 @@ export default {
       titleArray: [],
       activeTitle: 1,
       articleDetail: {
-        content: ''
+        content: '',
+        theme_color: '#000000'
       },
       categoryConfig: categoryConfig,
       carouselWidth: 0
     }
   },
   created () {
-    console.log('Name or Uuid')
+    // console.log('Name or Uuid')
     bus.$emit('header-go-black', 'white')
     this.getArticleDetail()
     document.body.classList.add('sidebar-hidden')
   },
   mounted () {
     const that = this
+    document.body.querySelector('.logo').classList.add('active')
     window.addEventListener('resize', function () {
       that.setSize()
     }, false)
+    this.totalHeight = this.$refs.bottomFooter.offsetTop
   },
   watch: {
     scrollTop (now, prev) {
@@ -190,6 +205,9 @@ export default {
           headerActive: true
         })
       }
+      let articleTop = document.body.querySelector('.article-content').offsetTop
+      this.showMobileProgress = (articleTop - position.scrollTop - 10) < 0
+      this.readingProgress = position.scrollTop * 100 / this.totalHeight
       this.previousTop = this.position.scrollTop
     },
     getArticleDetail () {
@@ -210,13 +228,17 @@ export default {
     formatContentNode () {
       let content = this.$refs.content
       this.articleDetail.contentArr = this.Utils.formatProject(content.childNodes)
-      console.log('contentArr - \n', this.articleDetail.contentArr)
+      let that = this
+      setTimeout(() => {
+        that.totalHeight = this.$refs.bottomFooter.offsetTop - window.innerHeight
+      }, 1000)
+      // console.log('contentArr - \n', this.articleDetail.contentArr)
     },
     // titleList: this.formatTitleMenu(item.content)
     formatTitleMenu (title) {
       let content = this.$refs.content
 
-      let titleArr = content.querySelectorAll('h1, h2')
+      let titleArr = content.querySelectorAll('h1, h2, h3, h4')
       // console.log('titleArr - \n', titleArr)
       this.titleArray = []
       let titleIndex = -1
@@ -241,6 +263,17 @@ export default {
             tagObj.level = 'second'
             tagObj.id = `title-${titleIndex}-${subtitleIndex}`
             break
+          case 'h3':
+            titleIndex++
+            subtitleIndex = -1
+            tagObj.level = 'first'
+            tagObj.id = `title-${titleIndex}`
+            break
+          case 'h4':
+            subtitleIndex++
+            tagObj.level = 'second'
+            tagObj.id = `title-${titleIndex}-${subtitleIndex}`
+            break
           default:
             break
         }
@@ -253,7 +286,7 @@ export default {
     },
     gotoTitle (index) {
       this.activeTitle = index + 1
-      console.log('2333', this.titleArray[index].id)
+      // console.log('2333', this.titleArray[index].id)
     }
   }
 }
@@ -307,6 +340,9 @@ export default {
       width: 100%;
       text-align: center;
       vertical-align: middle;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
   }
   .right-col>.color-pattern {
       border-left: 24px solid white;
@@ -326,7 +362,7 @@ export default {
 
   .menu-ctn {
     display: block;
-    
+    margin-top: 70px;    
     transition: all 200ms ease;
     margin-left: 30px;
     width: calc(100% - 30px);
@@ -335,15 +371,13 @@ export default {
       left: 77%;
       top: 70px;
       width: 20%;
+      margin-top: 0;
     }
   }
   @media (max-width: 991px) {
     .left-col {
         width: 100%;
         float: left;
-    }
-    .header {
-      height: 284px;
     }
     figure.left-col {
       background: black;
@@ -361,12 +395,60 @@ export default {
       padding-right: 5px;
       padding-bottom: 30px;
     }
+  } 
+  @media (max-width: 767px) {
+    .header {
+      height: 284px;
+    }
   }
-
   .clear {
     clear: both;
   }
 </style>
 <style lang="scss">
   @import '../style/project.scss';
+</style>
+<style lang="scss">
+  a.nav-link {
+    .title-nav-item & {
+      color: rgba(1, 0, 0, 0.6);
+    }
+    .sub-title-nav-item & {
+      color: rgba(94, 94, 94, 0.6);
+    }
+
+    .title-nav-item &.active {
+      color: var(--current-theme-color) !important;
+    }
+
+    .title-nav-item &:hover {
+      color: var(--current-theme-color) !important;
+    }
+    .title-nav-item &.active{
+      color: var(--current-theme-color) !important;
+    }
+
+    .sub-title-nav-item &.active{
+      color: var(--current-theme-color) !important;
+    }
+    .first-menu-item &.active::before {
+      background-color: var(--current-theme-color) !important;
+    }
+  }
+
+  .project-progress {
+    width: 100%;
+    height: 3px;
+    position: fixed;
+    top: 0;
+    z-index: 1111;
+    background-color: white;
+  }
+  .project-progress-inner {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 100%;
+    background-color: var(--current-theme-color) !important;
+    transition: all 100ms ease;
+  }
 </style>

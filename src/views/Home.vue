@@ -1,13 +1,24 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
-  <Dashboard></Dashboard>
+  <!-- <Dashboard class="d-md-down-none"></Dashboard> -->
+  <Catograph class="d-md-down-none"></Catograph>
+  <section class="d-lg-none mobile-home">
+    <p class="mt-100">Research-based,</p>
+    <p class="mt-1">Problem-solving,</p>
+    <p class="mt-1">Experience-creating,</p>
+    <p class="mt-4">DESIGNER.</p>
+  </section>
   <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
-      <div v-for="element in picArray" :key="element.name"
-      class="grid-item grid-sizer" @click="handleClick(element)">
+      <div v-for="element in picArray" :key="element.uuid"
+      class="grid-item grid-sizer project-item" @click="handleClick(element)">
           <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
           <img :src="element.src" alt="Not found">
+          <section class="hover-show">
+            <p class="item-title">{{element.name}}</p>
+            <p class="item-desc">{{element.discribe}}</p>
+          </section>
       </div>
     </isotope>
   </section>
@@ -19,7 +30,8 @@
 
 <script>
 import { Footer as AppFooter } from '../components/'
-import Dashboard from '@/views/Dashboard'
+// import Dashboard from '@/views/Dashboard'
+import Catograph from '@/views/Catograph'
 import isotope from 'vueisotope'
 import imagesLoaded from 'vue-images-loaded'
 import vueWaterfallEasy from 'vue-waterfall-easy'
@@ -29,7 +41,8 @@ export default {
   name: 'home',
   components: {
     AppFooter,
-    Dashboard,
+    // Dashboard,
+    Catograph,
     isotope,
     vueWaterfallEasy
   },
@@ -57,6 +70,7 @@ export default {
   },
   mounted () {
     console.log('hhhh')
+    document.body.querySelector('.logo').classList.remove('active')
   },
   created () {
     this.getData()
@@ -70,7 +84,11 @@ export default {
 
     bus.$on('home-go-down', isDown => {
       if (isDown && this.$refs.page) {
-        this.$refs.page.scrollTop = this.windowHinnerHeight
+        // this.$refs.page.scrollTop = this.windowHinnerHeight
+        this.$refs.page.scrollTo({
+          top: this.windowHinnerHeight,
+          behavior: 'smooth'
+        })
       }
     })
     bus.$on('nav-router', nav => {
@@ -86,7 +104,7 @@ export default {
       this.$router.push({
         name: 'Project',
         params: {
-          uuid: row.uuid
+          uuid: row.url_params
         }
       })
     },
@@ -138,17 +156,21 @@ export default {
     getData () {
       // dataLoading
       this.dataLoading = true
-      this.Http.SimpleGet('sun-create/article/').then(res => {
+      this.Http.SimpleGet('sun-create/article/', {
+        offset: 0,
+        limit: 50
+      }).then(res => {
         console.log(res)
         this.dataLoading = false
 
         this.picArray = res.results.map(item => {
           return {
+            ...item,
             uuid: item.uuid,
             src: item.header_image.replace('Http://', 'Https://'),
             name: item.title,
-            href: '/', // todo: single Article
-            group: item.category || parseInt(Math.random() * 3)
+            discribe: item.explanation,
+            group: item.category
           }
         })
         this.picSaveArray = this.picArray
@@ -198,10 +220,10 @@ export default {
   min-height: 100vh;
   padding-bottom: 2rem;
 }
-.home-page .container {
-  max-width: calc(100% - 132px);
-}
+/* .home-page .container {
+} */
 .home-page .flud {
+  max-width: calc(100% - 132px);
   margin-top: 118px;
   margin-bottom: 118px;
   min-height: calc(100vh - 196px);
@@ -212,19 +234,91 @@ export default {
 }
 .home-page .grid-item img {
   width: 100%;
+}
+.home-page .project-item {
   margin-bottom: 36px;
 }
-@media (max-width: 768px) {
-  .home-page .container {
+@media (max-width: 991px) {
+  .home-page .flud {
     max-width: calc(100% - 40px);
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 48px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 768px) {
+  .home-page .flud {
+    max-width: 100%;
     padding-left: 0;
     padding-right: 0;
     padding-bottom: 20px;
     margin-bottom: 30px;
   }
-  .grid-item,
-  .grid-sizer {
+  .home-page .grid-item,
+  .home-page .grid-sizer {
     width: 100%;
+  }
+  .home-page .project-item {
+    margin-bottom: 22px;
+  }
+}
+.mobile-home {
+  height: 700px;
+  width: 100%;
+  background-color: black;
+  background-image: url(/static/images/project/img2.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  background-position: center;
+}
+.mobile-home p {
+  padding-left: 53px;
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+.mobile-home p.mt-100 {
+  padding-top: 300px;
+}
+.mobile-home p.mt-4 {
+  font-size: 2.2rem;
+}
+</style>
+<style lang="scss">
+.home-page .project-item {
+  position: relative;
+  overflow: hidden;
+  .hover-show {
+    position: absolute;
+    top: 100%;
+    color: #ffffff;
+    background: rgba(115, 115, 115, 0.61);
+    transition: all 300ms cubic-bezier(0.23, 0.06, 0, 1.34) 100ms;
+    width: 100%;
+    height: 100%;
+    padding: 10px 14px;
+
+    display: flex;
+    overflow: hidden;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    .item-title {
+      font-family: 'Mada SemiBold'
+    }
+  }
+
+  &:hover .hover-show {
+    // display: block;
+    top: 0;
+  }
+}
+@media (max-width: 991px) {
+  .hover-show {
+    font-size: 0.8rem;
   }
 }
 </style>

@@ -1,17 +1,37 @@
 <template>
-  <div class="animated fadeIn">
-    <quill-editor v-model="content"
-                  class="editor-container"
-                  ref="myQuillEditor"
-                  :options="editorOption"
-                  @blur="onEditorBlur($event)"
-                  @focus="onEditorFocus($event)"
-                  @ready="onEditorReady($event)">
-    </quill-editor>
+  <div v-loading="processLoading" class="animated fadeIn editor-page">
+    <section class="editor-whole-ctn">
+      <quill-editor v-model="content"
+                    class="editor-container"
+                    ref="myQuillEditor"
+                    :options="editorOption"
+                    @blur="onEditorBlur($event)"
+                    @focus="onEditorFocus($event)"
+                    @ready="onEditorReady($event)">
+      </quill-editor>
+      <div class="editor-split" :class="{'fixed': isEditorToolboxFixed}">
+        <el-button type="danger" circle @click="showSplit()">hr</el-button>
+        <el-tooltip class="item" effect="dark" content="H1H2/H3H4分别为文字和图片标题, 图片标题正文不可见.相邻图片会转为轮播图, 需要分割相邻图片使用左侧 hr." placement="top-start">
+          <el-button  type="warning" icon="el-icon-view" circle></el-button>
+        </el-tooltip>
+      </div>
+      
+    </section>
     <!-- Confirm -->
     <div class="my-3 d-flex justify-content-end">
-        <!-- <el-button type="primary" class="mr-auto" @click="showAddCarousel()">插入轮播图</el-button> -->
-        <el-button type="primary" class="mr-auto" @click="showSplit()">插入分割</el-button>
+        <el-upload
+          id="uploadQuillImage"
+          class="upload-quill-image upload-demo mr-2"
+          :headers="uploadHeader"
+          :action="uploadImage"
+          :data="uploadImageData"
+          :before-upload="handleBeforeUpdate"
+          :on-progress="handleUploadProcess"
+          :on-error="handleUploadError"
+          :on-success="handleImageSuccess"
+          multiple>
+          <el-button size="small" type="primary">插入图片</el-button>
+        </el-upload>
         <!-- <button class="btn btn-secondary" @click="cancel()">Clear</button> -->
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
     </div>
@@ -37,42 +57,6 @@
     </b-card>
 
 
-<el-dialog
-  title="轮播图插件"
-  :visible.sync="isShowAddCarousel"
-  width="80%"
-  :before-close="handleClose">
-  <span>选择需要插入轮播图的图片们</span>
-
-  <el-upload
-  class="upload-demo"
-  drag
-  :headers="uploadHeader"
-  :action="uploadImage"
-  :data="uploadImageData"
-  :before-upload="handleBeforeUpdate"
-  :on-progress="handleUploadProcess"
-  :on-error="handleUploadError"
-  :on-success="handleImageSuccess"
-  multiple>
-    <i class="el-icon-upload"></i>
-    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-  </el-upload>
-
-  <el-carousel v-loading="processLoading"
-  indicator-position="outside">
-    <el-carousel-item v-for="(item, index) in carouselData" :key="index">
-      <img v-if="item.type == 'image'" :src="item.url"/>
-      <h3 v-else>{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
-  {{carouselData}}
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="closeAddCarousel">取 消</el-button>
-    <el-button type="primary" @click="confirmCarouselText">确 定</el-button>
-  </span>
-</el-dialog>
   </div>
 </template>
 
@@ -97,11 +81,12 @@ export default {
       result: '',
       contentArr: [],
       carouselData: [],
+      isEditorToolboxFixed: false,
       isShowAddCarousel: false,
       uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
       uploadImageData: {
         identifier: '',
-        image_type: 'sun/carousel'
+        image_type: 'sun/content'
       },
       uploadHeader: {
         Authorization: `Token ${window.localStorage.token}`
@@ -114,12 +99,12 @@ export default {
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],
             [{ 'header': 1 }, { 'header': 2 }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
             [{ 'script': 'sub' }, { 'script': 'super' }],
             [{ 'indent': '-1' }, { 'indent': '+1' }],
             [{ 'direction': 'rtl' }],
             [{ 'size': ['small', false, 'large', 'huge'] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'font': [] }],
             [{ 'color': [] }, { 'background': [] }],
             [{ 'align': [] }],
@@ -139,7 +124,17 @@ export default {
       console.log('contentArr - \n', this.contentArr)
     },
     showSplit () {
-      this.content.push(`<p>!&hr&!</p>`)
+      let quill = this.$refs.myQuillEditor.quill
+      let content = `\n------------- 图片分割 ------------- !&hr&! ------------- 图片分割 -------------\n`
+      // 获取光标所在位置
+      let length = quill.getSelection().index
+      // 插入
+      quill.insertText(length, content, {
+        'color': '#F56C6C',
+        'italic': true
+      })
+      // 调整光标到最后
+      quill.setSelection(length + 1)
     },
     onEditorBlur (quill) {
       // console.log('editor blur!', quill)
@@ -179,12 +174,29 @@ export default {
       console.warn(res)
       // this.$message.error(res)
       this.processLoading = false
+      this.$message.error('图片插入失败')
     },
     handleImageSuccess (res, file) {
       console.log(res, file)
       // this.imageUrl = URL.createObjectURL(file.raw)
-      this.addCarouselImage(res)
+      this.addImageToQuill(res)
+      // this.addCarouselImage(res)
       this.processLoading = false
+    },
+    addImageToQuill: function (res) {
+      let quill = this.$refs.myQuillEditor.quill
+      // 如果上传成功
+      if (res) {
+        // 获取光标所在位置
+        let length = quill.getSelection().index
+        // 插入图片  res.info为服务器返回的图片地址
+        quill.insertEmbed(length, 'image', res)
+        // 调整光标到最后
+        quill.setSelection(length + 1)
+      } else {
+        this.$message.error('图片插入失败')
+      }
+      // loading动画消失
     },
     addCarouselImage: function (params) {
       let imgItem = {
@@ -231,6 +243,17 @@ export default {
     cancel: function (params) {
       this.result = ''
       this.content = ''
+    },
+    imgHandler: function (state) {
+      if (state) {
+        // button is clicked
+        console.log(document.querySelector('.upload-demo input'))
+        document.querySelector('.upload-demo input').click()
+        console.log('Btn', state)
+      } else {
+        console.log('????', state)
+        this.quill.format('image', false)
+      }
     }
   },
   computed: {
@@ -242,12 +265,27 @@ export default {
     console.log('this is current quill instance object', this.editor)
     setTimeout(() => {
       this.content = this.formContent || ''
-      console.log(this.formContent)
     }, 1300)
+    var vm = this
+    vm.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image', this.imgHandler)
   }
 }
 </script>
 <style lang="scss" scoped>
+.upload-quill-image {
+  display: none;
+}
+.editor-whole-ctn {
+  position: relative;
+  .editor-container {
+    position: initial;
+  }
+  .editor-split {
+    position: absolute;
+    top: 90px;
+    right: 20px;
+  }
+}
 .quill-editor {
   // min-height: 500px;
   .ql-container {

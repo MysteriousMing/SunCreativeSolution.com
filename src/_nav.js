@@ -2,12 +2,12 @@ export default {
   items: [
     {
       name: 'PostRecord',
-      url: 'articles',
+      url: '/admin/articles',
       icon: 'icon-book-open'
     },
     {
       name: 'Post',
-      url: 'post',
+      url: '/admin/post',
       icon: 'icon-paper-plane'
     },
     {

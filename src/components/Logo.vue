@@ -48,6 +48,7 @@ export default {
   position: relative;
   width: 90px;
   height: 90px;
+  z-index: 100;
   .animated {
     transition: all 100ms ease-in;
   }
@@ -109,6 +110,37 @@ export default {
     }
     &.black {
       background: #000000;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .stella-item {
+    &.stella-left-top {
+      background: #000000 !important;
+    }
+    &.stella-right-top {
+      background: #000000 !important;      
+    }
+    &.stella-left-bottom {
+      background: #ffffff !important;      
+    }
+    &.stella-right-bottom {
+      background: #ffffff !important;      
+    }
+  }
+  .stella-upper-item {
+    &.stella-left-top {
+      background: #ffffff !important;
+    }
+    &.stella-right-top {
+      background: #ffffff !important;      
+    }
+    &.stella-left-bottom {
+      background: #000000 !important;      
+    }
+    &.stella-right-bottom {
+      background: #000000 !important;      
     }
   }
 }
