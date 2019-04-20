@@ -13,7 +13,7 @@
       <span></span>
       <span></span>
     </button>
-    <section class="mobile-full  d-lg-none">
+    <section class="mobile-full d-lg-none">
       <span class="mobile-full-item" @click="selectNav('art')">ART</span>
       <span class="mobile-full-item" @click="selectNav('research')">RESEARCH</span>
       <span class="mobile-full-item" @click="selectNav('commercial')">COMMERCIAL</span>
@@ -115,6 +115,8 @@ export default {
 .app-header.navbar .navbar-brand {
   line-height: 79px;
   font-family: 'Mada SemiBold';
+  width: auto !important;
+  background: none !important;
 }
 .app-header.navbar .navbar-brand.logo-ctn {
   padding-left: 78px;
@@ -161,22 +163,6 @@ export default {
 @media (max-width: 991px) {
   .app-header.navbar {
     background: #000000;
-  }
-}
-
-@media (max-width: 768px) {
-  .app-header.navbar {
-    /* padding-top: 14px; */
-  }
-  .app-header .navbar-brand.logo-ctn {
-    padding-left: 40px !important;
-  }
-  .logo {
-    transition: transform 250ms ease-in-out;
-    transform-origin: 0 0;
-  }
-  .logo.active {
-    transform: scale(0.5);
   }
   .mobile-full {
     position: fixed;
@@ -228,6 +214,22 @@ export default {
   }
   .mobile-full-item:nth-child(4) {
     transition-duration: 450ms;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header.navbar {
+    /* padding-top: 14px; */
+  }
+  .app-header .navbar-brand.logo-ctn {
+    padding-left: 40px !important;
+  }
+  .logo {
+    transition: transform 250ms ease-in-out;
+    transform-origin: 0 0;
+  }
+  .logo.active {
+    transform: scale(0.5);
   }
 }
 

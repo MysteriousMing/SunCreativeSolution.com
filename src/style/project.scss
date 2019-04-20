@@ -1,4 +1,4 @@
-.para-section {
+.para-section>section {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -7,13 +7,14 @@
 }
 .section-header-ctn {
   min-width: 30%;
+  width: 30%;
   display: flex;
   flex-flow: column;
   padding: 0 10px 0 0;
 }
 // 适配手机
 @media (max-width: 991px) {
-  .para-section {
+  .para-section>section {
     flex-flow: wrap;
     padding-left: 15px;
     padding-right: 15px;
@@ -47,14 +48,20 @@
 .ql-snow .ql-editor h2,
 .para-section h2 {
   color: #919191;
-  font-size: 1rem;
+  font-size: 1rem !important;
   // font-size: 0.56rem;
   line-height: 1.1;
   font-style:italic;
   font-family: 'Mada Regular';
   margin-top: 5px;
+  font-family: 'Mada Regular';
 }
 
+.image-header-section h1,
+.image-header-section h2 {
+    color: transparent!important;
+    font-size: 1px!important;
+}
 .ql-snow .ql-editor p,
 .para-section p {
   color: #606060;
@@ -63,36 +70,41 @@
 }
 
 
-
+// 右侧导航栏
 a.nav-link {
   // transition: all 100ms cubic-bezier(1, 0.3, 0, 0.7);
   transition: all 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
   padding: 0 4px;
+  opacity: 1;
+
   .title-nav-item & {
     cursor: pointer;
     font-weight: bold;
     font-family: 'Mada SemiBold';
     color: rgba(1, 0, 0, 0.6);
-    font-size: 1.2rem;
-    line-height: 0.8;
+    font-size: 1rem;
+    line-height: 1.2;
   }
   .sub-title-nav-item & {
     font-weight: normal;
     font-family: 'Mada Regular';
     color: rgba(94, 94, 94, 0.6);
     font-style: italic;
-    font-size: 0.8125rem;
+    font-size: 0.8rem;
   }
 
-  opacity: 1;
-  &.active {
+  .menu-item &.active {
     background-color: transparent !important;
-    color: #010000 !important;
+    line-height: 1.2;
+    color: #010000;
   }
 
-  &:hover {
+  .menu-item &:hover {
     background-color: transparent !important;
-    color: #010000 !important;
+    line-height: 1.2;
+    color: #010000;
+    padding-bottom: 4px;
+    font-weight: bold;
     font-size: 1.45rem;
   }
   .title-nav-item &.active{
@@ -100,15 +112,16 @@ a.nav-link {
     font-size: 1.45rem;
     padding-bottom: 4px;
     padding-left: 6px;
-    color: #010000 important;
+    color: #010000;
   }
 
   .sub-title-nav-item &.active{
     opacity: 1;
-    font-size: 0.8125rem;
+    font-weight: bold;
+    font-size: 1.2rem;
     padding-bottom: 4px;
     padding-left: 0;
-    color: #010000 !important;
+    color: #010000;
     // margin-top: 4px;
   }
 
@@ -138,7 +151,7 @@ a.nav-link {
 
 // margin
 .first-menu-item {
-  margin-top: 3.2rem;
+  margin-top: 30px;
   &:first-child {
     margin-top: 0;
   }
@@ -150,7 +163,7 @@ a.nav-link {
   li {
     word-break: break-word;
     white-space: normal;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 }
 // list style
@@ -164,9 +177,12 @@ ul li.sub-menu-item {
   list-style: none;
 }
 
+// list indicators
 .ql-editor .el-carousel ul>li::before {
   content: none;
 }
+
+// 轮播图
 .el-carousel__indicators {
  display: flex;
  justify-content: flex-end;
@@ -192,6 +208,16 @@ ul li.sub-menu-item {
   align-items: center;
   justify-content: center;
   max-width: 100%;
+}
+// 图片
+.images-section {
+  margin-bottom: 20px;
+}
+.image-header-section {
+  height: 0;
+}
+.images-section + .image-header-section {
+  margin-top: -20px;
 }
 .para-image {
   text-align: center;

@@ -1,6 +1,7 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
-  <Dashboard class="d-md-down-none"></Dashboard>
+  <!-- <Dashboard class="d-md-down-none"></Dashboard> -->
+  <Catograph class="d-md-down-none"></Catograph>
   <section class="d-lg-none mobile-home">
     <p class="mt-100">Research-based,</p>
     <p class="mt-1">Problem-solving,</p>
@@ -10,7 +11,7 @@
   <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
     <isotope ref="cpt" :options="getOptions()" v-images-loaded:on.progress="layout" :list="picArray">
-      <div v-for="element in picArray" :key="element.name"
+      <div v-for="element in picArray" :key="element.uuid"
       class="grid-item grid-sizer project-item" @click="handleClick(element)">
           <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
           <img :src="element.src" alt="Not found">
@@ -29,7 +30,8 @@
 
 <script>
 import { Footer as AppFooter } from '../components/'
-import Dashboard from '@/views/Dashboard'
+// import Dashboard from '@/views/Dashboard'
+import Catograph from '@/views/Catograph'
 import isotope from 'vueisotope'
 import imagesLoaded from 'vue-images-loaded'
 import vueWaterfallEasy from 'vue-waterfall-easy'
@@ -39,7 +41,8 @@ export default {
   name: 'home',
   components: {
     AppFooter,
-    Dashboard,
+    // Dashboard,
+    Catograph,
     isotope,
     vueWaterfallEasy
   },
@@ -101,7 +104,7 @@ export default {
       this.$router.push({
         name: 'Project',
         params: {
-          uuid: row.uuid
+          uuid: row.url_params
         }
       })
     },
@@ -153,18 +156,21 @@ export default {
     getData () {
       // dataLoading
       this.dataLoading = true
-      this.Http.SimpleGet('sun-create/article/').then(res => {
+      this.Http.SimpleGet('sun-create/article/', {
+        offset: 0,
+        limit: 50
+      }).then(res => {
         console.log(res)
         this.dataLoading = false
 
         this.picArray = res.results.map(item => {
           return {
+            ...item,
             uuid: item.uuid,
             src: item.header_image.replace('Http://', 'Https://'),
             name: item.title,
             discribe: item.explanation,
-            href: '/', // todo: single Article
-            group: item.category || parseInt(Math.random() * 3)
+            group: item.category
           }
         })
         this.picSaveArray = this.picArray
