@@ -1,7 +1,10 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
   <!-- <Dashboard class="d-md-down-none"></Dashboard> -->
-  <Catograph class="d-md-down-none"></Catograph>
+  <!-- <Catograph class="d-md-down-none"></Catograph> -->
+  <!-- 正常首页头图 -->
+  <section class="d-md-down-none normal-home"></section>
+  <!-- 移动端首页头图 -->
   <section class="d-lg-none mobile-home">
     <p class="mt-100">Research-based,</p>
     <p class="mt-1">Problem-solving,</p>
@@ -31,7 +34,7 @@
 <script>
 import { Footer as AppFooter } from '../components/'
 // import Dashboard from '@/views/Dashboard'
-import Catograph from '@/views/Catograph'
+// import Catograph from '@/views/Catograph'
 import isotope from 'vueisotope'
 import imagesLoaded from 'vue-images-loaded'
 import vueWaterfallEasy from 'vue-waterfall-easy'
@@ -42,7 +45,7 @@ export default {
   components: {
     AppFooter,
     // Dashboard,
-    Catograph,
+    // Catograph,
     isotope,
     vueWaterfallEasy
   },
@@ -264,11 +267,21 @@ export default {
     margin-bottom: 22px;
   }
 }
+.normal-home {
+  color: white;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  background-image: url(/static/images/project/img2.png); /* 首页背景图片 */
+}
 .mobile-home {
   height: 700px;
   width: 100%;
+  cursor: pointer;
   background-color: black;
-  background-image: url(/static/images/project/img2.png);
+  background-image: url(/static/images/project/img2.png); /* 首页背景图片 */
   background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;
