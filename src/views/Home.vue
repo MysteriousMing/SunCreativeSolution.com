@@ -274,14 +274,14 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
-  background-image: url(/static/images/project/img2.png); /* 首页背景图片 */
+  background-image: url(/static/images/project/imgnm.jpg); /* 首页背景图片 */
 }
 .mobile-home {
   height: 700px;
   width: 100%;
   cursor: pointer;
   background-color: black;
-  background-image: url(/static/images/project/img2.png); /* 首页背景图片 */
+  background-image: url(/static/images/project/imgmb.jpg); /* 首页背景图片 */
   background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;
