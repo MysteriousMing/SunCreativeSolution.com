@@ -67,8 +67,7 @@ export default new Router({
       ]
     },
     {
-      path: '/index/',
-      redirect: '/index/',
+      path: '/',
       name: 'Product',
       component: Full,
       children: [
@@ -87,7 +86,7 @@ export default new Router({
       ]
     },
     {
-      path: '/',
+      path: '/construction',
       name: 'Dev',
       component: Construction,
       children: []

@@ -6,10 +6,10 @@
   <section class="d-md-down-none normal-home"></section>
   <!-- 移动端首页头图 -->
   <section class="d-lg-none mobile-home">
-    <p class="mt-100">Research-based,</p>
-    <p class="mt-1">Problem-solving,</p>
-    <p class="mt-1">Experience-creating,</p>
-    <p class="mt-4">DESIGNER.</p>
+    <p hidden class="mt-100">Research-based,</p>
+    <p hidden class="mt-1">Problem-solving,</p>
+    <p hidden class="mt-1">Experience-creating,</p>
+    <p hidden class="mt-4">DESIGNER.</p>
   </section>
   <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
@@ -274,14 +274,14 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
-  background-image: url(/static/images/project/imgnm.jpg); /* 首页背景图片 */
+  background-image: url(/static/images/imgnm.jpg); /* 首页背景图片 */
 }
 .mobile-home {
   height: 700px;
   width: 100%;
   cursor: pointer;
   background-color: black;
-  background-image: url(/static/images/project/imgmb.jpg); /* 首页背景图片 */
+  background-image: url(/static/images/imgmb.jpg); /* 首页背景图片 */
   background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;

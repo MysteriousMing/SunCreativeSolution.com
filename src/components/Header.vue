@@ -1,7 +1,7 @@
 <template>
   <header class="app-header navbar animated"
   :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true }">
-    <b-link class="navbar-brand logo-ctn" to="/index">
+    <b-link class="navbar-brand logo-ctn" to="/">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg" class="logo"></logo>
     </b-link>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('art')">ART</span>
