@@ -142,6 +142,9 @@ export default {
     bus.$emit('header-go-black', 'white')
     this.getArticleDetail()
     document.body.classList.add('sidebar-hidden')
+    bus.$emit('animate-info', {
+      isHome: false
+    })
   },
   mounted () {
     const that = this

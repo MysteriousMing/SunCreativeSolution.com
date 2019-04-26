@@ -1,7 +1,7 @@
 <template>
   <header class="app-header navbar animated"
   :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true }">
-    <b-link class="navbar-brand logo-ctn" to="/">
+    <b-link class="navbar-brand logo-ctn" :class="{'transparent': !(!(bottomUpperBg == 'white' && isOnHome) || !isOnHome)}" to="/">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg" class="logo"></logo>
     </b-link>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('art')">ART</span>
@@ -44,7 +44,8 @@ export default {
       topUpperBg: this.topBg || 'black',
       bottomUpperBg: this.bottomBg || 'white',
       headerAnimate: false,
-      scrollUp: false
+      scrollUp: false,
+      isOnHome: false
     }
   },
   created () {
@@ -62,6 +63,7 @@ export default {
       if (animateInfo && animateInfo.isShow) {
         this.headerAnimate = animateInfo.isShow
       }
+      this.isOnHome = animateInfo.isHome || false
       this.scrollUp = animateInfo.scrollUp
     })
   },
@@ -120,6 +122,11 @@ export default {
 }
 .app-header.navbar .navbar-brand.logo-ctn {
   padding-left: 78px;
+}
+.app-header.navbar .navbar-brand.logo-ctn.transparent {
+  opacity: 0;
+  padding-left: 0;
+  width: 40px!important;
 }
 .navbar-brand.black {
   color: #ffffff;

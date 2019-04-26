@@ -80,6 +80,7 @@ export default {
     console.log(this.windowHinnerHeight)
     bus.$emit('header-go-black', 'white')
     bus.$emit('animate-info', {
+      isHome: true,
       isShow: true,
       scrollUp: true,
       headerActive: true
