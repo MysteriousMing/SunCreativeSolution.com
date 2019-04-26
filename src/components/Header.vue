@@ -126,7 +126,7 @@ export default {
 .app-header.navbar .navbar-brand.logo-ctn.transparent {
   opacity: 0;
   padding-left: 0;
-  width: 40px!important;
+  width: 10%!important;
 }
 .navbar-brand.black {
   color: #ffffff;
