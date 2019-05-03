@@ -66,7 +66,7 @@
     </div>
     <!-- 右侧 TOC 目录 -->
     <div class="right-col d-md-down-none">
-      <div style="height: 300px;"
+      <div
       :style="{ top : menuPositionY + 'px'}"
       class="menu-ctn pt-4 pr-2"
       :class="{fixed: menuPositionY == 70}">
@@ -367,7 +367,7 @@ export default {
     display: block;
     margin-top: 70px;    
     transition: all 200ms ease;
-    margin-left: 30px;
+    padding-left: 30px;
     width: calc(100% - 30px);
     &.fixed {
       position: fixed;

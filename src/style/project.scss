@@ -127,21 +127,21 @@ a.nav-link {
 
   .first-menu-item &::before {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 10px;
+    height: 10px;
     background-color: #d7d7d7;
     border-radius: 50%;
 
     content: '';
 
-    left: -31px;
+    left: -28px;
   }
 
   .first-menu-item &.active::before {
     background-color: #010000;
-    width: 24px;
-    height: 24px;
-    left: -35px;
+    width: 18px;
+    height: 18px;
+    left: -32px;
     // width: 32px;
     // height: 32px;
     // left: -40px;
@@ -156,9 +156,14 @@ a.nav-link {
     margin-top: 0;
   }
 }
+.menu-ctn {
+    max-height: calc(100vh - 210px);
+    overflow-x: unset;
+    overflow-y: auto;
+}
 .menu-ctn ul {
   padding-left: 22px;
-  border-left: 2px #D7D7D7 solid;
+  border-left: 1px #D7D7D7 solid;
   flex-flow: column nowrap;
   li {
     word-break: break-word;
