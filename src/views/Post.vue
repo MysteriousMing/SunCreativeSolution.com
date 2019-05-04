@@ -10,7 +10,7 @@
       <el-form-item label="标题">
         <el-input v-model="form.title" @change="inputTitle"></el-input>
       </el-form-item>
-      <el-form-item v-if="form.url_params" label="url 地址">
+      <el-form-item v-if="form.uuid" label="url 地址">
         <el-input v-model="form.url_params"></el-input>
       </el-form-item>
       <el-form-item label="简介">
@@ -133,8 +133,7 @@ export default {
         // explanation: 'hhhhh',
         header_image: 'https://static.dubheee.cn/sun/header-image/default.png',
         thumbnail: 'https://static.dubheee.cn/sun/thumbnail-image/default.png',
-        title: '',
-        url_params: null
+        title: ''
       },
       categoryConfig: categoryConfig,
       lastSaveTime: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
@@ -168,6 +167,7 @@ export default {
       this.Http.Get(`sun-create/article-admin/${uuid}/`).then(res => {
         this.form = res
         setTimeout(() => {
+          this.$set(this.form, 'url_params', res.url_params)
           // this.formatTitleMenu()
           // this.formatContentNode()
           this.processLoading = false
