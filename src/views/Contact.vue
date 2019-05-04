@@ -56,6 +56,7 @@ export default {
     console.log(this.windowHinnerHeight)
     bus.$emit('header-go-black', 'white')
     bus.$emit('animate-info', {
+      isHome: false,
       isShow: true,
       scrollUp: true,
       headerActive: true
@@ -243,37 +244,6 @@ export default {
     margin-bottom: 22px;
   }
 }
-.normal-home {
-  color: white;
-  height: 100vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  cursor: pointer;
-  background-image: url(/static/images/project/imgnm.jpg); /* 首页背景图片 */
-}
-.mobile-home {
-  height: 700px;
-  width: 100%;
-  cursor: pointer;
-  background-color: black;
-  background-image: url(/static/images/project/imgmb.jpg); /* 首页背景图片 */
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: #ffffff;
-  background-position: center;
-}
-.mobile-home p {
-  padding-left: 53px;
-  font-size: 1.5rem;
-  margin-bottom: 0;
-}
-.mobile-home p.mt-100 {
-  padding-top: 300px;
-}
-.mobile-home p.mt-4 {
-  font-size: 2.2rem;
-}
 </style>
 <style lang="scss">
 .home-page .project-item {
@@ -320,6 +290,6 @@ export default {
 }
 }
 .cnt{
-  height:48vh;
+  height: calc(100vh - 342px);
 }
 </style>
