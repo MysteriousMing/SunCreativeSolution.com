@@ -8,6 +8,8 @@ import Construction from '@/containers/Construction'
 
 // Views
 import Home from '@/views/Home'
+import About from '@/views/About'
+import Contact from '@/views/Contact'
 import Project from '@/views/Project'
 import Dashboard from '@/views/Dashboard'
 import Catograph from '@/views/Catograph'
@@ -77,10 +79,19 @@ export default new Router({
           component: Home
         },
         {
+          path: '/about',
+          name: 'About',
+          component: About
+        },
+        {
+          path: '/contact',
+          name: 'Contact',
+          component: Contact
+        },
+        {
           path: '/project/:uuid/',
           name: 'Project',
           component: Project
-
         }
         // todo: articleDetail
       ]
