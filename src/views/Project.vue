@@ -143,7 +143,8 @@ export default {
     this.getArticleDetail()
     document.body.classList.add('sidebar-hidden')
     bus.$emit('animate-info', {
-      isHome: false
+      isHome: false,
+      headerActive: true
     })
   },
   mounted () {
