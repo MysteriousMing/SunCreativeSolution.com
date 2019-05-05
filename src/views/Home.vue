@@ -1,15 +1,9 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
-  <!-- <Dashboard class="d-md-down-none"></Dashboard> -->
-  <!-- <Catograph class="d-md-down-none"></Catograph> -->
   <!-- 正常首页头图 -->
   <section class="d-md-down-none normal-home"></section>
   <!-- 移动端首页头图 -->
   <section class="d-lg-none mobile-home">
-    <p hidden class="mt-100">Research-based,</p>
-    <p hidden class="mt-1">Problem-solving,</p>
-    <p hidden class="mt-1">Experience-creating,</p>
-    <p hidden class="mt-4">DESIGNER.</p>
   </section>
   <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
