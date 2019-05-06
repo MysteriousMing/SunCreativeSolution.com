@@ -268,13 +268,13 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  cursor: pointer;
+  /* cursor: pointer; */
   background-image: url(/static/images/imgnm.jpg); /* 首页背景图片 */
 }
 .mobile-home {
   height: calc(100vh - 66px);
   width: 100%;
-  cursor: pointer;
+  /* cursor: pointer; */
   background-color: black;
   background-image: url(/static/images/imgmb.jpg); /* 首页背景图片 */
   background-size: cover;
