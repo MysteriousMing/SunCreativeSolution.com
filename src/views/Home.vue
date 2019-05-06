@@ -298,6 +298,7 @@ export default {
 .home-page .project-item {
   position: relative;
   overflow: hidden;
+  cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png) 22.8 0, pointer;
   .hover-show {
     position: absolute;
     top: 100%;

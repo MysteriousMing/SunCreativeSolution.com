@@ -10,6 +10,8 @@
         v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
         class="left-col mb-0">
             <img v-show="articleDetail.header_image" class="align-self-center" height="auto" width="100px"
+            ondragstart="return false;"
+            oncontextmenu="return false;"
             :src="articleDetail.header_image" alt="Header photos - title">
         </figure>
         <div class="right-col mb-0 d-md-down-none">

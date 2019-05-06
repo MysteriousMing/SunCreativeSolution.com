@@ -51,7 +51,7 @@ html, body {
     height: $navbar-height;
     line-height: $navbar-height;
     padding-bottom: 0 !important;
-    cursor: pointer;
+    cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png) 22.8 0, pointer;
     user-select: none;
     &:focus,
     &:hover {

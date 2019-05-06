@@ -252,7 +252,7 @@ export default {
   -moz-transition: .5s ease-in-out;
   -o-transition: .5s ease-in-out;
   transition: .5s ease-in-out;
-  cursor: pointer;
+  cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png) 22.8 0, pointer;
 }
 button.menu-btn:focus {
   outline: none;

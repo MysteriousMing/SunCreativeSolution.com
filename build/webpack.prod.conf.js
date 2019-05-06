@@ -124,13 +124,13 @@ if (config.build.bundleAnalyzerReport) {
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
-webpackConfig.plugins.push(
-  new PrerenderSpaPlugin({
-    // Absolute path to compiled SPA
-    staticDir: path.join(config.build.assetsRoot),
-    // List of routes to prerender
-    routes: ['/about', '/contact']
-  })
-)
+// webpackConfig.plugins.push(
+
+//     // Absolute path to compiled SPA
+//     staticDir: path.join(config.build.assetsRoot),
+//     // List of routes to prerender
+//     routes: ['/about', '/contact']
+//   })
+// )
 
 module.exports = webpackConfig

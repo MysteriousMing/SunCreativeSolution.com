@@ -40,6 +40,7 @@ export default {
 }
 .nav-tag-item {
   color: white;
+  cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png) 22.8 0, pointer;
 }
 .nav-tag-item:hover {
   color: #fafafa;
