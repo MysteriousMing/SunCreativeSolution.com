@@ -9,21 +9,24 @@
         <!-- <svg v-if="!spinner" class="circular" viewBox="25 25 50 50">
           <circle class="path" cx="50" cy="50" r="20" fill="none"/>
         </svg> -->
-        <div v-if="!spinner && ramdom==0" class="spinner3">
+        <!-- <div v-if="!spinner && ramdom==0" class="spinner3">
           <div class="rect1"></div>
           <div class="rect2"></div>
           <div class="rect3"></div>
           <div class="rect4"></div>
           <div class="rect5"></div>
-        </div>
-        <div v-if="!spinner && ramdom==1" class="spinner6">
+        </div> -->
+        <!-- <div v-if="!spinner && ramdom==2" class="spinner6">
           <div class="dot1"></div>
           <div class="dot2"></div>
-        </div>
+        </div> -->
         <div v-if="!spinner && ramdom==2" class="spinner7">
           <div class="bounce1"></div>
           <div class="bounce2"></div>
           <div class="bounce3"></div>
+        </div>
+        <div v-if="!spinner && ramdom<=1" class="logo-spinner">
+          <logo topBg="black" bottomBg="black" class="logo logo-loading"></logo>
         </div>
         <i v-if="spinner" :class="spinner"></i>
         <p v-if="text" class="el-loading-text" style="margin-top: 0.6rem; color: #333;">{{ text }}</p>
@@ -33,7 +36,11 @@
 </template>
 
 <script>
+  import logo from '@/components/logo'
   export default {
+    components: {
+      logo
+    },
     data () {
       return {
         text: null,
@@ -200,6 +207,65 @@
     -webkit-transform: scale(1.0);
     transform: scale(1.0);
   }
+}
+@keyframes logo-bouncedelay {
+  0%, 100% {
+    background: white;
+  } 40%, 60% { 
+    background: black;
+    opacity: 1;
+  }
+}
+
+.logo-spinner {
+  margin: 0 auto 0;
+  width: 90px;
+  transform: scale(0.7)
+}
+.logo-spinner .logo {
+  width: 90px;
+  height: 90px;
+}
+.logo-spinner .logo {
+  width: 90px;
+  height: 90px;
+}
+.logo-spinner .logo .stella-upper-item {
+  background: white;
+  -webkit-animation: logo-bouncedelay 3.6s infinite ease-in-out both;
+  animation: logo-bouncedelay 3.6s infinite ease-in-out both;
+}
+.logo-spinner .logo .stella-item {
+  background: black;
+  -webkit-animation: logo-bouncedelay 1.8s infinite ease-in-out both;
+  animation: logo-bouncedelay 1.8s infinite ease-in-out both;
+}
+
+.logo-spinner .logo .stella-item:nth-child(3) {
+  -webkit-animation-delay: -0.2s;
+  animation-delay: -0.2s;
+}
+
+.logo-spinner .logo .stella-item:nth-child(4) {
+  -webkit-animation-delay: -0.4s;
+  animation-delay: -0.4s;
+}
+
+
+.logo-spinner .logo .stella-item:nth-child(2) {
+  -webkit-animation-delay: -0.6s;
+  animation-delay: -0.6s;
+}
+
+.logo-spinner .logo .stella-item:nth-child(1) {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+.logo-spinner .logo .stella-upper-item.stella-left-top,
+.logo-spinner .logo .stella-upper-item.stella-right-top {
+  -webkit-animation-delay: -1.8s;
+  animation-delay: -1.8s;
 }
 </style>
 

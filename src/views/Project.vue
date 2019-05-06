@@ -5,7 +5,7 @@
       <div class="project-progress-inner" :style="'width: ' + readingProgress +'%'"></div>
     </section>
     <!-- image banner -->
-    <section class="header" v-loading="isDetailLoading">
+    <section class="header">
         <figure 
         v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
         class="left-col mb-0">

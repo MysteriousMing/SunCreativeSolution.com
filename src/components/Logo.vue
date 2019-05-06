@@ -1,5 +1,5 @@
 <template>
-  <div class="stella-container white">
+  <div class="stella-container white" :class="isLoading">
     <div class="stella-item animated stella-left-top" :class="bottomUpperBg"></div>
     <div class="stella-item animated stella-right-top" :class="bottomUpperBg"></div>
     <div class="stella-item animated stella-left-bottom" :class="topUpperBg"></div>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'logo',
-  props: ['topBg', 'bottomBg'],
+  props: ['topBg', 'bottomBg', 'isLoading'],
   data () {
     return {
     }

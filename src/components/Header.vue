@@ -7,7 +7,7 @@
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('art')">ART</span>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('research')">RESEARCH</span>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('commercial')">COMMERCIAL</span>
-    <button class="ml-auto mr-4 navbar-toggler mobile-sidebar-toggler d-lg-none menu-btn" @click="mobileSidebarToggle">
+    <button class="ml-auto mr-4 mt-4 navbar-toggler mobile-sidebar-toggler d-lg-none menu-btn" @click="mobileSidebarToggle">
       <span></span>
       <span></span>
       <span></span>
@@ -17,7 +17,7 @@
       <span class="mobile-full-item" @click="selectNav('art')">ART</span>
       <span class="mobile-full-item" @click="selectNav('research')">RESEARCH</span>
       <span class="mobile-full-item" @click="selectNav('commercial')">COMMERCIAL</span>
-      <span class="mobile-full-item mt-auto" @click="gotoContact()">CONTACT</span>
+      <span class="mobile-full-item mt-auto" @click="gotoAbout()">ABOUT ME</span>
     </section>
   </header>
 </template>
@@ -79,7 +79,7 @@ export default {
       document.body.querySelector('.menu-btn').classList.remove('open')
       document.body.querySelector('.logo').classList.remove('active')
 
-      if (this.$router.history.current.name === 'Project') {
+      if (this.$router.history.current.name !== 'Home') {
         this.$router.push({
           name: 'Home'
         })
@@ -105,10 +105,21 @@ export default {
       e.preventDefault()
       document.body.classList.toggle('aside-menu-hidden')
     },
+    gotoAbout () {
+      this.$router.push({
+        name: 'About'
+      })
+      document.body.querySelector('.mobile-full').classList.remove('show')
+      document.body.querySelector('.menu-btn').classList.remove('open')
+      document.body.querySelector('.logo').classList.remove('active')
+    },
     gotoContact () {
       this.$router.push({
         name: 'Contact'
       })
+      document.body.querySelector('.mobile-full').classList.remove('show')
+      document.body.querySelector('.menu-btn').classList.remove('open')
+      document.body.querySelector('.logo').classList.remove('active')
     }
   }
 }
@@ -241,7 +252,7 @@ export default {
 }
 
 .menu-btn {
-  width: 45px;
+  width: 35px;
   height: 35px;
   position: relative;
   -webkit-transform: rotate(0deg);
@@ -283,11 +294,11 @@ button.menu-btn:focus {
 }
 
 .menu-btn span:nth-child(2),.menu-btn span:nth-child(3) {
-  top: 18px;
+  top: 12px;
 }
 
 .menu-btn span:nth-child(4) {
-  top: 36px;
+  top: 24px;
 }
 
 .menu-btn.open span:nth-child(1) {
