@@ -11,6 +11,7 @@
       </quill-editor>
       <div class="editor-split" :class="{'fixed': isEditorToolboxFixed}">
         <el-button type="danger" circle @click="showSplit()">hr</el-button>
+        <el-button type="info" circle @click="joinAudio()"><i class="el-icon-phone-outline"></i></el-button>
         <el-tooltip class="item" effect="dark" content="H1H2/H3H4分别为文字和图片标题, 图片标题正文不可见.相邻图片会转为轮播图, 需要分割相邻图片使用左侧 hr." placement="top-start">
           <el-button  type="warning" icon="el-icon-view" circle></el-button>
         </el-tooltip>
@@ -31,6 +32,19 @@
           :on-success="handleImageSuccess"
           multiple>
           <el-button size="small" type="primary">插入图片</el-button>
+        </el-upload>
+        <el-upload
+          id="uploadQuillAudio"
+          class="upload-quill-image upload-audio mr-2"
+          :headers="uploadHeader"
+          :action="uploadAudio"
+          :data="uploadAudioData"
+          :before-upload="handleBeforeUpdate"
+          :on-progress="handleUploadProcess"
+          :on-error="handleUploadError"
+          :on-success="bindUploadAudioSuccess"
+          multiple>
+          <el-button size="small" type="primary">插入音频</el-button>
         </el-upload>
         <!-- <button class="btn btn-secondary" @click="cancel()">Clear</button> -->
         <button class="btn btn-primary" type="success" @click="confirmText()">PRVIEW</button>
@@ -84,9 +98,13 @@ export default {
       isEditorToolboxFixed: false,
       isShowAddCarousel: false,
       uploadImage: `${this.Http.baseUrl}tools/upload-image/`,
+      uploadAudio: `${this.Http.baseUrl}tools/upload-file/`,
       uploadImageData: {
         identifier: '',
         image_type: 'sun/content'
+      },
+      uploadAudioData: {
+        file_type: 'sun/audio'
       },
       uploadHeader: {
         Authorization: `Token ${window.localStorage.token}`
@@ -109,7 +127,7 @@ export default {
             [{ 'color': [] }, { 'background': [] }],
             [{ 'align': [] }],
             ['clean'],
-            ['link', 'image', 'video']
+            ['link', 'image', 'video', 'audio']
           ]
         }
       },
@@ -198,6 +216,32 @@ export default {
       }
       // loading动画消失
     },
+    // 插入音频
+    joinAudio: function (state) {
+      // button is clicked
+      console.log(document.querySelector('.upload-audio input'))
+      document.querySelector('.upload-audio input').click()
+      console.log('Btn', state)
+    },
+    bindUploadAudioSuccess: function (res, file) {
+      console.log(res, file)
+      this.addAudioToQuill(res)
+      this.processLoading = false
+    },
+    addAudioToQuill: function (res) {
+      let quill = this.$refs.myQuillEditor.quill
+      // 如果上传成功
+      if (res) {
+        // 获取光标所在位置
+        let length = quill.getSelection().index
+        // 插入图片  res.info为服务器返回的图片地址
+        quill.insertEmbed(length, 'audio', res)
+        // 调整光标到最后
+        quill.setSelection(length + 1)
+      } else {
+        this.$message.error('音频插入失败')
+      }
+    },
     addCarouselImage: function (params) {
       let imgItem = {
         type: 'image',
@@ -268,6 +312,7 @@ export default {
     }, 1300)
     var vm = this
     vm.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('image', this.imgHandler)
+    // vm.$refs.myQuillEditor.quill.getModule('toolbar').addHandler('audio', this.audioHandler)
   }
 }
 </script>
