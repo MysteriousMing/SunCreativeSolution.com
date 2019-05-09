@@ -179,11 +179,29 @@ const formatProject = nodeArr => {
         } else if (item.textContent && item.textContent.indexOf('!&hr&!') >= 0) {
           newNodeArr.push(tagObj)
           flag++
+        } else if (item.textContent && item.textContent.indexOf('<p><audio') >= 0 && item.textContent.indexOf('</audio></p>') >= 0) {
+          // 增加音频 section
+          tagObj.styleClass = 'audios-section'
+          tagObj.header = {}
+          tagObj.subheader = {}
+          tagObj.audioSrc = item.textContent.match(/src="([^"]*?)"/g).map(item => {
+            return item.replace(/^src="([^"]*)"$/, '$1')
+          })
+          // console.log(tagObj.audioSrc)
+          tagObj.para = []
+          newNodeArr.push(tagObj)
+          flag++
         } else {
           if (flag > 0) {
             let lastSection = newNodeArr[flag - 1]
             if (lastSection.styleClass === 'para-section' && item.textContent !== '') {
               newNodeArr[flag - 1].para.push(item)
+            } else if (item.textContent !== '') {
+              newNodeArr[flag] = {
+                styleClass: 'para-section',
+                para: [item]
+              }
+              flag++
             }
           } else {
             newNodeArr[flag] = {

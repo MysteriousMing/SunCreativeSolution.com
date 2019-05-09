@@ -24,6 +24,15 @@ Vue.use(VueScroll, {
 Vue.prototype.Http = Http
 Vue.prototype.Utils = utils
 
+router.beforeEach((to, from, next) => {
+  // 这里能够跟踪路径的变化
+  // console.log(from)
+  // console.log(to)
+  // console.log('切换!')
+  // 最后通过钩子继续页面的跳转
+  next()
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

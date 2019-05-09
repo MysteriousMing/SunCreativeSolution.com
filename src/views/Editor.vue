@@ -51,21 +51,46 @@
     </div>
     <b-card class="mb-3 animated fadeIn ql-container ql-snow result-content" v-if="result">
       <div ref="resultContent"
+      v-if="result && !contentArr"
+      v-show="false"
       class="col-12 col-md-8 ql-editor" v-html="result"></div>
       <article class="col-12 col-md-8 ql-editor">
-        <div v-for="(section, index) of contentArr" :key="index">
-          <section v-if="section.styleClass === 'para-section'" class="para-section">
+        <div v-for="(section, index) of contentArr" :key="index" :class="section.styleClass">
+          <section v-if="section.styleClass === 'para-section'">
             <div class="section-header-ctn">
-              <h1>{{section.header.name}}</h1>
-              <h2>{{section.subheader.name}}</h2>
+              <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
+              <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
             </div>
             <div>
               <p v-for="(para, p_index) in section.para" :key="p_index" v-html="para.innerHTML"></p>
             </div>
           </section>
-          <section v-else-if="section.styleClass === 'images-section'" class="images-section">
-            <div v-for="(image, image_index) in section.images" :key="image_index" v-html="image.innerHTML"></div>
-          </section>          
+          <section v-else-if="section.styleClass === 'image-header-section'">
+            <div class="section-header-ctn">
+              <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
+              <h2 v-if="section && section.subheader" v-bind:id="section.subheader.idx">{{section.subheader.name}}</h2>
+            </div>
+          </section>
+          <section v-else-if="section.styleClass === 'images-section'">
+            <!-- v-for="(image, image_index) in section.images" :key="image_index"-->
+            <el-carousel v-if="section.images.length > 1"
+              :autoplay="section.images.length > 2 ? true : false"
+              :loop="section.images.length > 2 ? true : false"
+              ref="imageCarousel"
+              :height="(parseInt(carouselWidth * section.height / section.width) || 400) + 'px'"
+              indicator-position="outside">
+              <el-carousel-item v-for="(image, image_index) in section.images" :key="image_index">
+                <div class="para-image" v-html="image.innerHTML" ref="imgSize"></div>
+              </el-carousel-item>
+            </el-carousel>
+            <div class="para-image" v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
+          </section>
+          <section v-else-if="section.styleClass === 'audios-section'">
+            <div v-for="item in section.audioSrc" :key="item">
+              <audio controls :src="item"></audio>
+              <p class="audio-src">{{item}}</p>
+            </div>
+          </section>     
         </div>
       </article>
     </b-card>
@@ -79,7 +104,6 @@
 import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
 
-// mount with global
 Vue.use(VueQuillEditor)
 
 export default {
@@ -93,7 +117,7 @@ export default {
   data () {
     return {
       result: '',
-      contentArr: [],
+      contentArr: null,
       carouselData: [],
       isEditorToolboxFixed: false,
       isShowAddCarousel: false,
@@ -127,19 +151,26 @@ export default {
             [{ 'color': [] }, { 'background': [] }],
             [{ 'align': [] }],
             ['clean'],
-            ['link', 'image', 'video', 'audio']
+            ['link', 'image', 'video']
           ]
         }
       },
-      content: `<h2 class="ql-align-center"><span class="ql-font-serif">Text content loading..</span></h2>`
+      content: `<h2 class="ql-align-center"><span class="ql-font-serif">Text content loading..</span></h2>`,
+      carouselWidth: 0
     }
   },
   methods: {
+    setSize: function () {
+      if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
+        this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
+      }
+    },
     formatContentNode () {
       let content = this.$refs.resultContent
       if (!content || !content.childNodes) return
       this.contentArr = this.Utils.formatProject(content.childNodes)
       console.log('contentArr - \n', this.contentArr)
+      this.setSize()
     },
     showSplit () {
       let quill = this.$refs.myQuillEditor.quill
@@ -219,7 +250,8 @@ export default {
     // 插入音频
     joinAudio: function (state) {
       // button is clicked
-      console.log(document.querySelector('.upload-audio input'))
+      // this.$refs.myQuillEditor.quill.root.children.push('<p>99999</p>')
+      console.log(this.$refs.myQuillEditor.quill.root.children)
       document.querySelector('.upload-audio input').click()
       console.log('Btn', state)
     },
@@ -235,7 +267,12 @@ export default {
         // 获取光标所在位置
         let length = quill.getSelection().index
         // 插入图片  res.info为服务器返回的图片地址
-        quill.insertEmbed(length, 'audio', res)
+        // quill.insertEmbed(length, 'audio', res)
+        let content = `<p><audio src="${res}" controls>你的浏览器不支持audio标签</audio></p>`
+        // 插入
+        quill.insertText(length, content, {
+          'color': '#666666'
+        })
         // 调整光标到最后
         quill.setSelection(length + 1)
       } else {
@@ -279,9 +316,10 @@ export default {
       this.closeAddCarousel()
     },
     confirmText: function (params) {
-      console.log('CONTENT | ', this.content)
       this.result = this.content
-      // this.formatContentNode()
+      setTimeout(() => {
+        this.formatContentNode()
+      }, 200)
       this.$emit('confirmEditorRichText', this.content)
     },
     cancel: function (params) {

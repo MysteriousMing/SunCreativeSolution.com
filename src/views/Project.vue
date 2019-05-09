@@ -62,7 +62,13 @@
               </el-carousel-item>
             </el-carousel>
             <div class="para-image" v-if="section.images.length == 1" v-html="section.images[0].innerHTML"></div>
-          </section>          
+          </section>
+          <section v-else-if="section.styleClass === 'audios-section'">
+            <div v-for="item in section.audioSrc" :key="item">
+              <audio controls :src="item"></audio>
+              <p class="audio-src">{{item}}</p>
+            </div>
+          </section>
         </div>
       </article>
     </div>
