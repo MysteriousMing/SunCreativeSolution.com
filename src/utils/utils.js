@@ -155,6 +155,24 @@ const formatProject = nodeArr => {
           flag++
         }
         break
+      case 'iframe':
+        // 增加音频 section
+        let currentTagObjIndex = newNodeArr.length - 1 >= 0 ? newNodeArr.length - 1 : 0
+        console.log('[ + ] video source:', item.src)
+        if (newNodeArr[currentTagObjIndex].styleClass === 'videos-section') {
+          tagObj.videos.push(item)
+          tagObj.videoSrcs.push(item.src)
+        } else {
+          tagObj.styleClass = 'videos-section'
+          tagObj.header = {}
+          tagObj.subheader = {}
+          tagObj.para = []
+          tagObj.videos = [item]
+          tagObj.videoSrcs = [item.src]
+          newNodeArr.push(tagObj)
+          flag++
+        }
+        break
       default:
         if (item.querySelectorAll('img').length > 0) {
           // console.log('[+]Image -', item)

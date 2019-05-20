@@ -90,7 +90,17 @@
               <audio controls :src="item"></audio>
               <p class="audio-src">{{item}}</p>
             </div>
-          </section>     
+          </section>
+          <section v-else-if="section.styleClass === 'videos-section'">
+            <iframe class="ql-video" 
+            style="margin: auto;"
+            v-for="(item,v_index) in section.videoSrcs"
+            :key="'section_' + index + 'video_' + v_index"
+            frameborder="0" 
+            width="540" height="310"
+            allowfullscreen="true" 
+            :src="item"></iframe>
+          </section>
         </div>
       </article>
     </b-card>
