@@ -74,7 +74,7 @@
             style="margin: auto;"
             v-for="(item,v_index) in section.videoSrcs"
             :key="'section_' + index + 'video_' + v_index"
-            frameborder="0" width="540" height="310" allowfullscreen="true" 
+            frameborder="0" width="100%" :height="contentWidth * 9 / 16" allowfullscreen="true" 
             :src="item"></iframe>
           </section>
         </div>
@@ -150,7 +150,8 @@ export default {
         theme_color: '#000000'
       },
       categoryConfig: categoryConfig,
-      carouselWidth: 0
+      carouselWidth: 0,
+      contentWidth: 0
     }
   },
   created () {
@@ -197,6 +198,8 @@ export default {
       this.$scrollTo(5)
     },
     setSize: function () {
+      let contentNode = this.$refs.contentNode
+      this.contentWidth = contentNode.clientWidth
       if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
         this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
       }
