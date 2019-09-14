@@ -159,7 +159,7 @@ const formatProject = nodeArr => {
         // 增加音频 section
         let currentTagObjIndex = newNodeArr.length - 1 >= 0 ? newNodeArr.length - 1 : 0
         console.log('[ + ] video source:', item.src)
-        if (newNodeArr[currentTagObjIndex].styleClass === 'videos-section') {
+        if (newNodeArr.length > 0 && newNodeArr[currentTagObjIndex].styleClass === 'videos-section') {
           tagObj.videos.push(item)
           tagObj.videoSrcs.push(item.src)
         } else {
@@ -180,7 +180,7 @@ const formatProject = nodeArr => {
           if (flag > 0 && lastSection && lastSection.styleClass === 'images-section') {
             let imageSrc = item.querySelector('img').src
             // 处理图片
-            if (imageSrc.indexOf('x-oss-process') < 0) {
+            if (imageSrc && imageSrc.indexOf('//static.dubheee.cn') > 0 && imageSrc.indexOf('x-oss-process') < 0) {
               imageSrc = `${imageSrc}?x-oss-process=style/2k`
               item.querySelector('img').src = imageSrc
             }
@@ -188,7 +188,7 @@ const formatProject = nodeArr => {
           } else {
             let imgUrl = item.querySelector('img').src
             // 处理图片
-            if (imgUrl.indexOf('x-oss-process') < 0) {
+            if (imgUrl && imgUrl.indexOf('//static.dubheee.cn') > 0 && imgUrl.indexOf('x-oss-process') < 0) {
               imgUrl = `${imgUrl}?x-oss-process=style/2k`
               item.querySelector('img').src = imgUrl
             }
