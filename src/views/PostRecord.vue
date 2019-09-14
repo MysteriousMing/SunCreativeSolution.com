@@ -74,7 +74,7 @@
         class="grid-item grid-sizer">
           <el-card :body-style="{ padding: '0px' }"
           style="margin-bottom: 10px;min-height: 306px">
-            <img :src="item.header_image + '?x-oss-process=style/400wh'" class="image thumbnail">
+            <img :src="item.thumbnail + '?x-oss-process=style/400wh'" class="image thumbnail">
             <div style="border-top: 10px solid"
             :style="{ padding: '14px', borderColor: item.theme_color }">
               <span>{{index+1}}. {{item.title}}</span>

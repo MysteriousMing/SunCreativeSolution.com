@@ -1,6 +1,6 @@
 <template>
   <header class="app-header navbar animated"
-  :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true }">
+  :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true, 'home-hide': isOnHome && bottomUpperBg == 'white'}">
     <b-link class="navbar-brand logo-ctn" :class="{'transparent': !(!(bottomUpperBg == 'white' && isOnHome) || !isOnHome)}" :to="{name: 'Home'}">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg" class="logo"></logo>
     </b-link>
@@ -327,4 +327,26 @@ button.menu-btn:focus {
   left: 50%;
 }
 
+</style>
+
+<style lang="scss">
+// 满足 pc 端首页默认不加载
+@media (min-width: 992px) {
+  .app-header.home-hide {
+    transform: translateY(-126px);
+    transition: transform 200ms ease;
+  }
+  // home.vue
+  .app-header.home-hide + .app-body.active-header{
+    margin-top: 0;
+    
+    .home-page { // 首页 home
+      height: 100vh;
+      overflow: auto;
+    }
+    .normal-home { // pc 首页的图片 #首页背景图片
+      height: 100vh;
+    }
+  }
+}
 </style>

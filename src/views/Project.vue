@@ -237,7 +237,10 @@ export default {
       this.isDetailLoading = true
       let uuid = this.$router.history.current.params.uuid
       this.Http.SimpleGet(`sun-create/article/${uuid}/`).then(res => {
-        this.articleDetail = res
+        this.articleDetail = {
+          ...res,
+          header_image: res.header_image.indexOf('x-oss') >= 0 ? res.header_image : `${res.header_image}?x-oss-process=style/2k`
+        }
         setTimeout(() => {
           let promiseTitle = this.formatTitleMenu(res.title)
           let promiseContent = this.formatContentNode()

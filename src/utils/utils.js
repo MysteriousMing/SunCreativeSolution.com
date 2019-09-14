@@ -178,13 +178,25 @@ const formatProject = nodeArr => {
           // console.log('[+]Image -', item)
           let lastSection = newNodeArr[flag - 1] || null
           if (flag > 0 && lastSection && lastSection.styleClass === 'images-section') {
+            let imageSrc = item.querySelector('img').src
+            // 处理图片
+            if (imageSrc.indexOf('x-oss-process') < 0) {
+              imageSrc = `${imageSrc}?x-oss-process=style/2k`
+              item.querySelector('img').src = imageSrc
+            }
             newNodeArr[flag - 1].images.push(item)
           } else {
+            let imgUrl = item.querySelector('img').src
+            // 处理图片
+            if (imgUrl.indexOf('x-oss-process') < 0) {
+              imgUrl = `${imgUrl}?x-oss-process=style/2k`
+              item.querySelector('img').src = imgUrl
+            }
+            // 加入数据
             tagObj.styleClass = 'images-section'
             tagObj.height = '500px'
             tagObj.images = [item]
-            let imgUrl = item.querySelector('img').src
-            // console.log(imgUrl)
+
             if (imgUrl) {
               loadImage(imgUrl).then(res => {
                 tagObj.height = res.height

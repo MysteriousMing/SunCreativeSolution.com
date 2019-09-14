@@ -26,7 +26,7 @@
           :headers="uploadHeader"
           :action="uploadImage"
           :data="uploadImageData"
-          :before-upload="handleBeforeUpdate"
+          :before-upload="handleImageBeforeUpdate"
           :on-progress="handleUploadProcess"
           :on-error="handleUploadError"
           :on-success="handleImageSuccess"
@@ -223,8 +223,19 @@ export default {
         })
         .catch(_ => {})
     },
-    handleBeforeUpdate () {
+    handleBeforeUpdate (file) {
       this.uploadImageData.identifier = new Date().getTime()
+      // 限制上传大小
+    },
+    handleImageBeforeUpdate (file) {
+      this.uploadImageData.identifier = new Date().getTime()
+      // 限制上传图片大小
+      if (file && file.size > 15728640) {
+        // 不能超过 15 M
+        console.error('Image too large')
+        this.$message.error('图片太大, 请先压缩')
+        return false
+      }
     },
     handleUploadProcess () {
       this.processLoading = true

@@ -11,7 +11,7 @@
       <div v-for="element in picArray" :key="element.uuid"
       class="grid-item grid-sizer project-item" @click="handleClick(element)">
           <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
-          <img :src="element.src" alt="Not found">
+          <img :src="element.src" :alt="element.name || 'not found'">
           <section class="hover-show">
             <p class="item-title">{{element.name}}</p>
             <p class="item-desc">{{element.discribe}}</p>
@@ -165,7 +165,7 @@ export default {
           return {
             ...item,
             uuid: item.uuid,
-            src: item.header_image.replace('Http://', 'Https://'),
+            src: item.thumbnail.replace('Http://', 'Https://') + '?x-oss-process=style/smaller',
             name: item.title,
             discribe: item.explanation,
             group: item.category
@@ -269,14 +269,14 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   /* cursor: pointer; */
-  background-image: url(/static/images/imgnm.jpg); /* 首页背景图片 */
+  background-image: url(https://static.dubheee.cn/sun/static/imgnm.jpg?x-oss-process=style/2k); /* 首页背景图片 */
 }
 .mobile-home {
   height: calc(100vh - 66px);
   width: 100%;
   /* cursor: pointer; */
   background-color: black;
-  background-image: url(/static/images/imgmb.jpg); /* 首页背景图片 */
+  background-image: url(https://static.dubheee.cn/sun/static/imgmb.jpg?x-oss-process=style/2k); /* 首页背景图片 */
   background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;
