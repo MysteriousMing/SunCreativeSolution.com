@@ -10,7 +10,7 @@
   width: 30%;
   display: flex;
   flex-flow: column;
-  padding: 0 10px 0 0;
+  padding: 0 10px 0 12px;
 }
 // 适配手机
 @media (max-width: 991px) {
@@ -224,6 +224,16 @@ ul li.sub-menu-item {
 .images-section + .image-header-section {
   margin-top: -20px;
 }
+.images-section + .videos-section,
+.videos-section + .videos-section,
+.videos-section + .images-section,
+.margin-section + .videos-section,
+.margin-section + .images-section,
+.margin-section + .para-section,
+.margin-section + .audios-section {
+  margin-top: 20px;
+}
+
 .para-image {
   text-align: center;
 }
@@ -239,4 +249,10 @@ ul li.sub-menu-item {
 .audio-src {
   font-size: 10px;
   color: #919191;
+}
+
+.videos-section {
+  .vp-center>div {
+    max-width: none !important;
+  }
 }

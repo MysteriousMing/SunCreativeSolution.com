@@ -5,7 +5,7 @@
       <div class="project-progress-inner" :style="'width: ' + readingProgress +'%'"></div>
     </section>
     <!-- image banner -->
-    <section class="header">
+    <section class="header" v-loading="isDetailLoading">
         <figure 
         v-bind:style="{ background: articleDetail.theme_color || 'gray'}"
         class="left-col mb-0">
@@ -33,7 +33,7 @@
       <article v-if="articleDetail"
       class="ql-editor"
       ref="contentNode">
-        <div v-for="(section, index) of articleDetail.contentArr" :key="index" :class="section.styleClass">
+        <div v-for="(section, index) of articleDetail.contentArr" :key="index" :class="section.styleClass || 'margin-section'">
           <section v-if="section.styleClass === 'para-section'">
             <div class="section-header-ctn">
               <h1 v-if="section && section.header" v-bind:id="section.header.idx">{{section.header.name}}</h1>
@@ -55,7 +55,7 @@
               :autoplay="section.images.length > 2 ? true : false"
               :loop="section.images.length > 2 ? true : false"
               ref="imageCarousel"
-              :height="(parseInt(carouselWidth * section.height / section.width) || 400) + 'px'"
+              :height="elCarouselHeight(section) + 'px'"
               indicator-position="outside">
               <el-carousel-item v-for="(image, image_index) in section.images" :key="image_index">
                 <div class="para-image" v-html="image.innerHTML" ref="imgSize"></div>
@@ -69,14 +69,15 @@
               <p class="audio-src">{{item}}</p>
             </div>
           </section>
-          <section v-else-if="section.styleClass === 'videos-section'">
+          <section v-else-if="section.styleClass === 'videos-section'" class='video-wrapper'>
             <iframe class="ql-video" 
-            style="margin: auto;"
+            style="margin-left: auto; margin-right: auto;"
             v-for="(item,v_index) in section.videoSrcs"
             :key="'section_' + index + 'video_' + v_index"
-            frameborder="0" width="100%" :height="contentWidth * 9 / 16" allowfullscreen="true" 
+            frameborder="0" width="100%" :height="(contentWidth + 80) * 9 / 16" allowfullscreen="true" 
             :src="item"></iframe>
           </section>
+          <section v-else></section>
         </div>
       </article>
     </div>
@@ -200,9 +201,51 @@ export default {
     setSize: function () {
       let contentNode = this.$refs.contentNode
       this.contentWidth = contentNode.clientWidth
-      if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
-        this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
+      this.$nextTick().then(() => {
+        if (this.$refs.imageCarousel && this.$refs.imageCarousel.length > 0) {
+          this.carouselWidth = this.$refs.imageCarousel[0].$el.clientWidth
+          // console.log('carouselWidth:', this.carouselWidth)
+          this.calcImageSize()
+        }
+      })
+    },
+    calcImageSize () {
+      let needCalcArrs = this.articleDetail.contentArr.filter((item) => this.imageDetectFilterFunc(item))
+      if (needCalcArrs.length > 0) {
+        let imagePromiseArr = []
+        this.articleDetail.contentArr.forEach((each, index) => {
+          if (this.imageDetectFilterFunc(each)) {
+            // console.log(each, index)
+            imagePromiseArr.push(this.Utils.loadImage(each.firstImageUrl))
+          } else {
+            imagePromiseArr.push(this.nothingPromise())
+          }
+        })
+        Promise.all(imagePromiseArr).then((resArr) => {
+          if (resArr) {
+            resArr.forEach((value, index, array) => {
+              if (value) {
+                // console.log(value.height, value.width, index)
+                let item = this.articleDetail.contentArr[index]
+                if (item.styleClass === 'images-section') {
+                  item.height = value.height
+                  item.width = value.width
+                  this.$set(this.articleDetail.contentArr, index, item)
+                }
+              }
+            })
+          }
+        })
       }
+    },
+    nothingPromise () {
+      return new Promise(resolve => resolve())
+    },
+    imageDetectFilterFunc (item) {
+      return item.styleClass === 'images-section' && item.images && item.images.length > 1 && (item.height === 0 || item.width === 0)
+    },
+    elCarouselHeight (section) {
+      return parseInt(this.carouselWidth * section.height / section.width) || 400
     },
     onScroll: function (e, position) {
       this.position = position
@@ -245,19 +288,28 @@ export default {
           let promiseTitle = this.formatTitleMenu(res.title)
           let promiseContent = this.formatContentNode()
           Promise.all([promiseTitle, promiseContent]).then(res => {
+            console.log('Then')
             this.isDetailLoading = false
             this.setSize()
+          }).catch((err) => {
+            console.error(err)
           })
         }, 200)
       })
     },
     formatContentNode () {
-      let content = this.$refs.content
-      this.articleDetail.contentArr = this.Utils.formatProject(content.childNodes)
       let that = this
-      setTimeout(() => {
-        that.totalHeight = this.$refs.bottomFooter.offsetTop - window.innerHeight
-      }, 1000)
+      return new Promise((resolve, reject) => {
+        that.$nextTick().then(() => {
+          let content = that.$refs.content
+          that.articleDetail.contentArr = that.Utils.formatProject(content.childNodes)
+          console.log('End build')
+          that.$nextTick().then(() => {
+            that.totalHeight = that.$refs.bottomFooter.offsetTop - window.innerHeight
+            resolve(that.totalHeight)
+          })
+        })
+      })
       // console.log('contentArr - \n', this.articleDetail.contentArr)
     },
     // titleList: this.formatTitleMenu(item.content)
@@ -326,6 +378,7 @@ export default {
     height: 100vh;
     overflow: auto;
     overflow-x: hidden;
+    transition-duration: 200ms; // Fix 高度变化
   }
   .active-header section.page-project {
     height: calc(100vh - 66px);

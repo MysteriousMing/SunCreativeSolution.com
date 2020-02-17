@@ -10,8 +10,21 @@
                     @ready="onEditorReady($event)">
       </quill-editor>
       <div class="editor-split" :class="{'fixed': isEditorToolboxFixed}">
-        <el-button type="danger" circle @click="showSplit()">hr</el-button>
-        <el-button type="info" circle @click="joinAudio()"><i class="el-icon-phone-outline"></i></el-button>
+
+        <el-tooltip class="item" effect="dark" content="图片是否压缩, 压缩率为 0.8" placement="top-start">
+          <el-switch
+            v-model="isCompressImage"
+            active-text="压缩"
+            inactive-text="原图"
+            inactive-color="#ff4949">
+          </el-switch>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="插入图片分隔符,以分开相邻的图片避免成为轮播图" placement="top-start">
+          <el-button type="danger" circle @click="showSplit()">hr</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="插入音频" placement="top-start">
+          <el-button type="info" circle @click="joinAudio()"><i class="el-icon-phone-outline"></i></el-button>
+        </el-tooltip>
         <el-tooltip class="item" effect="dark" content="H1H2/H3H4分别为文字和图片标题, 图片标题正文不可见.相邻图片会转为轮播图, 需要分割相邻图片使用左侧 hr." placement="top-start">
           <el-button  type="warning" icon="el-icon-view" circle></el-button>
         </el-tooltip>
@@ -143,6 +156,7 @@ export default {
       uploadHeader: {
         Authorization: `Token ${window.localStorage.token}`
       },
+      isCompressImage: true,
       processLoading: false,
       startTimestamp: new Date(),
       editorOption: {
@@ -230,11 +244,31 @@ export default {
     handleImageBeforeUpdate (file) {
       this.uploadImageData.identifier = new Date().getTime()
       // 限制上传图片大小
-      if (file && file.size > 15728640) {
+      let originSize = file.size
+      if (originSize > 15728640) {
         // 不能超过 15 M
         console.error('Image too large')
-        this.$message.error('图片太大, 请先压缩')
+        this.$message.error('图片太大, 请先本地压缩')
         return false
+      } else if (originSize > 0 && this.isCompressImage) {
+        const vm = this
+        return new Promise((resolve) => {
+          const reader = new FileReader()
+          const image = new Image()
+          image.onload = (imageEvent) => {
+            let dataUrl = vm.Utils.compressImage(image, file.type)
+            let blobData = vm.Utils.dataURItoBlob(dataUrl, file.type)
+            let compressedSize = blobData.size
+            this.$notify({
+              type: 'success',
+              title: '压缩成功',
+              message: `体积从 ${(originSize / 1024 / 1024).toFixed(2)}M 缩小到了 ${(compressedSize / 1024 / 1024).toFixed(2)}M`
+            })
+            resolve(blobData)
+          }
+          reader.onload = e => { image.src = e.target.result }
+          reader.readAsDataURL(file)
+        })
       }
     },
     handleUploadProcess () {

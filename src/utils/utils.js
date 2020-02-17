@@ -4,6 +4,40 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const compressImage = (img, type, ratio) => {
+  let canvas = document.createElement('canvas')
+  let ctx = canvas.getContext('2d')
+  let initSize = img.src.length
+  console.log('*******原始图片大小*******\n', initSize)
+
+  let width = img.width
+  let height = img.height
+  canvas.width = width
+  canvas.height = height
+  // 铺底色
+  ctx.fillStyle = '#fff'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  ctx.drawImage(img, 0, 0, width, height)
+
+  // 进行最小压缩
+  let ndata = canvas.toDataURL(type || 'image/jpeg', ratio || 0.8)
+  console.log('*******压缩后的图片大小*******')
+  // console.log(ndata)
+  console.log(ndata.length)
+  return ndata
+}
+
+const dataURItoBlob = (dataURI, type) => {
+  let binary = atob(dataURI.split(',')[1])
+  let array = []
+  for (var i = 0; i < binary.length; i++) {
+    array.push(binary.charCodeAt(i))
+  }
+  return new Blob([new Uint8Array(array)], {
+    type: type
+  })
+}
+
 const formatProject = nodeArr => {
   // h1 h2 分在一个 section 里 - .para-section
   // h2 之后, 下一个图片之前的 p 分在一个 section 里 .images-section
@@ -14,7 +48,7 @@ const formatProject = nodeArr => {
   let subTitleIndex = -1
   let currentHeader = ''
   let currentHeaderNodes = []
-  nodeArr.forEach(item => {
+  nodeArr.forEach(function (item) {
     let tagObj = {}
     switch (item.tagName.toLowerCase()) {
       case 'h1':
@@ -186,7 +220,12 @@ const formatProject = nodeArr => {
             }
             newNodeArr[flag - 1].images.push(item)
           } else {
-            let imgUrl = item.querySelector('img').src
+            let imageItem = item.querySelector('img')
+            let imageSizeOption = {
+              width: imageItem.width,
+              height: imageItem.height
+            }
+            let imgUrl = imageItem.src
             // 处理图片
             if (imgUrl && imgUrl.indexOf('//static.dubheee.cn') > 0 && imgUrl.indexOf('x-oss-process') < 0) {
               imgUrl = `${imgUrl}?x-oss-process=style/2k`
@@ -198,10 +237,14 @@ const formatProject = nodeArr => {
             tagObj.images = [item]
 
             if (imgUrl) {
-              loadImage(imgUrl).then(res => {
-                tagObj.height = res.height
-                tagObj.width = res.width
-              })
+              tagObj.firstImageUrl = imgUrl
+              tagObj.height = imageSizeOption.height
+              tagObj.width = imageSizeOption.width
+              if (imageSizeOption.height === 0 || imageSizeOption.width === 0) {
+                console.error(Error(`Image Size Error:${imgUrl}\nImage Size: 0, 0`))
+              }
+            } else {
+              console.error(Error('Load Image Error'), '\nimage: ', imgUrl)
             }
             newNodeArr.push(tagObj)
             flag++
@@ -253,21 +296,17 @@ const loadImage = function (imgUrl) {
   return new Promise(resolve => {
     // 创建对象
     let img = new Image()
-    // 改变图片的src
-    // console.log('URL = ', imgUrl)
-    img.src = imgUrl
-    // 定时执行获取宽高
-    let check = function () {
-      // 只要任何一方大于0
-      // console.log('[Image Height]:', img.height || 0)
-      // 表示已经服务器已经返回宽高
+    img.onload = () => {
       if (img.width > 0 || img.height > 0) {
-        // console.log('[Image Height]:', img.width, img.height)
+        // console.log('[Image Size]:', img.width, img.height)
         // clearInterval(set)
         resolve(img)
       }
     }
-    check()
+    // 改变图片的src
+    // console.log('URL = ', imgUrl)
+    img.src = imgUrl
+    // 定时执行获取宽高
     // let set = setInterval(check, 1000)
   })
 }
@@ -275,6 +314,8 @@ module.exports = {
   formatNumber: formatNumber,
   formatProject: formatProject,
   loadImage: loadImage,
+  compressImage: compressImage,
+  dataURItoBlob: dataURItoBlob,
   getMonthEnArr () {
     return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   },
