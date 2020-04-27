@@ -269,14 +269,14 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   /* cursor: pointer; */
-  background-image: url(https://static.dubheee.cn/sun/static/imgnm.jpg?x-oss-process=style/2k); /* 首页背景图片 */
+  background-image: url(https://static.dubheee.cn/sun/static/imgnm.png?x-oss-process=style/2k); /* 首页背景图片 */
 }
 .mobile-home {
   height: calc(100vh - 66px);
   width: 100%;
   /* cursor: pointer; */
   background-color: black;
-  background-image: url(https://static.dubheee.cn/sun/static/imgmb.jpg?x-oss-process=style/2k); /* 首页背景图片 */
+  background-image: url(https://static.dubheee.cn/sun/static/imgmb.png?x-oss-process=style/2k); /* 首页背景图片 */
   background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;
