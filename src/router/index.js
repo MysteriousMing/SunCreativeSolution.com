@@ -8,20 +8,19 @@ import Construction from '@/containers/Construction'
 
 // Views
 import Home from '@/views/Home'
-import About from '@/views/About'
-import Contact from '@/views/Contact'
 import Project from '@/views/Project'
 import Dashboard from '@/views/Dashboard'
 import Catograph from '@/views/Catograph'
 
-// Admin
-import PostRecord from '@/views/PostRecord'
-import Post from '@/views/Post'
-import Editor from '@/views/Editor'
-import Periodic from '@/views/Periodic'
+const Contact = () => import(/* webpackChunkName: "other" */ '@/views/Contact')
+const About = () => import(/* webpackChunkName: "other" */ '@/views/About')
 
-// Pages
-import Login from '@/views/pages/Login'
+// Admin
+const PostRecord = () => import(/* webpackChunkName: "admin" */ '@/views/PostRecord')
+const Post = () => import(/* webpackChunkName: "admin" */ '@/views/Post')
+const Editor = () => import(/* webpackChunkName: "admin" */ '@/views/Editor')
+const Periodic = () => import(/* webpackChunkName: "admin" */ '@/views/Periodic')
+const Login = () => import(/* webpackChunkName: "admin" */ '@/views/pages/Login')
 
 Vue.use(Router)
 
