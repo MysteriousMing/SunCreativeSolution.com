@@ -9,6 +9,11 @@ export default {
       name: 'Post',
       url: '/admin/post',
       icon: 'icon-paper-plane'
+    },
+    {
+      name: 'Media',
+      url: '/admin/media',
+      icon: 'icon-magic-wand'
     }
     // {
     //   name: 'Dashboard',

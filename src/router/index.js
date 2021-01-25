@@ -21,6 +21,7 @@ const Post = () => import(/* webpackChunkName: "admin" */ '@/views/Post')
 const Editor = () => import(/* webpackChunkName: "admin" */ '@/views/Editor')
 const Periodic = () => import(/* webpackChunkName: "admin" */ '@/views/Periodic')
 const Login = () => import(/* webpackChunkName: "admin" */ '@/views/pages/Login')
+const Media = () => import(/* webpackChunkName: "admin" */ '@/views/medias/index')
 
 Vue.use(Router)
 
@@ -64,6 +65,11 @@ export default new Router({
           path: 'periodic',
           name: 'Periodic',
           component: Periodic
+        },
+        {
+          path: 'medias',
+          name: 'Medias',
+          component: Media
         }
       ]
     },
