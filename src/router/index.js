@@ -14,6 +14,7 @@ import Catograph from '@/views/Catograph'
 
 const Contact = () => import(/* webpackChunkName: "other" */ '@/views/Contact')
 const About = () => import(/* webpackChunkName: "other" */ '@/views/About')
+const NotFound = () => import(/* webpackChunkName: "page" */ '@/views/pages/NotFound')
 
 // Admin
 const PostRecord = () => import(/* webpackChunkName: "admin" */ '@/views/PostRecord')
@@ -118,6 +119,11 @@ export default new Router({
       name: 'LoginPage',
       component: Login,
       children: []
+    },
+    {
+      path: '*',
+      name: '404',
+      component: NotFound
     }
   ]
 })
