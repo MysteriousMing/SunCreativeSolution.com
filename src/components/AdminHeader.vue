@@ -1,6 +1,6 @@
 <template>
   <header class="app-header navbar animated white">
-    <h4 class="px-4">Sun Creative Solution</h4>
+    <h4 class="px-4">innovative intervention</h4>
     <el-menu :default-active="activeIndex" class="el-menu-demo ml-auto" mode="horizontal" @select="handleSelect">
       <el-menu-item index="Product">首页</el-menu-item>
       <el-menu-item index="Dev">建设中</el-menu-item>
