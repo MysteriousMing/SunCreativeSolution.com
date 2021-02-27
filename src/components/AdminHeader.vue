@@ -1,6 +1,6 @@
 <template>
   <header class="app-header navbar animated white">
-    <h4 class="px-4">Sun Creative Solution</h4>
+    <h4 class="px-4">innovative intervention</h4>
     <el-menu :default-active="activeIndex" class="el-menu-demo ml-auto" mode="horizontal" @select="handleSelect">
       <el-menu-item index="Product">首页</el-menu-item>
       <el-menu-item index="Dev">建设中</el-menu-item>
@@ -9,7 +9,7 @@
   </header>
 </template>
 <script>
-import logo from '../components/logo'
+import logo from '../components/Logo'
 import bus from '@/router/bus'
 
 export default {
@@ -17,14 +17,14 @@ export default {
   components: {
     logo
   },
-  data () {
+  data() {
     return {
       activeIndex: 'Admin',
       topUpperBg: this.topBg || 'black',
       bottomUpperBg: this.bottomBg || 'white'
     }
   },
-  created () {
+  created() {
     // document.body.classList.toggle('sidebar-hidden')
     bus.$on('header-go-black', isDown => {
       if (isDown === 'black') {
@@ -36,17 +36,17 @@ export default {
       }
     })
   },
-  mounted () {
+  mounted() {
     console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
   },
   methods: {
-    handleSelect (key, keyPath) {
+    handleSelect(key, keyPath) {
       console.log(key, keyPath)
       this.$router.push({
         name: key
       })
     },
-    showName (item) {
+    showName(item) {
       if (item.meta && item.meta.label) {
         item = item.meta && item.meta.label
       }
@@ -55,22 +55,22 @@ export default {
       }
       return item
     },
-    selectNav (val) {
+    selectNav(val) {
       bus.$emit('nav-router', val)
     },
-    sidebarToggle (e) {
+    sidebarToggle(e) {
       e.preventDefault()
       document.body.classList.toggle('sidebar-hidden')
     },
-    sidebarMinimize (e) {
+    sidebarMinimize(e) {
       e.preventDefault()
       document.body.classList.toggle('sidebar-minimized')
     },
-    mobileSidebarToggle (e) {
+    mobileSidebarToggle(e) {
       e.preventDefault()
       document.body.classList.toggle('sidebar-mobile-show')
     },
-    asideToggle (e) {
+    asideToggle(e) {
       e.preventDefault()
       document.body.classList.toggle('aside-menu-hidden')
     }

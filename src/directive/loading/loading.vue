@@ -1,10 +1,6 @@
 <template>
   <transition name="el-loading-fade" @after-leave="handleAfterLeave">
-    <div
-      v-show="visible"
-      class="el-loading-mask"
-      :style="{ backgroundColor: background || '' }"
-      :class="[customClass, { 'is-fullscreen': fullscreen }]">
+    <div v-show="visible" class="el-loading-mask" :style="{ backgroundColor: background || '' }" :class="[customClass, { 'is-fullscreen': fullscreen }]">
       <div class="el-loading-spinner">
         <!-- <svg v-if="!spinner" class="circular" viewBox="25 25 50 50">
           <circle class="path" cx="50" cy="50" r="20" fill="none"/>
@@ -36,32 +32,32 @@
 </template>
 
 <script>
-  import logo from '@/components/logo'
-  export default {
-    components: {
-      logo
-    },
-    data () {
-      return {
-        text: null,
-        spinner: null,
-        background: null,
-        fullscreen: false,
-        visible: false,
-        customClass: '',
-        ramdom: Math.floor(Math.random() * 3)
-      }
-    },
+import logo from '@/components/Logo'
+export default {
+  components: {
+    logo
+  },
+  data() {
+    return {
+      text: null,
+      spinner: null,
+      background: null,
+      fullscreen: false,
+      visible: false,
+      customClass: '',
+      ramdom: Math.floor(Math.random() * 3)
+    }
+  },
 
-    methods: {
-      handleAfterLeave () {
-        this.$emit('after-leave')
-      },
-      setText (text) {
-        this.text = text
-      }
+  methods: {
+    handleAfterLeave() {
+      this.$emit('after-leave')
+    },
+    setText(text) {
+      this.text = text
     }
   }
+}
 </script>
 
 <style>
@@ -78,7 +74,7 @@
   height: 100%;
   width: 6px;
   display: inline-block;
-  
+
   -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
   animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }
@@ -89,8 +85,8 @@
 }
 
 .spinner3 .rect3 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
 }
 
 .spinner3 .rect4 {
@@ -104,17 +100,26 @@
 }
 
 @-webkit-keyframes sk-stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
-  20% { -webkit-transform: scaleY(1.0) }
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+  }
 }
 
 @keyframes sk-stretchdelay {
-  0%, 40%, 100% { 
+  0%,
+  40%,
+  100% {
     transform: scaleY(0.4);
     -webkit-transform: scaleY(0.4);
-  }  20% { 
-    transform: scaleY(1.0);
-    -webkit-transform: scaleY(1.0);
+  }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1);
   }
 }
 
@@ -124,12 +129,13 @@
   height: 40px;
   position: relative;
   text-align: center;
-  
-  -webkit-animation: sk-rotate 2.0s infinite linear;
-  animation: sk-rotate 2.0s infinite linear;
+
+  -webkit-animation: sk-rotate 2s infinite linear;
+  animation: sk-rotate 2s infinite linear;
 }
 
-.dot1, .dot2 {
+.dot1,
+.dot2 {
   width: 60%;
   height: 60%;
   display: inline-block;
@@ -137,33 +143,49 @@
   top: 0;
   background-color: #333;
   border-radius: 100%;
-  
-  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
-  animation: sk-bounce 2.0s infinite ease-in-out;
+
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
 }
 
 .dot2 {
   top: auto;
   bottom: 0;
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
 }
 
-@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
-@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+@-webkit-keyframes sk-rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes sk-rotate {
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}
 
 @-webkit-keyframes sk-bounce {
-  0%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
 }
 
 @keyframes sk-bounce {
-  0%, 100% { 
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 50% { 
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
   }
 }
 
@@ -195,23 +217,35 @@
 }
 
 @-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+  }
 }
 
 @keyframes sk-bouncedelay {
-  0%, 80%, 100% { 
+  0%,
+  80%,
+  100% {
     -webkit-transform: scale(0);
     transform: scale(0);
-  } 40% { 
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
   }
 }
 @keyframes logo-bouncedelay {
-  0%, 100% {
+  0%,
+  100% {
     background: white;
-  } 40%, 60% { 
+  }
+  40%,
+  60% {
     background: black;
     opacity: 1;
   }
@@ -220,7 +254,7 @@
 .logo-spinner {
   margin: 0 auto 0;
   width: 90px;
-  transform: scale(0.7)
+  transform: scale(0.7);
 }
 .logo-spinner .logo {
   width: 90px;
@@ -250,7 +284,6 @@
   -webkit-animation-delay: -0.4s;
   animation-delay: -0.4s;
 }
-
 
 .logo-spinner .logo .stella-item:nth-child(2) {
   -webkit-animation-delay: -0.6s;
