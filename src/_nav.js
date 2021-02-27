@@ -11,8 +11,8 @@ export default {
       icon: 'icon-paper-plane'
     },
     {
-      name: 'Media',
-      url: '/admin/media',
+      name: '媒体库',
+      url: '/admin/medias',
       icon: 'icon-magic-wand'
     }
     // {
