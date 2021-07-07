@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var PrerenderSpaPlugin = require('prerender-spa-plugin')
 // var ImageminPlugin = require('imagemin-webpack-plugin').default
 
 var env = process.env.NODE_ENV === 'testing'
@@ -122,5 +123,14 @@ if (config.build.bundleAnalyzerReport) {
   var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
+
+// webpackConfig.plugins.push(
+
+//     // Absolute path to compiled SPA
+//     staticDir: path.join(config.build.assetsRoot),
+//     // List of routes to prerender
+//     routes: ['/about', '/contact']
+//   })
+// )
 
 module.exports = webpackConfig

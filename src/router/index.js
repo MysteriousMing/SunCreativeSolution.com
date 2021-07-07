@@ -8,20 +8,21 @@ import Construction from '@/containers/Construction'
 
 // Views
 import Home from '@/views/Home'
-import About from '@/views/About'
-import Contact from '@/views/Contact'
 import Project from '@/views/Project'
 import Dashboard from '@/views/Dashboard'
 import Catograph from '@/views/Catograph'
 
-// Admin
-import PostRecord from '@/views/PostRecord'
-import Post from '@/views/Post'
-import Editor from '@/views/Editor'
-import Periodic from '@/views/Periodic'
+const Contact = () => import(/* webpackChunkName: "other" */ '@/views/Contact')
+const About = () => import(/* webpackChunkName: "other" */ '@/views/About')
+const NotFound = () => import(/* webpackChunkName: "page" */ '@/views/pages/NotFound')
 
-// Pages
-import Login from '@/views/pages/Login'
+// Admin
+const PostRecord = () => import(/* webpackChunkName: "admin" */ '@/views/PostRecord')
+const Post = () => import(/* webpackChunkName: "admin" */ '@/views/Post')
+const Editor = () => import(/* webpackChunkName: "admin" */ '@/views/Editor')
+const Periodic = () => import(/* webpackChunkName: "admin" */ '@/views/Periodic')
+const Login = () => import(/* webpackChunkName: "admin" */ '@/views/pages/Login')
+const Media = () => import(/* webpackChunkName: "admin" */ '@/views/medias/index')
 
 Vue.use(Router)
 
@@ -65,6 +66,11 @@ export default new Router({
           path: 'periodic',
           name: 'Periodic',
           component: Periodic
+        },
+        {
+          path: 'medias',
+          name: 'Medias',
+          component: Media
         }
       ]
     },
@@ -113,6 +119,11 @@ export default new Router({
       name: 'LoginPage',
       component: Login,
       children: []
+    },
+    {
+      path: '*',
+      name: '404',
+      component: NotFound
     }
   ]
 })

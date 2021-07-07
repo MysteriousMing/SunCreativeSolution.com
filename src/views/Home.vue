@@ -1,15 +1,9 @@
 <template>
 <div class="home-page" v-scroll="onScroll" ref="page">
-  <!-- <Dashboard class="d-md-down-none"></Dashboard> -->
-  <!-- <Catograph class="d-md-down-none"></Catograph> -->
   <!-- 正常首页头图 -->
   <section class="d-md-down-none normal-home"></section>
   <!-- 移动端首页头图 -->
   <section class="d-lg-none mobile-home">
-    <p hidden class="mt-100">Research-based,</p>
-    <p hidden class="mt-1">Problem-solving,</p>
-    <p hidden class="mt-1">Experience-creating,</p>
-    <p hidden class="mt-4">DESIGNER.</p>
   </section>
   <section class="container flud" v-loading="dataLoading">
     <!-- <vue-waterfall-easy :imgsArr="picArray"></vue-waterfall-easy> -->
@@ -17,7 +11,7 @@
       <div v-for="element in picArray" :key="element.uuid"
       class="grid-item grid-sizer project-item" @click="handleClick(element)">
           <!-- {{element.name}} [GROUP: {{element.group+1}}]-->
-          <img :src="element.src" alt="Not found">
+          <img :src="element.src" :alt="element.name || 'not found'">
           <section class="hover-show">
             <p class="item-title">{{element.name}}</p>
             <p class="item-desc">{{element.discribe}}</p>
@@ -171,7 +165,7 @@ export default {
           return {
             ...item,
             uuid: item.uuid,
-            src: item.header_image.replace('Http://', 'Https://'),
+            src: item.thumbnail.replace('Http://', 'Https://') + '?x-oss-process=style/smaller',
             name: item.title,
             discribe: item.explanation,
             group: item.category
@@ -274,15 +268,15 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  cursor: pointer;
-  background-image: url(/static/images/imgnm.jpg); /* 首页背景图片 */
+  /* cursor: pointer; */
+  background-image: url(https://static.dubheee.cn/sun/static/imgnm.png?x-oss-process=style/2k); /* 首页背景图片 */
 }
 .mobile-home {
   height: calc(100vh - 66px);
   width: 100%;
-  cursor: pointer;
+  /* cursor: pointer; */
   background-color: black;
-  background-image: url(/static/images/imgmb.jpg); /* 首页背景图片 */
+  background-image: url(https://static.dubheee.cn/sun/static/imgmb.png?x-oss-process=style/2k); /* 首页背景图片 */
   background-size: cover;
   background-repeat: no-repeat;
   color: #ffffff;
@@ -304,6 +298,7 @@ export default {
 .home-page .project-item {
   position: relative;
   overflow: hidden;
+  cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png) 22.8 0, pointer;
   .hover-show {
     position: absolute;
     top: 100%;

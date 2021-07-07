@@ -102,6 +102,6 @@ export default {
 .page-dashboard .three {
   display: block;
   padding: 0!important;
-  cursor: pointer;
+  cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png),pointer;
 }
 </style>

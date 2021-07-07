@@ -1,13 +1,12 @@
 <template>
-  <header class="app-header navbar animated"
-  :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true }">
-    <b-link class="navbar-brand logo-ctn" :class="{'transparent': !(!(bottomUpperBg == 'white' && isOnHome) || !isOnHome)}" to="/">
+  <header class="app-header navbar animated" :class="{'black':bottomUpperBg == 'black', 'hide': headerAnimate && scrollUp === false, 'show': headerAnimate && scrollUp === true, 'home-hide': isOnHome && bottomUpperBg == 'white'}">
+    <b-link class="navbar-brand logo-ctn" :class="{'transparent': !(!(bottomUpperBg == 'white' && isOnHome) || !isOnHome)}" :to="{name: 'Home'}">
       <logo :topBg="topUpperBg" :bottomBg="bottomUpperBg" class="logo"></logo>
     </b-link>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('art')">ART</span>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('research')">RESEARCH</span>
     <span class="navbar-brand d-md-down-none" :class="{'black':bottomUpperBg == 'black'}" @click="selectNav('commercial')">COMMERCIAL</span>
-    <button class="ml-auto mr-4 navbar-toggler mobile-sidebar-toggler d-lg-none menu-btn" @click="mobileSidebarToggle">
+    <button class="ml-auto mr-4 mt-4 navbar-toggler mobile-sidebar-toggler d-lg-none menu-btn" @click="mobileSidebarToggle">
       <span></span>
       <span></span>
       <span></span>
@@ -17,12 +16,12 @@
       <span class="mobile-full-item" @click="selectNav('art')">ART</span>
       <span class="mobile-full-item" @click="selectNav('research')">RESEARCH</span>
       <span class="mobile-full-item" @click="selectNav('commercial')">COMMERCIAL</span>
-      <span class="mobile-full-item mt-auto" @click="gotoContact()">CONTACT</span>
+      <span class="mobile-full-item mt-auto" @click="gotoAbout()">ABOUT ME</span>
     </section>
   </header>
 </template>
 <script>
-import logo from '../components/logo'
+import logo from '../components/Logo'
 import bus from '@/router/bus'
 
 export default {
@@ -35,11 +34,11 @@ export default {
     animateDirect: String
   },
   watch: {
-    scrollInfo (from, to) {
+    scrollInfo(from, to) {
       console.log(from, to)
     }
   },
-  data () {
+  data() {
     return {
       topUpperBg: this.topBg || 'black',
       bottomUpperBg: this.bottomBg || 'white',
@@ -48,7 +47,7 @@ export default {
       isOnHome: false
     }
   },
-  created () {
+  created() {
     document.body.classList.add('sidebar-hidden')
     bus.$on('header-go-black', isDown => {
       if (isDown === 'black') {
@@ -67,48 +66,59 @@ export default {
       this.scrollUp = animateInfo.scrollUp
     })
   },
-  mounted () {
+  mounted() {
     // console.log('Mounted:', this.topUpperBg, typeof (this.topUpperBg))
     document.body.querySelector('.menu-btn').classList.remove('open')
     document.body.querySelector('.logo').classList.add('active')
   },
   methods: {
-    selectNav (val) {
+    selectNav(val) {
       console.log(this.$router)
       document.body.querySelector('.mobile-full').classList.remove('show')
       document.body.querySelector('.menu-btn').classList.remove('open')
       document.body.querySelector('.logo').classList.remove('active')
 
-      if (this.$router.history.current.name === 'Project') {
+      if (this.$router.history.current.name !== 'Home') {
         this.$router.push({
           name: 'Home'
         })
       }
       bus.$emit('nav-router', val)
     },
-    sidebarToggle (e) {
+    sidebarToggle(e) {
       e.preventDefault()
       document.body.classList.toggle('sidebar-hidden')
     },
-    sidebarMinimize (e) {
+    sidebarMinimize(e) {
       e.preventDefault()
       document.body.classList.toggle('sidebar-minimized')
     },
-    mobileSidebarToggle (e) {
+    mobileSidebarToggle(e) {
       e.preventDefault()
       // document.body.classList.toggle('sidebar-mobile-show')
       document.body.querySelector('.menu-btn').classList.toggle('open')
       document.body.querySelector('.logo').classList.toggle('active')
       document.body.querySelector('.mobile-full').classList.toggle('show')
     },
-    asideToggle (e) {
+    asideToggle(e) {
       e.preventDefault()
       document.body.classList.toggle('aside-menu-hidden')
     },
-    gotoContact () {
+    gotoAbout() {
+      this.$router.push({
+        name: 'About'
+      })
+      document.body.querySelector('.mobile-full').classList.remove('show')
+      document.body.querySelector('.menu-btn').classList.remove('open')
+      document.body.querySelector('.logo').classList.remove('active')
+    },
+    gotoContact() {
       this.$router.push({
         name: 'Contact'
       })
+      document.body.querySelector('.mobile-full').classList.remove('show')
+      document.body.querySelector('.menu-btn').classList.remove('open')
+      document.body.querySelector('.logo').classList.remove('active')
     }
   }
 }
@@ -116,7 +126,7 @@ export default {
 <style>
 .app-header.navbar .navbar-brand {
   line-height: 79px;
-  font-family: 'Mada SemiBold';
+  font-family: "Mada SemiBold";
   width: auto !important;
   background: none !important;
 }
@@ -126,7 +136,7 @@ export default {
 .app-header.navbar .navbar-brand.logo-ctn.transparent {
   opacity: 0;
   padding-left: 0;
-  width: 10%!important;
+  width: 10% !important;
 }
 .navbar-brand.black {
   color: #ffffff;
@@ -139,21 +149,21 @@ export default {
 }
 
 @keyframes fromTopIn {
-    from {
-        top: -120px;
-    }
-    to {
-        top: 0;
-    }
+  from {
+    top: -120px;
+  }
+  to {
+    top: 0;
+  }
 }
 
 @keyframes toTopIn {
-    from {
-        top: 0;
-    }
-    to {
-        top: -120px;
-    }
+  from {
+    top: 0;
+  }
+  to {
+    top: -120px;
+  }
 }
 
 .app-header.show {
@@ -178,7 +188,7 @@ export default {
     right: 0;
     display: flex;
     flex-flow: column;
-    color:white;
+    color: white;
     background: black;
     transition: all 250ms ease 100ms;
     overflow: hidden;
@@ -241,18 +251,19 @@ export default {
 }
 
 .menu-btn {
-  width: 45px;
+  width: 35px;
   height: 35px;
   position: relative;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  -webkit-transition: .5s ease-in-out;
-  -moz-transition: .5s ease-in-out;
-  -o-transition: .5s ease-in-out;
-  transition: .5s ease-in-out;
-  cursor: pointer;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+  cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png) 22.8 0,
+    pointer;
 }
 button.menu-btn:focus {
   outline: none;
@@ -270,10 +281,10 @@ button.menu-btn:focus {
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  -webkit-transition: .25s ease-in-out;
-  -moz-transition: .25s ease-in-out;
-  -o-transition: .25s ease-in-out;
-  transition: .25s ease-in-out;
+  -webkit-transition: 0.25s ease-in-out;
+  -moz-transition: 0.25s ease-in-out;
+  -o-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 
 /* Icon 3 */
@@ -282,12 +293,13 @@ button.menu-btn:focus {
   top: 0px;
 }
 
-.menu-btn span:nth-child(2),.menu-btn span:nth-child(3) {
-  top: 18px;
+.menu-btn span:nth-child(2),
+.menu-btn span:nth-child(3) {
+  top: 12px;
 }
 
 .menu-btn span:nth-child(4) {
-  top: 36px;
+  top: 24px;
 }
 
 .menu-btn.open span:nth-child(1) {
@@ -315,5 +327,28 @@ button.menu-btn:focus {
   width: 0%;
   left: 50%;
 }
+</style>
 
+<style lang="scss">
+// 满足 pc 端首页默认不加载
+@media (min-width: 992px) {
+  .app-header.home-hide {
+    transform: translateY(-126px);
+    transition: transform 200ms ease;
+  }
+  // home.vue
+  .app-header.home-hide + .app-body.active-header {
+    margin-top: 0;
+
+    .home-page {
+      // 首页 home
+      height: 100vh;
+      overflow: auto;
+    }
+    .normal-home {
+      // pc 首页的图片 #首页背景图片
+      height: 100vh;
+    }
+  }
+}
 </style>

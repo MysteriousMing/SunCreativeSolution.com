@@ -496,7 +496,7 @@ body {
 	outline: 1px solid rgba(127,255,255,0.75);
 	border: 0px;
 	padding: 5px 10px;
-	cursor: pointer;
+  cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png),pointer;
 }
 .page-dashboard button:hover {
 	background-color: rgba(0,255,255,0.5);

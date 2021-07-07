@@ -1,5 +1,6 @@
 export default [
   'art',
   'research',
-  'commercial'
+  'commercial',
+  'invisible'
 ]

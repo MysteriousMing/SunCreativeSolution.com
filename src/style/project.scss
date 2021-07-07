@@ -10,7 +10,7 @@
   width: 30%;
   display: flex;
   flex-flow: column;
-  padding: 0 10px 0 0;
+  padding: 0 10px 0 12px;
 }
 // 适配手机
 @media (max-width: 991px) {
@@ -78,7 +78,7 @@ a.nav-link {
   opacity: 1;
 
   .title-nav-item & {
-    cursor: pointer;
+    cursor: url(https://static.dubheee.cn/sun/static/cursor_pointer.png) 22.8 0, pointer;
     font-weight: bold;
     font-family: 'Mada SemiBold';
     color: rgba(1, 0, 0, 0.6);
@@ -224,6 +224,16 @@ ul li.sub-menu-item {
 .images-section + .image-header-section {
   margin-top: -20px;
 }
+.images-section + .videos-section,
+.videos-section + .videos-section,
+.videos-section + .images-section,
+.margin-section + .videos-section,
+.margin-section + .images-section,
+.margin-section + .para-section,
+.margin-section + .audios-section {
+  margin-top: 20px;
+}
+
 .para-image {
   text-align: center;
 }
@@ -231,4 +241,18 @@ ul li.sub-menu-item {
 .proj-content button:focus {
   outline: none;
   box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.ql-editor > * {
+  cursor: url(https://static.dubheee.cn/sun/static/cursor.png), auto;
+}
+.audio-src {
+  font-size: 10px;
+  color: #919191;
+}
+
+.videos-section {
+  .vp-center>div {
+    max-width: none !important;
+  }
 }

@@ -11,14 +11,19 @@ export default {
       icon: 'icon-paper-plane'
     },
     {
-      name: 'Dashboard',
-      url: 'dashboard',
-      icon: 'icon-layers'
-    }, {
-      name: 'Periodic',
-      url: 'periodic',
+      name: '媒体库',
+      url: '/admin/medias',
       icon: 'icon-magic-wand'
     }
+    // {
+    //   name: 'Dashboard',
+    //   url: 'dashboard',
+    //   icon: 'icon-layers'
+    // }, {
+    //   name: 'Periodic',
+    //   url: 'periodic',
+    //   icon: 'icon-magic-wand'
+    // }
   ]
 }
 // https://coreui.io/v1/demo/AngularJS_Demo/#!/icons/simple-line-icons
