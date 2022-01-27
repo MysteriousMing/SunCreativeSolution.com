@@ -27,7 +27,7 @@
     "jquery": "^3.3.1",
     "mapbox-gl": "^0.52.0-beta.2",
     "simple-line-icons": "^2.4.1",
-    "three": "^0.99.0",
+    "three": "^0.137.0",
     "tween": "^0.9.0",
     "vue": "^2.5.21",
     "vue-append": "^1.1.3",
